@@ -1,0 +1,15 @@
+
+:root {
+    --cor_background: rgb(180, 180, 180);
+}
+
+
+html {
+    background-color: var(--cor_background);
+}
+
+div.titulos {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
