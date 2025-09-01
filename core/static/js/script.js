@@ -1,5 +1,9 @@
 import { btn_index } from './utilitys.js';
 
+
+
+
+
 btn_index.btn_adicionar.addEventListener('click', () => {
     console.log('Adicionar button clicked');
 });
