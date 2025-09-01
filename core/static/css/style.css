@@ -1,14 +1,18 @@
 
 :root {
     --cor_background: rgba(223, 221, 221, 0.863);
+    --font_family: Arial, sans-serif;
+    --font_size: 16px;
 }
 
 
 html {
-    background-color: var(--cor_background);
+    background-color: var(--cor_background);    
 }
 
 main {
+    align-content: center;
+    align-items: center;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -16,6 +20,8 @@ main {
 }
 
 div.titulos {
+    align-content: center;
+    align-items: center;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -26,10 +32,15 @@ div.div_input_link{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 25%;
+    width: 70%;
 }
-id#id_input_link {
-    height: 30px;
-    width: 500px;
-    margin-top: 100px;
+input#id_input_link {
+    display: block;
+    max-width: 80%;
+    height: 50px;
+    width: 100%;
+    padding: 10px 15px;
+
+    font-family: var(--font_family);
+    font-size: var(--font_size);
 }
