@@ -18,12 +18,20 @@ function add_link_sistema (link_youtube) {
 
 
 class btn_youtube  {
+
     constructor(link) {
         this.link = link;
     }
 
     add_link() {
         add_link_sistema(this.link);
+    }
+
+    player_midia(midia) {
+        const dialog = document.querySelector('.dialog_play');
+        const video = dialog.querySelector('.video_player source');
+        video.src = midia;
+        dialog.showModal();
     }
 }
 
@@ -43,5 +51,7 @@ btn_index.btn_remover.addEventListener('click', () => {
 });
 
 btn_index.btn_player.addEventListener('click', () => {
-    console.log('Player button clicked');
+    const midia = 'Teste'
+    const btn = new btn_youtube(midia);
+    btn.player_midia();
 });
