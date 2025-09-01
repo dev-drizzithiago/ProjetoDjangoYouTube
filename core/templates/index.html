@@ -19,12 +19,32 @@
         <div class="div_input_link">
             <input type="text" placeholder="Cole o link aqui" id="id_input_link">
         </div>
-        <div class="div_btns">
+
+        <div class="div_btns_add">
             <button id="id_btn_add_link">Adicionar</button>
+        </div>
+
+        <ul>
+            <li>Download</li>
+            <li>Remover</li>
+            <li>Player</li>
+        </ul>
+
+        <div class="div_btns">
             <button id="id_btn_download">Download</button>
             <button id="id_btn_remover">Remover</button>
             <button id="id_btn_player">Player</button>
         </div>
+
+        <dialog class="dialog dialog_play">
+            <div class="div div_dialog_play">
+                <video controls class="video_player">
+                    <source src="" type="video/mp4">
+                    Seu navegador não suporta o elemento de vídeo.
+                </video>
+            </div>
+        </dialog>
+
     </main>
 
     <script type="module" src="{% static 'js/utilitys.js' %}"></script>
