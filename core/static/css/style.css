@@ -1,6 +1,6 @@
 
 :root {
-    --cor_background: rgb(180, 180, 180);
+    --cor_background: rgba(223, 221, 221, 0.863);
 }
 
 
@@ -8,8 +8,21 @@ html {
     background-color: var(--cor_background);
 }
 
+main {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 div.titulos {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    width: 50%;
+}
+
+div.div_input_link{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
