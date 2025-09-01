@@ -1,11 +1,24 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Download Vídeos Youtube</title>
 </head>
 <body>
-    
+    <main>
+        <div class="titulos">
+            <h1>
+                Download Vídeos Youtube
+            </h1>
+        </div>
+
+        <div>
+            <input type="text" placeholder="Cole o link aqui">
+        </div>
+    </main>
 </body>
 </html>
