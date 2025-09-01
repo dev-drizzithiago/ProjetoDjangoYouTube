@@ -3,6 +3,7 @@
     --cor_background: rgba(223, 221, 221, 0.863);
     --font_family: Arial, sans-serif;
     --font_size: 16px;
+    --bord_teste: 1px solid #000;
 }
 
 
@@ -11,16 +12,18 @@ html {
 }
 
 main {
-    display: block;
-    border: 1px solid #000;
+    border: var(--bord_teste);
+    display: flex;
     margin-left: auto; 
     margin-right: auto;
     width: 50%;
-    height: 50%;
+    height: 500px;
+
+    justify-content: center;
+    align-items: center;
 }
 
 div.titulos {
-    border: 1px solid #000;
     text-align: center;
     align-content: center;
     align-items: center;
@@ -31,7 +34,6 @@ div.titulos {
 }
 
 div.div_input_link{
-    border: 1px solid #000;
     justify-items: center; /* Centraliza o conteúdo ao meio da DIV*/
     display: block;
     margin-left: auto;
@@ -44,14 +46,15 @@ input#id_input_link {
     height: 50px;
     width: 100%;
     padding: 10px 15px;
+    border-radius: 4px;
 
     font-family: var(--font_family);
     font-size: var(--font_size);
+
 }
 
 div.div_btns{
     display: flex;
-    border: 1px solid #000;
     justify-content: center; /*Centraliza os botões ao meio da DIV*/    
     margin-left: auto;
     margin-right: auto;
@@ -59,7 +62,7 @@ div.div_btns{
 }
 
 button {
-    background-color: #4CAF50; /* Verde */
+    background-color: #3357f5; /* Verde */
     border: none;
     color: white;
     padding: 15px 32px;
