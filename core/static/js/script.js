@@ -12,7 +12,7 @@ function add_link_sistema (link_youtube) {
         body: JSON.stringify(link_youtube)
     })
 
-    const data = response.json();
+    const data = response.json;
     console.log(data);
 }
 
@@ -36,22 +36,27 @@ class btn_youtube  {
 }
 
 
-btn_index.btn_adicionar.addEventListener('click', () => {
+btn_index.btn_adicionar.addEventListener('click', (event) => {
+    event.preventDefault();
     const link = document.getElementById('id_input_link').value;
     const btn = new btn_youtube(link);
     btn.add_link();
 });
 
-btn_index.btn_download.addEventListener('click', () => {
+btn_index.btn_download.addEventListener('click', (event) => {
+    event.preventDefault();
     console.log('Download button clicked');
 });
 
-btn_index.btn_remover.addEventListener('click', () => {
+btn_index.btn_remover.addEventListener('click', (event) => {
+    event.preventDefault();
     console.log('Remover button clicked');
 });
 
-btn_index.btn_player.addEventListener('click', () => {
-    const midia = 'Teste'
-    const btn = new btn_youtube(midia);
+btn_index.btn_player.addEventListener('click', (event) => {
+    event.preventDefault();
+    const midia = document.getElementById('id_video_teste').getAttribute('data-url');
+    console.log(midia)
+    const btn = new btn_youtube();
     btn.player_midia();
 });
