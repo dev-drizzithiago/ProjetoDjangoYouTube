@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.conf import settings
 
 from .app_youtube import YouTubeDownload
-INICIO_OBJ_YOUTUBE = YouTubeDownload()
 midia = 'Dreams (2004 Remaster).mp4'
 
 # Create your views here.
@@ -21,8 +20,10 @@ def index(request):
 
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
+    link_registro = str(dados_json)
 
-    resultado_processo_add = INICIO_OBJ_YOUTUBE.validar_link_youtube(dados_json)
+    inicio_obj_yt_registro = YouTubeDownload()
+    resultado_processo_add = inicio_obj_yt_registro.validar_link_youtube(link_registro)
 
     return JsonResponse({
         'mensagem': resultado_processo_add,
