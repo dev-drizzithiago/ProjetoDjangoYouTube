@@ -76,6 +76,11 @@ class YouTubeDownload:
         self.conexao_banco = None
         self.cursor = None
         self.link = link
+        self._auto_link = None
+        self._titulo_link = None
+        self._duracao = None
+        self._miniatura = None
+        self._link_tube = None
 
     # Registra o link na base de dados.
     def registrando_link_base_dados(self):
@@ -83,13 +88,20 @@ class YouTubeDownload:
         youtube = YouTube(self.link)
 
         dados_link = DadosYoutube(
-            autor=youtube.author,
-            titulo=youtube.title,
+            autor_link=youtube.author,
+            titulo_link=youtube.title,
             duracao=youtube.length,
             miniatua=youtube.thumbnail_url,
-            link_down=youtube.watch_url,
+            link_tube=youtube.watch_url,
         )
-        dados_link.save()
+        print(dados_link)
+        try:
+            dados_link.save()
+            return f'Link salvo na base de dados com sucesso'
+
+        except Exception as error:
+            return f'Erro ao salvar o link na base de dados: {error}'
+
 
     def removendo_link_base_dados(self):
         """
