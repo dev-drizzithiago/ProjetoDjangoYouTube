@@ -18,6 +18,7 @@ def index(request):
 
 
 def add_link_sistema(request):
+
     dados_json = json.loads(request.body)
     print(dados_json)
 
