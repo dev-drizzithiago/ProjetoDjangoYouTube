@@ -32,7 +32,7 @@ Duration: 534 sec
 
 """
 
-from .models import DadosYtoutube
+from .models import DadosYoutube
 
 from os import path, listdir, makedirs, remove, system
 
@@ -66,6 +66,7 @@ def validacao_nome_arquivo(filename):
 class YouTubeDownload:
 
 
+
     def __init__(self, link):
         self.link = None
         self.conexao_banco = None
@@ -77,13 +78,14 @@ class YouTubeDownload:
 
         youtube = YouTube(self.link)
 
-        dados_link = {
-            'autor': youtube.author,
-            'titulo': youtube.title,
-            'duracao': youtube.length,
-            'miniatua': youtube.thumbnail_url,
-            'link_down': youtube.watch_url,
-        }
+        dados_link = DadosYoutube(
+            autor=youtube.author,
+            titulo=youtube.title,
+            duracao=youtube.length,
+            miniatua=youtube.thumbnail_url,
+            link_down=youtube.watch_url,
+        )
+        dados_link.save()
 
     def removendo_link_base_dados(self):
         """
@@ -98,6 +100,8 @@ class YouTubeDownload:
         Metodo responsável por lista as urls dentro da base de dados.
         :return: Sempre vai retornar um tubla. O "fronte" vai ser responsável em mostrar os dados.
         """
+
+        query_dados_youtube = DadosYoutube.objects.all()
 
     # Faz download do arquivo em MP3.
     def download_music(self):
