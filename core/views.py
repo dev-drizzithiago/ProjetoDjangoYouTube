@@ -24,9 +24,6 @@ def add_link_sistema(request):
 
     resultado_processo_add = INICIO_OBJ_YOUTUBE.validar_link_youtube(dados_json)
 
-    if resultado_processo_add:
-        return JsonResponse({
-            'mesage': dados_json
-        })
-    else:
-        return resultado_processo_add
+    return JsonResponse({
+        'mensagem': resultado_processo_add,
+    })
