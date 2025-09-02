@@ -32,6 +32,8 @@ Duration: 534 sec
 
 """
 
+from .models import DadosYtoutube
+
 from os import path, listdir, makedirs, remove, system
 
 from pathlib import Path
@@ -62,91 +64,33 @@ def validacao_nome_arquivo(filename):
     return re.sub(r'[\/:*?"<>|]', '-', filename)
 
 class YouTubeDownload:
-    linha = '----' * 24
 
-    path_home = Path.home()
 
-    DB_YOUTUBE_ONE = Path(path_home, 'OneDrive', 'Documentos', 'YouTube_V6', 'dados_core.db')
-    path_down_mp3_one = Path(path_home, 'OneDrive', 'Documentos', 'YouTube_V6', 'Músicas(MP3)')
-    path_down_mp4_one = Path(path_home, 'OneDrive', 'Documentos', 'YouTube_V6', 'Vídeos(MP4)')
-
-    DB_YOUTUBE = Path(path_home, 'Documentos', 'dados_core.db')
-    path_down_mp3 = Path(path_home, 'Documentos', 'YouTube_V6', 'Músicas(MP3)')
-    path_down_mp4 = Path(path_home, 'Documentos', 'YouTube_V6', 'Vídeos(MP4)')
-
-    # Pasta vai receber o vídeo apenas com o som para ser modificado para audio
-    path_temp = str(Path(path_home, 'AppData', 'Local', 'Temp'))
-
-    # Faz uma checagem na pasta
-    pasta_com_onedrive = path.join(path_home, 'OneDrive', 'Documentos')
-
-    def __init__(self):
+    def __init__(self, link):
         self.link = None
         self.conexao_banco = None
         self.cursor = None
+        self.link = link
 
     # Registra o link na base de dados.
-    def registrando_link_base_dados(self, link):
-        """
-        Metodo responsável em registrar o link na base de dados.
-        :param link: Recebe o link do youtube, validado pelo metodo 'validar_link_youtube'.
-        1º O metodo pytubefix.YouTube processo o link e é estraido as informações do link como:
-        Author, title, length(duração em segundos), thumbnail_url(miniatura) e watch_url(Link do vídeo)
-        2º query_sqlite: cria o comanado para adicionar os valores na tabela.
-        3º valores_query: Recebe as variáveis com os valores do link.
-        4º self.cursor.execute(query_sqlite, valores_query): Executa o comando para adicionar os dados na tabela.
-        :return: A confirmação que os dados foram salvos na tabela.
-        """
-        try:
-            dados_tube = YouTube(link)  # Criando objeto
+    def registrando_link_base_dados(self):
 
-            try:
-                # Adicionando url dentro da base de dados
-                # Estou usando um placeholders para garantir que nenhum comando entre.
-                query_sqlite = (
-                    f"INSERT INTO INFO_TUBE (autor_link, titulo_link, duracao, miniatura, link_tube) "
-                    f"VALUES (?, ?, ?, ?, ?); "
-                )
-                valores_query = (
-                    dados_tube.author,
-                    dados_tube.title,
-                    str(dados_tube.length),
-                    dados_tube.thumbnail_url,
-                    dados_tube.watch_url,
-                )
-                self.cursor.execute(query_sqlite, valores_query)
-                self.conexao_banco.commit()
-                print(f'{dados_tube.author} - {dados_tube.title}')
-                return 'Link salvo na base de dados.'
+        youtube = YouTube(self.link)
 
-            except Exception as error:
-                # Desfaz das operações em caso de erro.
-                self.conexao_banco.rollback()
-                return f'ERROR: Não foi possível salvar a URL na base de dados (registrando_link_base_dados): [{error}]'
+        dados_link = {
+            'autor': youtube.author,
+            'titulo': youtube.title,
+            'duracao': youtube.length,
+            'miniatua': youtube.thumbnail_url,
+            'link_down': youtube.watch_url,
+        }
 
-        except Exception as error:
-            print(f'ERROR: ocorreu um erro inexperado: [{error}]')
-
-    def removendo_link_base_dados(self, link_remove: int):
+    def removendo_link_base_dados(self):
         """
         Metódo responsável por remover o link da base de dados.
         :param link_remove: Recebe o valor do número do id do link.
         :return: Retorna a confirmação que o link foi deletado.
         """
-
-        # Cria a query para o banco de dados.
-        cmd_sql = f"DELETE FROM INFO_TUBE WHERE id={link_remove}"
-        try:
-            # Executa o comando do sql
-            self.cursor.execute(cmd_sql)
-
-            # Atualiza o banco de dados.
-            self.conexao_banco.commit()
-
-            # Retorna a confirmação da remoção.
-            return f'Link deletado...'
-        except Exception as error:
-            print(f'Erro: {error}')
 
     # Listando Tabela INFO_TUBE
     def listando_info_base_dados(self):
@@ -154,31 +98,9 @@ class YouTubeDownload:
         Metodo responsável por lista as urls dentro da base de dados.
         :return: Sempre vai retornar um tubla. O "fronte" vai ser responsável em mostrar os dados.
         """
-        # Consulta SQL. Busca todos os dados dentro da tabela  INFO_TUBE
-        query_sqlite = "SELECT * FROM INFO_TUBE"
-
-        # fetchall() extrai todos os resultados e retorna uma lista de tuplas.
-        lista_urls = self.cursor.execute(query_sqlite).fetchall()
-        lista_dict = list()
-
-        # List comprehension gera uma lista com os nomes das colunas.
-        # Itera os valores dentro da tabela e pega nos nomes da coluna.
-        # Cada item em description é uma tupla, onde o primeiro elemento (desc[0]) é o nome da coluna.
-        colunas = [desc[0] for desc in self.cursor.description]
-
-        # itera as linhas que estão dentro da tabela
-        for linha in lista_urls:
-
-            # Junta a coluna com a linha e transforma em dicionário
-            registro = dict(zip(colunas, linha))
-
-            # Adiciona o dicionário na lista
-            lista_dict.append(registro)
-
-        return lista_dict
 
     # Faz download do arquivo em MP3.
-    def download_music(self, dados_youtube):
+    def download_music(self):
         """
         1º O arquivo M4A é baixado para pasta "temp".
         2º O metodo mp4_to_mp3 é chamado e transforma o arquivo em MP3.
