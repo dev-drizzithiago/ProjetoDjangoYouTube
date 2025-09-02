@@ -18,10 +18,10 @@ def index(request):
 
 
 def add_link_sistema(request):
-
     dados_json = json.loads(request.body)
+
     print(dados_json)
 
     return JsonResponse({
-        'mesage': 'Teste'
+        'mesage': dados_json
     })
