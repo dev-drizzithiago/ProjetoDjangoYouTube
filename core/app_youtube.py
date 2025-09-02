@@ -31,8 +31,11 @@ Duration: 534 sec
 ---
 
 """
+import os.path
 
 from .models import DadosYoutube
+from django.conf import settings
+
 
 from os import path, listdir, makedirs, remove, system
 
@@ -64,9 +67,8 @@ def validacao_nome_arquivo(filename):
     return re.sub(r'[\/:*?"<>|]', '-', filename)
 
 class YouTubeDownload:
-
-
-
+    PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
+    PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
     def __init__(self, link):
         self.link = None
         self.conexao_banco = None
