@@ -20,7 +20,7 @@ def index(request):
 
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
-    link_registro = str(dados_json)
+    link_registro = dados_json
 
     inicio_obj_yt_registro = YouTubeDownload()
     resultado_processo_add = inicio_obj_yt_registro.validar_link_youtube(link_registro)
