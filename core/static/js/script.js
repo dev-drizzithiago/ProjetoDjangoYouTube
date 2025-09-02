@@ -15,18 +15,18 @@ class btn_youtube  {
         this.midia = midia;
     }
 
-    add_link() {
+    async add_link() {
         try {
-            const response = fetch("/add_link_sistema/", {
+            const response = await fetch("/add_link_sistema/", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
+                    'X-CSRFToken': getCookie('csrftoken'),
                 },
-            body: JSON.stringify(this.link)
+                body: JSON.stringify(this.link)
             })
 
-            const data = response.json;
+            const data = await response.json();
             console.log(data);
         } catch (error) {
             console.error('Error adding link:', error);
