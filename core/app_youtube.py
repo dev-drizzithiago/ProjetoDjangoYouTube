@@ -71,11 +71,11 @@ class YouTubeDownload:
     PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
 
-    def __init__(self, link):
+    def __init__(self):
         self.link = None
         self.conexao_banco = None
         self.cursor = None
-        self.link = link
+        self.link_validado = None
         self._auto_link = None
         self._titulo_link = None
         self._duracao = None
@@ -219,7 +219,7 @@ class YouTubeDownload:
         if link[:23] != 'https://www.youtube.com':
             return False
         else:
-            return True
+            self.link_validado = link
 
     def criando_tabela_dados(self):
         """
