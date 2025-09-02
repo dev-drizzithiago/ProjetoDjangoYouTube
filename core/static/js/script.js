@@ -42,7 +42,7 @@ class btn_youtube  {
     }
 }
 
-
+/** Botão para adicionar o link no banco de dados */
 btn_index.btn_adicionar.addEventListener('click', (event) => {
     event.preventDefault();
     const link = document.getElementById('id_input_link').value;
@@ -50,16 +50,19 @@ btn_index.btn_adicionar.addEventListener('click', (event) => {
     btn.add_link();
 });
 
+/** Botão para baixar o vídeo */
 btn_index.btn_download.addEventListener('click', (event) => {
     event.preventDefault();
     console.log('Download button clicked');
 });
 
+/** Botão para remover o registro na base de dados */
 btn_index.btn_remover.addEventListener('click', (event) => {
     event.preventDefault();
     console.log('Remover button clicked');
 });
 
+/** Botão para reproduzir o vídeo/audio */
 btn_index.btn_player.addEventListener('click', (event) => {
     event.preventDefault();
     const entrada_midia = document.getElementById('id_video_teste').getAttribute('data-url');
