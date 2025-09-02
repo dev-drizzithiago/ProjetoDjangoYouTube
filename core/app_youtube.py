@@ -86,7 +86,9 @@ class YouTubeDownload:
         print(self.link_validado)
 
         youtube = YouTube(self.link_validado)
+
         print(youtube.title)
+
         dados_link = DadosYoutube(
             autor_link=youtube.author,
             titulo_link=youtube.title,
