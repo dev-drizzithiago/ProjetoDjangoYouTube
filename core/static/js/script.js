@@ -3,34 +3,41 @@ import { btn_index, getCookie } from './utilitys.js';
 
 
 function add_link_sistema (link_youtube) {
-    const response = fetch("/add_link_sistema/", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify(link_youtube)
-    })
-
-    const data = response.json;
-    console.log(data);
+    
+    
 }
 
 
 class btn_youtube  {
 
-    constructor(link) {
+    constructor(link, midia) {
         this.link = link;
+        this.midia = midia;
     }
 
     add_link() {
-        add_link_sistema(this.link);
+        try {
+            const response = fetch("/add_link_sistema/", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+            body: JSON.stringify(this.link)
+            })
+
+            const data = response.json;
+            console.log(data);
+        } catch (error) {
+            console.error('Error adding link:', error);
+        }
     }
 
-    player_midia(midia) {
+    player_midia() {
+        console.log(this.midia);
         const dialog = document.querySelector('.dialog_play');
         const video = dialog.querySelector('.video_player source');
-        video.src = midia;
+        video.src = this.midia;
         dialog.showModal();
     }
 }
@@ -55,8 +62,8 @@ btn_index.btn_remover.addEventListener('click', (event) => {
 
 btn_index.btn_player.addEventListener('click', (event) => {
     event.preventDefault();
-    const midia = document.getElementById('id_video_teste').getAttribute('data-url');
-    console.log(midia)
+    const entrada_midia = document.getElementById('id_video_teste').getAttribute('data-url');
+    console.log(entrada_midia)
     const btn = new btn_youtube();
     btn.player_midia();
 });
