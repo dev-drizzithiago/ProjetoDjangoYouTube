@@ -43,7 +43,7 @@ from pathlib import Path
 from re import search
 from time import sleep
 
-from moviepy.editor import AudioFileClip
+from moviepy import AudioFileClip
 from pytubefix import YouTube
 from pytubefix.cli import on_progress
 from pytubefix import Playlist
@@ -72,7 +72,6 @@ class YouTubeDownload:
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
 
     def __init__(self):
-        self.link = None
         self.conexao_banco = None
         self.cursor = None
         self.link_validado = None
@@ -84,24 +83,20 @@ class YouTubeDownload:
 
     # Registra o link na base de dados.
     def registrando_link_base_dados(self):
+        print(self.link_validado)
 
-        youtube = YouTube(self.link)
-
+        youtube = YouTube(self.link_validado)
+        print(youtube.title)
         dados_link = DadosYoutube(
             autor_link=youtube.author,
             titulo_link=youtube.title,
             duracao=youtube.length,
-            miniatua=youtube.thumbnail_url,
+            miniatura=youtube.thumbnail_url,
             link_tube=youtube.watch_url,
         )
-        print(dados_link)
-        try:
-            dados_link.save()
-            return f'Link salvo na base de dados com sucesso'
 
-        except Exception as error:
-            return f'Erro ao salvar o link na base de dados: {error}'
-
+        dados_link.save()
+        return f'Link salvo na base de dados com sucesso'
 
     def removendo_link_base_dados(self):
         """
@@ -217,9 +212,10 @@ class YouTubeDownload:
             link = f'{link[:8]}www.{link[8:]}'
 
         if link[:23] != 'https://www.youtube.com':
-            return False
+            return f'Link não é valido...'
         else:
-            self.link_validado = link
+            self.link_validado = str(link)
+            self.registrando_link_base_dados()
 
     def criando_tabela_dados(self):
         """
