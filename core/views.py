@@ -38,3 +38,10 @@ def add_link_sistema(request):
         return JsonResponse({
             'mensagem': 'Por favor, insira um link válido.',
         })
+
+def links_salvos(request):
+    dados_json = json.loads(request.body)
+
+    return JsonResponse({
+        'mensagem': 'links_salvos'
+    })
