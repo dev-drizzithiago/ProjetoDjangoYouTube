@@ -6,6 +6,11 @@ export const btn_index = {
     btn_player: document.getElementById('id_btn_player'),
 }
 
+export const elemento_index = {
+    msg_alerta: document.getElementById('id_msg_alerta'),
+    link_entrada: document.getElementById('id_input_link'),
+}
+
 // Função para "autenticar" o django.
 export function getCookie(name) {
     let cookieValue = null;
@@ -20,4 +25,10 @@ export function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+class validando_campos {
+    constructor() {
+        this.link_entrada = elemento_index.
+    }
 }
