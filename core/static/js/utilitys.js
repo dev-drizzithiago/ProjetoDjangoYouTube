@@ -27,8 +27,18 @@ export function getCookie(name) {
     return cookieValue;
 }
 
-class validando_campos {
+export class ValidandoCampos {
     constructor() {
-        this.link_entrada = elemento_index.
+        this.link_entrada = elemento_index.link_entrada;
+    }
+    
+    validar_campos() {
+        if (this.link_entrada.value.trim() === "") {
+            elemento_index.msg_alerta.innerText = "Por favor, insira um link válido.";
+            return false
+        } else {
+            elemento_index.msg_alerta.remove();
+            return true
+        }
     }
 }
