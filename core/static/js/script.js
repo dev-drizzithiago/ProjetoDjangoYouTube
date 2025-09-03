@@ -1,12 +1,4 @@
-import { btn_index, getCookie } from './utilitys.js';
-
-
-
-function add_link_sistema (link_youtube) {
-    
-    
-}
-
+import { btn_index, getCookie, elemento_index } from './utilitys.js';
 
 class btn_youtube  {
 
@@ -27,6 +19,7 @@ class btn_youtube  {
             })
 
             const data = await response.json();
+            elemento_index.msg_alerta.textContent = data.mensagem;
             console.log(data);
         } catch (error) {
             console.error('Error adding link:', error);
