@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <h1 class="titulo_player">
+            Player Midias
+        </h1>
+    </div>
+
+    <div class="div_btns">
+        <button id="id_btn_download">Download</button>
+        <button id="id_btn_remover">Remover</button>
+    </div>
+</body>
+    <div id="id_video_teste" data-url="{{ midia_local }}"></div>
+    <script type="module" src="{% static 'js/utilitys.js' %}"></script>
+    <script type="module" src="{% static 'js/script.js' %}"></script>
+</html>
