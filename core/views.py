@@ -36,5 +36,5 @@ def add_link_sistema(request):
         })
     else:
         return JsonResponse({
-            'mensagem': 'Link não é valido',
+            'mensagem': 'Por favor, insira um link válido.',
         })
