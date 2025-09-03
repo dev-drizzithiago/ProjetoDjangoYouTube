@@ -82,12 +82,9 @@ class YouTubeDownload:
         self._link_tube = None
 
     # Registra o link na base de dados.
-    def registrando_link_base_dados(self):
-        print(self.link_validado)
+    def registrando_link_base_dados(self, link):
 
-        youtube = YouTube(self.link_validado)
-
-        print(youtube.title)
+        youtube = YouTube(link)
 
         dados_link = DadosYoutube(
             autor_link=youtube.author,
@@ -96,9 +93,11 @@ class YouTubeDownload:
             miniatura=youtube.thumbnail_url,
             link_tube=youtube.watch_url,
         )
-
-        dados_link.save()
-        return f'Link salvo na base de dados com sucesso'
+        try:
+            resultado = dados_link.save()
+            return f'Link salvo na base de dados com sucesso'
+        except Exception as error:
+            return f'Dados não foram salvos: {error}'
 
     def removendo_link_base_dados(self):
         """
@@ -214,10 +213,9 @@ class YouTubeDownload:
             link = f'{link[:8]}www.{link[8:]}'
 
         if link[:23] != 'https://www.youtube.com':
-            return f'Link não é valido...'
+            return False
         else:
-            self.link_validado = str(link)
-            self.registrando_link_base_dados()
+            return True
 
     def criando_tabela_dados(self):
         """
