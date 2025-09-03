@@ -20,16 +20,23 @@
             <input type="text" placeholder="Cole o link aqui" id="id_input_link">
         </div>
 
+        <div>
+            <h4 id="id_msg_alerta"></h4>
+        </div>
+
+        <div id="id_lista_links">
+            {% for link in lista_links %}
+                <div class="div_link">
+                    <a href="{{ link.url }}" target="_blank">{{ link.titulo }}</a>
+                </div>
+            {% endfor %}
+        </div>
+
         <div class="div_btns_add">
             <button id="id_btn_add_link">Adicionar</button>
         </div>
 
-        <ul>
-            <li>Download</li>
-            <li>Remover</li>
-            <li>Player</li>
-        </ul>
-
+      
         <div class="div_btns">
             <button id="id_btn_download">Download</button>
             <button id="id_btn_remover">Remover</button>
