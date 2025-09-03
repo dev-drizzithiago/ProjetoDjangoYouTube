@@ -60,7 +60,7 @@ div.div_btns{
     width: 100%;
 }
 
-div.id_div_msg_alerta {
+div#id_div_msg_alerta {
     border: 2px solid red;
     display: flex;
     justify-content: center;
