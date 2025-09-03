@@ -34,11 +34,8 @@ export class ValidandoCampos {
     
     validar_campos() {
         if (this.link_entrada.value.trim() === "") {
-            elemento_index.msg_alerta.innerText = "Por favor, insira um link válido.";
+            elemento_index.msg_alerta.innerText = "O campo link é obrigatório.";
             return false
-        } else {
-            elemento_index.msg_alerta.remove();
-            return true
-        }
+        } 
     }
 }
