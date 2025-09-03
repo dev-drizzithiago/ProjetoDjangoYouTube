@@ -1,4 +1,4 @@
-import { btn_index, getCookie, elemento_index } from './utilitys.js';
+import { btn_index, getCookie, elemento_index, ValidandoCampos } from './utilitys.js';
 
 class btn_youtube  {
 
@@ -19,8 +19,8 @@ class btn_youtube  {
             })
 
             const data = await response.json();
-            elemento_index.msg_alerta.textContent = data.mensagem;
-            console.log(data);
+            elemento_index.msg_alerta.innerText = data.mensagem;
+            console.warn(data.mensagem);
         } catch (error) {
             console.error('Error adding link:', error);
         }
@@ -39,6 +39,12 @@ class btn_youtube  {
 btn_index.btn_adicionar.addEventListener('click', (event) => {
     event.preventDefault();
     const link = document.getElementById('id_input_link').value;
+
+    const validar_link = new ValidandoCampos();
+    if (!validar_link.validar_campos()) {
+        return;
+    }
+
     const btn = new btn_youtube(link);
     btn.add_link();
 });
