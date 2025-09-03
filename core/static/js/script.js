@@ -35,6 +35,29 @@ class btn_youtube  {
     }
 }
 
+function request() {
+    fetch("/links_salvos/", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify('requesting'),
+    })
+    .then(response => response.json())
+    .then(data => {
+        carregaPagina(data);
+    })
+    .catch(error => {
+        console.error('Error fetching links:', error);
+    });
+}
+
+function carregaPagina(response) {
+    const elemento = document.querySelector('.div_resultado_link');
+    elemento.innerHTML = response
+}
+
 /** Botão para adicionar o link no banco de dados */
 btn_index.btn_adicionar.addEventListener('click', (event) => {
     event.preventDefault();
@@ -50,22 +73,47 @@ btn_index.btn_adicionar.addEventListener('click', (event) => {
 });
 
 /** Botão para baixar o vídeo */
-btn_index.btn_download.addEventListener('click', (event) => {
-    event.preventDefault();
-    console.log('Download button clicked');
-});
+if (btn_index.btn_download !== null) {
+    btn_index.btn_download.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.log('Download button clicked');
+    });
+}
+
 
 /** Botão para remover o registro na base de dados */
-btn_index.btn_remover.addEventListener('click', (event) => {
-    event.preventDefault();
-    console.log('Remover button clicked');
-});
+if (btn_index.btn_remover !== null) {
+    btn_index.btn_remover.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.log('Remover button clicked');
+    });
+}
+
 
 /** Botão para reproduzir o vídeo/audio */
-btn_index.btn_player.addEventListener('click', (event) => {
-    event.preventDefault();
-    const entrada_midia = document.getElementById('id_video_teste').getAttribute('data-url');
-    console.log(entrada_midia)
-    const btn = new btn_youtube();
-    btn.player_midia();
-});
+if (btn_index.btn_player !== null) {
+    btn_index.btn_player.addEventListener('click', (event) => {
+        event.preventDefault();
+        const entrada_midia = document.getElementById('id_video_teste').getAttribute('data-url');
+        console.log(entrada_midia)
+        const btn = new btn_youtube();
+        btn.player_midia();
+    });
+}
+
+
+document.addEventListener('click', (event) => {
+    const elemento = event.target
+    const tag = elemento.tagName.toLowerCase();
+    const id = elemento.id;
+
+    if (tag === 'a') {
+        request();
+        if (id === 'id_a_down_links') {
+            request();
+        }
+        else if (id === 'id_a_player_midias') {
+            request();
+        }
+    }
+})
