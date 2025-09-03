@@ -40,18 +40,17 @@ div.div_input_link{
     margin-right: auto;
     width: 100%;
 }
-input#id_input_link {
-    display: block;
-    max-width: 96%;
-    height: 50px;
-    width: 100%;
-    padding: 10px 15px;
-    border-radius: 4px;
+    input#id_input_link {
+        display: block;
+        max-width: 96%;
+        height: 50px;
+        width: 100%;
+        padding: 10px 15px;
+        border-radius: 4px;
 
-    font-family: var(--font_family);
-    font-size: var(--font_size);
-
-}
+        font-family: var(--font_family);
+        font-size: var(--font_size);
+    }
 
 div.div_btns{
     display: flex;
@@ -59,6 +58,13 @@ div.div_btns{
     margin-left: auto;
     margin-right: auto;
     width: 100%;
+}
+
+div.id_div_msg_alerta {
+    border: 2px solid red;
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }
 
 button {
@@ -75,16 +81,3 @@ button {
     border-radius: 4px;
     width: 250px;
 }
-
-/*
-dialog.dialog_play {
-    border: var(--bord_teste);
-    display: block;
-    margin-left: auto; 
-    margin-right: auto;
-    width: 80%;
-    height: 80%;
-
-    justify-content: center;
-    align-items: center;
-}*/
