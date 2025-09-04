@@ -43,5 +43,5 @@ def links_salvos(request):
     dados_json = json.loads(request.body)
 
     return JsonResponse({
-        'mensagem': 'links_salvos'
+        'mensagem': ['links_salvos', 'link_salvos']
     })
