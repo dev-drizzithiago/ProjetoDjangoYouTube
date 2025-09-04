@@ -35,6 +35,13 @@ class btn_youtube  {
     }
 }
 
+
+function carregaPagina(response) {
+    const elemento = document.querySelector('.div_resultado_link');
+    elemento.innerHTML = response
+    // Para eu precisar usar varios valores, vou precisar criar elementos dentro da div de forma dinamica
+}
+
 function request() {
     fetch("/links_salvos/", {
         method: 'POST',
@@ -46,16 +53,11 @@ function request() {
     })
     .then(response => response.json())
     .then(data => {
-        carregaPagina(data);
+        carregaPagina(data.mensagem);
     })
     .catch(error => {
         console.error('Error fetching links:', error);
     });
-}
-
-function carregaPagina(response) {
-    const elemento = document.querySelector('.div_resultado_link');
-    elemento.innerHTML = response
 }
 
 /** Botão para adicionar o link no banco de dados */
