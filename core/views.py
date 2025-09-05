@@ -42,6 +42,6 @@ def add_link_sistema(request):
 def links_salvos(request):
     dados_json = json.loads(request.body)
 
-    return JsonResponse({
-        'mensagem': ['links_salvos', 'link_salvos']
-    })
+    query_info_links = DadosYoutube.objects.all().order_by('-base_ptr_id')
+
+    return render(request, "links_salvos.html", context=query_info_links)
