@@ -59,7 +59,7 @@ function request() {
     })
     .then(response => response.json())
     .then(data => {
-        carregaPagina(data.mensagem);
+        carregaPagina(data);
     })
     .catch(error => {
         console.error('Error fetching links:', error);
