@@ -37,29 +37,60 @@ class btn_youtube  {
     }
 }
 
-function carregaPagina(response) {
-    const p_autor_link = document.getElementById('id_p_autor_link');
-    const p_titulo_link = document.getElementById('id_h1_titulo_link');
-    p_autor_link.innerText = response.autor_link;
-    p_titulo_link.innerText = response.titulo_link;
-
+function carregaPagina(response) {    
+    console.log(response)
     const elementoDivResult = document.querySelector('.div_resultado_link');
-    const articulador = document.createElement('article');
-    const cabecalho = document.createElement('header');
-    const pAutorLink = document.createElement('p');
-    const pTituloLink = document.createElement('h1');
-    const pDuracao = document.createElement('p');
 
-    const btnDownloadLink = document.createElement('button');
-    const btnRemoverLink = document.createElement('button');
+    const main = document.createElement('main'); // Cria o elemento main
+    main.classList.add('content'); // atribui uma class ao elemento main. 
 
-    elementoDivResult.appendChild(articulador);
-    articulador.appendChild(cabecalho);
-    cabecalho.appendChild(pAutorLink);
-    cabecalho.appendChild(pTituloLink);
-    articulador.appendChild(pDuracao);
+    const lista = document.createElement('ul');  // Cria uma lista não ordenada, conterá os links
 
+    elementoDivResult.appendChild(main); // Adicionar o elemento dentro da div de resultado
+    elementoDivResult.appendChild(lista); // Adicionar o elemento dentro da div de resultado
 
+    response.forEach(element => {       
+
+        const articulador = document.createElement('article');
+        articulador.classList.add('views', 'class_views_links');
+
+        const cabecalho = document.createElement('header');
+
+        const pAutorLink = document.createElement('li');
+        pAutorLink.id = 'id_p_autor_link';
+
+        const pDuracao = document.createElement('p');
+        pDuracao.id = 'id_p_duracao';
+
+        const img = document.createElement('img'); // cria um elemento de imagem 
+        img.id = 'img_miniatura'
+
+        const divBtn = document.createElement('div');
+
+        const btnDownloadLink = document.createElement('button');
+        btnDownloadLink.innerText = 'Download';
+
+        const btnRemoverLink = document.createElement('button');
+        btnRemoverLink.innerText = 'Remover';
+
+        elementoDivResult.appendChild(articulador);
+        articulador.appendChild(cabecalho);
+        cabecalho.appendChild(pAutorLink);
+        articulador.appendChild(pDuracao);
+        articulador.appendChild(divBtn);
+        
+        divBtn.appendChild(btnDownloadLink);
+        divBtn.appendChild(btnRemoverLink);
+
+        const p_autor_link = document.getElementById('id_p_autor_link');
+        const p_duracao = document.getElementById('id_p_duracao');
+        const miniatura = document.getElementById('img_miniatura');
+
+        p_autor_link.textContent = `${element.autor_link} - ${element.titulo_link}`;
+        p_duracao.textContent = converterDuracao(element.duracao);
+        miniatura.src = element.miniatura;
+    });
+   
 }
 
 function request() {
