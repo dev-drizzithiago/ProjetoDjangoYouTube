@@ -1,4 +1,4 @@
-import { btn_index as btn, getCookie, elemento_index, ValidandoCampos } from './utilitys.js';
+import { btn_index as btn, getCookie, elemento_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
 class btn_youtube  {
 
@@ -44,6 +44,9 @@ function carregaPagina(response) {
     response.forEach(item => {
         const li = document.createElement('li');  // cria um item de lista, onde vai conter cada dado
         const img = document.createElement('img'); // cria um elemento de imagem 
+        const tm = document.createElement('p')
+
+        li.style.marginTop = '15px'; // define a margem superior da imagem
 
         img.style.width = '90px'; // define a largura da imagem
         img.style.height = '60px'; // define a altura da imagem
@@ -51,8 +54,11 @@ function carregaPagina(response) {
 
         li.textContent = item.autor_link;  // define o texto do item de lista
         img.src = item.miniatura;  // define a fonte da imagem
+        tm.textContent = converterDuracao(item.duracao);  // define o texto do item de lista
+       
         lista.appendChild(li);  // adiciona o item de lista à lista
         li.appendChild(img); // adiciona a imagem ao item de lista
+        li.appendChild(tm); // adiciona a duração ao item de lista
     });
 }
 
