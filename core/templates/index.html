@@ -20,10 +20,12 @@
             <input type="text" placeholder="Cole o link aqui" id="id_input_link">
         </div>
 
+        <!-- Mensagem de alerta -->
         <div id="id_div_msg_alerta">
             <h4 id="id_msg_alerta">Mensagem</h4>
         </div>
 
+        <!-- Link para abrir os links salvos -->
         <div id="id_lista_links">
             {% for link in lista_links %}
                 <div class="div_link">
@@ -40,8 +42,26 @@
             <li><a href="#" id="id_a_down_links">Download links Salvos</a></li>
             <li><a href="#" id="id_a_player_midias">Player Midias</a></li>
         </ul>
+        
+        <!-- Vai receber o template dos links salvos. -->
+        <div class="div_resultado_link">
 
-        <div class="div_resultado_link"></div>
+            <!--main class="content">
+                <article class="views class_views_links">
+                    <header>
+                        <p id="id_p_autor_link"></p>
+                        <h1 id="id_h1_titulo_link"></h1>
+                    </header>
+
+                    <p id="id_p_duracao"><b>Escopo:</b> {{ texto.n_escopo }} </p>
+                    
+                    <div class="div_btn_alert_d4sign">
+                        <button id="id_btn_download">Download</button>
+                        <button id="id_btn_remover">Remover</button>
+                    </div>
+                </article>
+            </main-->
+        </div>
 
         <dialog class="dialog dialog_play">
             <div class="div div_dialog_play">
