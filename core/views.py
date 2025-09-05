@@ -40,10 +40,14 @@ def add_link_sistema(request):
         })
 
 def links_salvos(request):
+    # Realiza a leitura dos dados que chegou do template
     dados_json = json.loads(request.body)
+
+    # Faz a leitura dos dados que estão dentro do mysql
     query_info_links = DadosYoutube.objects.all().values().order_by('-base_ptr_id')
-    query_info_links = list(query_info_links)
+
+    # Retorna o valor, em forma de json, do query para o javascript do template.
     return JsonResponse({
-        'send_json': query_info_links
+        'send_json': list(query_info_links)
     })
 
