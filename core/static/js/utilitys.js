@@ -39,3 +39,9 @@ export class ValidandoCampos {
         } 
     }
 }
+
+export function converterDuracao(duracao) {
+    const minutos = Math.round(duracao / 60); // converte o valor inteiro para minutos.
+    const segundos = duracao % 60;  // converte o valor inteiro para segundos.
+    return `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+}
