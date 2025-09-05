@@ -47,7 +47,7 @@ export function converterDuracao(duracao) {
 }
 
 
-/*
+
 function carregaPagina(response) {
     const elemento = document.querySelector('.div_resultado_link');  // Elemento onde os links serão carregados
     const lista = document.createElement('ul');  // Cria uma lista não ordenada, conterá os links
@@ -72,4 +72,4 @@ function carregaPagina(response) {
         li.appendChild(img); // adiciona a imagem ao item de lista
         li.appendChild(tm); // adiciona a duração ao item de lista
     });
-}*/
+}
