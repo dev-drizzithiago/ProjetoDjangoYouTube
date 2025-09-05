@@ -90,3 +90,11 @@ button {
     background-color: #f9f9f9;
     overflow: hidden;
 }
+
+.main.content {
+  display: grid;
+  gap: 15px;
+  padding: 25px;
+  margin-top: 5%;
+
+}
