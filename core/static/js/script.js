@@ -43,7 +43,7 @@ function carregaPagina(response) {
 
     response.forEach(item => {
         const li = document.createElement('li');  // cria um item de lista, onde vai conter cada dado
-        li.textContent = item;  // define o texto do item de lista
+        li.textContent = item.autor_link;  // define o texto do item de lista
         lista.appendChild(li);  // adiciona o item de lista à lista
     });
 }
@@ -60,6 +60,9 @@ function request() {
     .then(response => response.json())
     .then(data => {
         carregaPagina(data.send_json);
+        data.send_json.forEach(item => {
+            console.log(item.autor_link)
+        })
     })
     .catch(error => {
         console.error('Error fetching links:', error);
