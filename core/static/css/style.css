@@ -82,3 +82,11 @@ button {
     border-radius: 4px;
     width: 250px;
 }
+
+.div_resultado_link {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
