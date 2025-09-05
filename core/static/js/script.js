@@ -1,5 +1,7 @@
 import { btn_index as btn, getCookie, elemento_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
+const elemento = document.querySelector('.div_resultado_link');  // Elemento onde os links serão carregados
+
 class btn_youtube  {
 
     constructor(link, midia) {
@@ -36,6 +38,27 @@ class btn_youtube  {
 }
 
 function carregaPagina(response) {
+    const p_autor_link = document.getElementById('id_p_autor_link');
+    const p_titulo_link = document.getElementById('id_h1_titulo_link');
+    p_autor_link.innerText = response.autor_link;
+    p_titulo_link.innerText = response.titulo_link;
+
+    const elementoDivResult = document.querySelector('.div_resultado_link');
+    const articulador = document.createElement('article');
+    const cabecalho = document.createElement('header');
+    const pAutorLink = document.createElement('p');
+    const pTituloLink = document.createElement('h1');
+    const pDuracao = document.createElement('p');
+
+    const btnDownloadLink = document.createElement('button');
+    const btnRemoverLink = document.createElement('button');
+
+    elementoDivResult.appendChild(articulador);
+    articulador.appendChild(cabecalho);
+    cabecalho.appendChild(pAutorLink);
+    cabecalho.appendChild(pTituloLink);
+    articulador.appendChild(pDuracao);
+
 
 }
 
@@ -51,9 +74,6 @@ function request() {
     .then(response => response.json())
     .then(data => {
         carregaPagina(data.send_json);
-        data.send_json.forEach(item => {
-            console.log(item.autor_link)
-        })
     })
     .catch(error => {
         console.error('Error fetching links:', error);
