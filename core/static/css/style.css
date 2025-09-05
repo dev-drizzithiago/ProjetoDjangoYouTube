@@ -111,3 +111,9 @@ article.views {
         gap: 1.5rem;  /* Espaçamento entre os itens */
     }
 }
+
+img#img_miniatura {
+    display: grid;
+    width: 90px;
+    height: 60px;
+}
