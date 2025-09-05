@@ -37,9 +37,15 @@ class btn_youtube  {
 
 
 function carregaPagina(response) {
-    const elemento = document.querySelector('.div_resultado_link');
-    elemento.innerHTML = response
-    // Para eu precisar usar varios valores, vou precisar criar elementos dentro da div de forma dinamica
+    const elemento = document.querySelector('.div_resultado_link');  // Elemento onde os links serão carregados
+    const lista = document.createElement('ul');  // Cria uma lista não ordenada, conterá os links
+    elemento.appendChild(lista);  // cria a lista dentro do elemento
+
+    response.forEach(item => {
+        const li = document.createElement('li');  // cria um item de lista, onde vai conter cada dado
+        li.textContent = item;  // define o texto do item de lista
+        lista.appendChild(li);  // adiciona o item de lista à lista
+    });
 }
 
 function request() {
