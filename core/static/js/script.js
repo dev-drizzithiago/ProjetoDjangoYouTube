@@ -43,8 +43,16 @@ function carregaPagina(response) {
 
     response.forEach(item => {
         const li = document.createElement('li');  // cria um item de lista, onde vai conter cada dado
+        const img = document.createElement('img'); // cria um elemento de imagem 
+
+        img.style.width = '90px'; // define a largura da imagem
+        img.style.height = '60px'; // define a altura da imagem
+        img.style.display = 'grid'; // define o modo de exibição da imagem
+
         li.textContent = item.autor_link;  // define o texto do item de lista
+        img.src = item.miniatura;  // define a fonte da imagem
         lista.appendChild(li);  // adiciona o item de lista à lista
+        li.appendChild(img); // adiciona a imagem ao item de lista
     });
 }
 
