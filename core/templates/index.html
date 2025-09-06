@@ -25,31 +25,21 @@
             <h4 id="id_msg_alerta">Mensagem</h4>
         </div>
 
-        <!-- Link para abrir os links salvos -->
-        <div id="id_lista_links">
-            {% for link in lista_links %}
-                <div class="div_link">
-                    <a href="{{ link.url }}" target="_blank">{{ link.titulo }}</a>
-                </div>
-            {% endfor %}
-        </div>
-
         <div class="div_btns_add">
             <button id="id_btn_add_link">
                 <img src="{{ img_btn_add }}" class="img_btn_add">
             </button>
         </div>
-        
-        <ul>
-            <li><a href="#" id="id_a_down_links">Download links Salvos</a></li>
-            <li><a href="#" id="id_a_player_midias">Player Midias</a></li>
-        </ul>
-        
-        <!-- Vai receber o template dos links salvos. -->
-        
 
-        <div class="content"></div>
+        <div class="div links_container">
+            <ul>
+                <li><a href="#" id="id_a_down_links">Links Salvos</a></li>
+                <li><a href="#" id="id_a_player_midias">Player de Midias</a></li>
+            </ul>
+        </div>
         
+        <!-- Recebe os links salvos, todo processo é feito pelo js.-->
+        <div class="content"></div>        
 
         <dialog class="dialog dialog_play">
             <div class="div div_dialog_play">
