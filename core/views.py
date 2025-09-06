@@ -22,7 +22,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
     link_registro = dados_json
@@ -43,6 +42,12 @@ def add_link_sistema(request):
             'mensagem': 'Por favor, insira um link válido.',
         })
 
+def download_link(request):
+    dados_json = json.loads(request.body)
+
+    return JsonResponse({
+        'mensagem': 'mensaagem'
+    })
 def links_salvos(request):
     # Realiza a leitura dos dados que chegou do template
     dados_json = json.loads(request.body)
@@ -56,9 +61,24 @@ def links_salvos(request):
     # Faz a leitura dos dados que estão dentro do mysql
     query_info_links = DadosYoutube.objects.all().values().order_by('-base_ptr_id')
 
-    # Retorna o valor, em forma de json, do query para o javascript do template.
+    # Retorna o valor, em forma de json, do query para o javascript do modelo.
     return JsonResponse({
         'send_json': list(query_info_links),
         'local_imgs': lista_img,
     })
 
+def player_midias(request):
+    dados_json = json.loads(request.body)
+
+    dados_midia = os.listdir(os.path.join())
+
+    lista_img = {
+        'botao-play': os.path.join(STATIC_IMG, 'botao-play.png'),
+        'remover': os.path.join(STATIC_IMG, 'remover.png'),
+        'youtube': os.path.join(STATIC_IMG, 'youtube.png'),
+    }
+
+    return JsonResponse({
+        'data_midia': dados_midia,
+        'lista_img': lista_img,
+    })
