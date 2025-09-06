@@ -139,15 +139,7 @@ function request() {
 /** Botão para adicionar o link no banco de dados */
 btn.btn_adicionar.addEventListener('click', (event) => {
     event.preventDefault();
-    const link = document.getElementById('id_input_link').value;
-
-    const validar_link = new ValidandoCampos();
-    if (!validar_link.validar_campos()) {
-        return;
-    }
-
-    const btn = new btn_youtube(link);
-    btn.add_link();
+    
 });
 
 /** Botão para baixar o vídeo */
@@ -183,7 +175,8 @@ if (btn.btn_player !== null) {
 document.addEventListener('click', (event) => {
     const elemento = event.target
     const tag = elemento.tagName.toLowerCase();
-    const id = elemento.id;    
+    const id = elemento.id;
+    const className = elemento.className;
 
     if (tag === 'a') {
         if (id === 'id_a_down_links') {            
@@ -191,6 +184,22 @@ document.addEventListener('click', (event) => {
         }
         else if (id === 'id_a_player_midias') {            
             request();
+        }
+    }
+    else if (tag === "img") {
+        if (className === 'img_btn_add') {
+            console.log(className === 'img_btn_add')
+            const link = document.getElementById('id_input_link').value;
+            
+            /** Valida se o campo input de link esta vazio */
+            const validar_link = new ValidandoCampos();
+            if (!validar_link.validar_campos()) {
+                console.log('Link inválido');
+                return;
+            }
+
+            const btn = new btn_youtube(link);
+            btn.add_link();
         }
     }
 })
