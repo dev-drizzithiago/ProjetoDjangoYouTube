@@ -43,13 +43,15 @@ div.titulos {
     letter-spacing: 2px;
 }
 
+/* Estilo para a DIV que contém o input de link */
 div.div_input_link{
     justify-items: center; /* Centraliza o conteúdo ao meio da DIV*/
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-}
+}   
+    /* Estilo para o input de link */
     input#id_input_link {
         display: block;
         max-width: 96%;
@@ -61,19 +63,26 @@ div.div_input_link{
         font-family: var(--font_family);
         font-size: var(--font_size);
     }
-
+/* Estilo para a DIV que contém o botão de adicionar */
 div.div_btns_add{
     display: block;
     justify-content: left; 
-    margin-left:25px;
+    margin-top: 35px;
+    margin-left: 25px;
     width: 70px;
-    
 }
 
+/* Estilo para a DIV que contém a mensagem de alerta */
 div#id_div_msg_alerta {
-    display: flex;
+    position: absolute;
+    display: block;
+    box-shadow: var(--sombra);
     justify-content: center;
     text-align: center;
+    border: var(--bord_teste);
+    width: 25%;
+    margin-left: 250px;
+    margin-top: 35px;
 }
 
 button {
@@ -90,7 +99,7 @@ button {
     border-radius: 4px;
     width: 60px;
     height: 60px;
-}
+}       
     .img_btn_add{
         width: 50px;
         height: 50px;
@@ -98,8 +107,19 @@ button {
         margin: -15px -25px;
     }
 
-div.content {
+div.links_container {
+    display: block;
+    margin-left: auto; 
+    margin-right: auto;
+    width: 90%;
+    padding: 10px;
     box-shadow: var(--sombra);
+    background-color: var(--cor_background);
+    margin-top: 20px;
+}
+
+div.content {
+    border: none;
     display: grid;  /* Estilo de grade */
     grid-template-rows: repeat(4, 1fr); /* 4 linhas de altura igual */
     max-height: 560px; /* altura máxima */
