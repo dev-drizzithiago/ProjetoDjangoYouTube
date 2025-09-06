@@ -67,9 +67,9 @@ div#id_div_msg_alerta {
 }
 
 button {
-    background-color: #ffffff; /* Verde */
+    background-color: #2b41ff; /* Verde */
     border: none;
-    color: white;
+    color: rgb(0, 0, 0);
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
