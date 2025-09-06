@@ -19,6 +19,7 @@ def index(request):
     context = {
         'midia_local': MIDIA_LOCAL.replace('\\', '/'),
         'lista_links': query_links,
+        'img_btn_add': os.path.join(STATIC_IMG, 'adicionar.png')
     }
     return render(request, 'index.html', context)
 
