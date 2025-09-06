@@ -1,7 +1,5 @@
 import { btn_index as btn, getCookie, elemento_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
-const elemento = document.querySelector('.div_resultado_link');  // Elemento onde os links serão carregados
-
 class btn_youtube  {
 
     constructor(link, midia) {
@@ -37,60 +35,70 @@ class btn_youtube  {
     }
 }
 
-function carregaPagina(response) {    
-    console.log(response)
-    const elementoDivResult = document.querySelector('.div_resultado_link');
+function carregaPagina(response, img_btn) {
 
-    const main = document.createElement('main'); // Cria o elemento main
-    main.classList.add('content'); // atribui uma class ao elemento main. 
-
-    const lista = document.createElement('ul');  // Cria uma lista não ordenada, conterá os links
-
-    elementoDivResult.appendChild(main); // Adicionar o elemento dentro da div de resultado
-    elementoDivResult.appendChild(lista); // Adicionar o elemento dentro da div de resultado
-
-    response.forEach(element => {       
+    response.forEach(element => {
+        const elementoDivResult = document.querySelector('.content'); 
+        const lista = document.createElement('ul');
 
         const articulador = document.createElement('article');
         articulador.classList.add('views', 'class_views_links');
 
         const cabecalho = document.createElement('header');
+        cabecalho.classList.add('id_cabecalho');
 
         const pAutorLink = document.createElement('li');
-        pAutorLink.id = 'id_p_autor_link';
+        pAutorLink.classList.add('id_p_autor_link');
 
         const pDuracao = document.createElement('p');
-        pDuracao.id = 'id_p_duracao';
+        pDuracao.classList.add('id_p_duracao');
 
-        const img = document.createElement('img'); // cria um elemento de imagem 
-        img.id = 'img_miniatura'
+        const img_miniatura = document.createElement('img'); // cria um elemento de imagem 
+        img_miniatura.classList.add('img_miniatura');
 
         const divBtn = document.createElement('div');
 
         const btnDownloadLink = document.createElement('button');
-        btnDownloadLink.innerText = 'Download';
+        btnDownloadLink.style.width = '60px';
+        btnDownloadLink.style.height = '60px';
 
         const btnRemoverLink = document.createElement('button');
         btnRemoverLink.innerText = 'Remover';
 
+        const img_btn_down = document.createElement('img');
+        img_btn_down.src = img_btn.download;
+        img_btn_down.style.width = '50px';
+        img_btn_down.style.height = '50px';
+        img_btn_down.style.marginLeft = '-27px'; 
+        img_btn_down.style.marginTop = '-10px';
+
+        const img_btn_remove = document.createElement('img');
+        img_btn_remove.src = img_btn.remover;
+        img_btn_remove.style.width = '50px';
+        img_btn_remove.style.height = '50px';
+        img_btn_remove.style.marginLeft = '-27px'; 
+        img_btn_remove.style.marginTop = '-10px';
+
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
-        cabecalho.appendChild(pAutorLink);
-        articulador.appendChild(pDuracao);
         articulador.appendChild(divBtn);
         
+        cabecalho.appendChild(img_miniatura);
+        cabecalho.appendChild(lista);
+
+        lista.appendChild(pAutorLink);
+        lista.appendChild(pDuracao);        
+
         divBtn.appendChild(btnDownloadLink);
         divBtn.appendChild(btnRemoverLink);
 
-        const p_autor_link = document.getElementById('id_p_autor_link');
-        const p_duracao = document.getElementById('id_p_duracao');
-        const miniatura = document.getElementById('img_miniatura');
+        btnDownloadLink.appendChild(img_btn_down);
+        btnRemoverLink.appendChild(img_btn_remove);
 
-        p_autor_link.textContent = `${element.autor_link} - ${element.titulo_link}`;
-        p_duracao.textContent = converterDuracao(element.duracao);
-        miniatura.src = element.miniatura;
-    });
-   
+        img_miniatura.src = element.miniatura;
+        pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
+        pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
+    });   
 }
 
 function request() {
@@ -104,7 +112,7 @@ function request() {
     })
     .then(response => response.json())
     .then(data => {
-        carregaPagina(data.send_json);
+        carregaPagina(data.send_json, data.local_imgs);
     })
     .catch(error => {
         console.error('Error fetching links:', error);
