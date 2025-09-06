@@ -61,9 +61,17 @@ function carregaPagina(response, img_btn) {
         const btnDownloadLink = document.createElement('button');
         btnDownloadLink.style.width = '60px';
         btnDownloadLink.style.height = '60px';
+        btnDownloadLink.style.backgroundColor = '#c5c5c5ff';
 
         const btnRemoverLink = document.createElement('button');
-        btnRemoverLink.innerText = 'Remover';
+        btnRemoverLink.style.width = '60px';
+        btnRemoverLink.style.height = '60px';
+        btnRemoverLink.style.backgroundColor = '#c5c5c5ff';
+
+        const btnAcessarLink = document.createElement('button');
+        btnAcessarLink.style.width = '60px';
+        btnAcessarLink.style.height = '60px';
+        btnAcessarLink.style.backgroundColor = '#c5c5c5ff';
 
         const img_btn_down = document.createElement('img');
         img_btn_down.src = img_btn.download;
@@ -78,6 +86,13 @@ function carregaPagina(response, img_btn) {
         img_btn_remove.style.height = '50px';
         img_btn_remove.style.marginLeft = '-27px'; 
         img_btn_remove.style.marginTop = '-10px';
+
+        const img_btn_acessar = document.createElement('img');
+        img_btn_acessar.src = img_btn.youtube;
+        img_btn_acessar.style.width = '50px';
+        img_btn_acessar.style.height = '50px';
+        img_btn_acessar.style.marginLeft = '-27px'; 
+        img_btn_acessar.style.marginTop = '-10px';
 
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
