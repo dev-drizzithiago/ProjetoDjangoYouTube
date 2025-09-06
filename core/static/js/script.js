@@ -135,7 +135,8 @@ async function requestPlayer() {
 
     if (response.ok) {
         const data = await response.json();
-        PlayerMidias(data, img_btn);
+        console.log(data);
+        //PlayerMidias(data, img_btn);
     } else {
         console.error('Error fetching player media:', response.statusText);
     }
