@@ -10,14 +10,16 @@ from .app_youtube import YouTubeDownload
 midia = 'Dreams (2004 Remaster).mp4'
 
 # Create your views here.
-MIDIA_LOCAL = os.path.join(settings.MEDIA_URL, 'movies', midia)
+URL_MIDIA_LOCAL = os.path.join(settings.MEDIA_URL, 'movies', midia)
+ROOT_MIDIA_LOCAL_MUSIC = os.path.join(settings.MEDIA_ROOT, 'musics')
+ROOT_MIDIA_LOCAL_MOVIE = os.path.join(settings.MEDIA_ROOT, 'movies')
 STATIC_IMG = os.path.join(settings.STATIC_URL, 'img')
 def index(request):
 
     query_links = DadosYoutube.objects.all()
 
     context = {
-        'midia_local': MIDIA_LOCAL.replace('\\', '/'),
+        'midia_local': ROOT_MIDIA_LOCAL_MUSIC.replace('\\', '/'),
         'img_btn_add': os.path.join(STATIC_IMG, 'adicionar.png'),
     }
     return render(request, 'index.html', context)
@@ -69,8 +71,7 @@ def links_salvos(request):
 
 def player_midias(request):
     dados_json = json.loads(request.body)
-
-    dados_midia = os.listdir(os.path.join())
+    dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
 
     lista_img = {
         'botao-play': os.path.join(STATIC_IMG, 'botao-play.png'),
