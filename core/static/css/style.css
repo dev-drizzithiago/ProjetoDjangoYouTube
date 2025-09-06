@@ -4,13 +4,18 @@
     --font_family: Arial, sans-serif;
     --font_size: 16px;
     --bord_teste: 1px solid #000;
+    --sombra: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 
 html {
     background-color: var(--cor_background);
 }
-
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 main {
     display: block;
     margin-left: auto; 
@@ -82,12 +87,13 @@ button {
 } 
 
 .content {
-  display: grid;  /* Estilo de grade */
-  grid-template-rows: repeat(4, 1fr); /* 4 linhas de altura igual */
-  max-height:600px; /* altura máxima */
-  gap: 15px;  /* espaçamento entre os itens */
-  padding: 10px;  /* preenchimento interno  */
-  overflow-y: auto; /* Adiciona rolagem vertical se necessário */
+    box-shadow: var(--sombra);
+    display: grid;  /* Estilo de grade */
+    grid-template-rows: repeat(4, 1fr); /* 4 linhas de altura igual */
+    max-height: 560px; /* altura máxima */
+    gap: 15px;  /* espaçamento entre os itens */
+    padding: 10px;  /* preenchimento interno  */
+    overflow-y: auto; /* Adiciona rolagem vertical se necessário */
 }
 
 .content::-webkit-scrollbar {
