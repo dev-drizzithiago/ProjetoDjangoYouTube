@@ -79,12 +79,12 @@ div#id_div_msg_alerta {
     box-shadow: var(--sombra);
     justify-content: center;
     text-align: center;
-    border: var(--bord_teste);
     width: 25%;
     margin-left: 250px;
     margin-top: 35px;
 }
 
+/* Estilo para os botões */
 button {
     background-color: #afafb4; /* Verde */
     border: none;
@@ -118,6 +118,7 @@ div.links_container {
     margin-top: 20px;
 }
 
+/* Estilo para a DIV que contém os links */
 div.content {
     border: none;
     display: grid;  /* Estilo de grade */
