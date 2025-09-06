@@ -16,15 +16,20 @@ body {
     margin: 0;
     padding: 0;
 }
+
 main {
     display: block;
     margin-left: auto; 
     margin-right: auto;
     width: 50%;
-    height: 500px;
+    height: 60rem;
+
+    box-shadow: var(--sombra);
 
     justify-content: center;
     align-items: center;
+
+    margin: 1px solid #000;
 }
 
 div.titulos {
@@ -57,12 +62,12 @@ div.div_input_link{
         font-size: var(--font_size);
     }
 
-div.div_btns{
-    display: flex;
-    justify-content: center; /*Centraliza os botões ao meio da DIV*/    
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+div.div_btns_add{
+    display: block;
+    justify-content: left; 
+    margin-left:25px;
+    width: 70px;
+    
 }
 
 div#id_div_msg_alerta {
@@ -72,7 +77,7 @@ div#id_div_msg_alerta {
 }
 
 button {
-    background-color: #2b41ff; /* Verde */
+    background-color: #afafb4; /* Verde */
     border: none;
     color: rgb(0, 0, 0);
     padding: 15px 32px;
@@ -83,10 +88,17 @@ button {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 4px;
-    width: 250px;
-} 
+    width: 60px;
+    height: 60px;
+}
+    .img_btn_add{
+        width: 50px;
+        height: 50px;
+        display: block;
+        margin: -15px -25px;
+    }
 
-.content {
+div.content {
     box-shadow: var(--sombra);
     display: grid;  /* Estilo de grade */
     grid-template-rows: repeat(4, 1fr); /* 4 linhas de altura igual */
