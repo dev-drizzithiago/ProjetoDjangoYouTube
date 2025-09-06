@@ -50,6 +50,7 @@ def links_salvos(request):
     lista_img = {
         'download': os.path.join(STATIC_IMG, 'download.png'),
         'remover': os.path.join(STATIC_IMG, 'remover.png'),
+        'youtube': os.path.join(STATIC_IMG, 'youtube.png'),
     }
 
     # Faz a leitura dos dados que estão dentro do mysql
