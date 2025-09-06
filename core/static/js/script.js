@@ -118,7 +118,12 @@ function carregaPagina(response, img_btn) {
     });   
 }
 
+function PlayerMidias(response, imgBtn) {
+    
+}
+
 function request() {
+
     fetch("/links_salvos/", {
         method: 'POST',
         headers: {
@@ -182,10 +187,12 @@ document.addEventListener('click', (event) => {
         if (id === 'id_a_down_links') {            
             request();
         }
-        else if (id === 'id_a_player_midias') {            
-            request();
+        else if (id === 'id_a_player_midias') {  
+            const obj_youtube = new btn_youtube();          
+            obj_youtube.player_midia();
         }
     }
+
     else if (tag === "img") {
         if (className === 'img_btn_add') {
             console.log(className === 'img_btn_add')
@@ -194,7 +201,6 @@ document.addEventListener('click', (event) => {
             /** Valida se o campo input de link esta vazio */
             const validar_link = new ValidandoCampos();
             if (!validar_link.validar_campos()) {
-                console.log('Link inválido');
                 return;
             }
 
