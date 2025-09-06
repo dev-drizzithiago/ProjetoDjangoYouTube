@@ -122,6 +122,29 @@ function PlayerMidias(response, imgBtn) {
     
 }
 
+async function requestPlayer() {
+    try {
+        const response = await fetch("/player_midias/", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify('requesting'),
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        PlayerMidias(data, img_btn);
+    } else {
+        console.error('Error fetching player media:', response.statusText);
+    }
+    } catch (error) {
+        console.error('Error fetching player media:', error);
+    }
+    
+}
+
 function request() {
 
     fetch("/links_salvos/", {
@@ -188,8 +211,7 @@ document.addEventListener('click', (event) => {
             request();
         }
         else if (id === 'id_a_player_midias') {  
-            const obj_youtube = new btn_youtube();          
-            obj_youtube.player_midia();
+            requestPlayer()
         }
     }
 
