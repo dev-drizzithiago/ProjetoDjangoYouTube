@@ -106,9 +106,11 @@ function carregaPagina(response, img_btn) {
 
         divBtn.appendChild(btnDownloadLink);
         divBtn.appendChild(btnRemoverLink);
+        divBtn.appendChild(btnAcessarLink);
 
         btnDownloadLink.appendChild(img_btn_down);
         btnRemoverLink.appendChild(img_btn_remove);
+        btnAcessarLink.appendChild(img_btn_acessar);
 
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
