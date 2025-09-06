@@ -90,6 +90,14 @@ button {
   overflow-y: auto; /* Adiciona rolagem vertical se necessário */
 }
 
+.content::-webkit-scrollbar {
+    width: 0px; /* Largura da barra de rolagem */
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: darkgrey; /* Cor da parte que pode ser arrastada */
+}
+
 article.views {
     background: #fff; /* Fundo branco */
     padding: 20px; /* Preenchimento interno */
