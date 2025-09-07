@@ -14,7 +14,8 @@ class objYoutube  {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': getCookie('csrftoken'),
                 },
-                body: JSON.stringify(this.link)
+                credentials: 'include',
+                body: JSON.stringify(this.link),
             })
             const data = await response.json();
             elemento_index.msg_alerta.innerText = data.mensagem;
@@ -47,6 +48,34 @@ class objYoutube  {
             dialog.close();
         });
     }
+
+    async downloadlinkYoutube() {
+        const linkYoutube = btn.btn_download.getAttribute('data-url');
+        console.log(linkYoutube)
+
+        try {
+            const response = await fetch("/download_link/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            credentials: 'include',
+            body: JSON.stringify({ link: linkYoutube }),
+        });
+
+        const data = await response.json();
+        elemento_index.msg_alerta.innerText = data.mensagem;
+
+        } catch (error) {
+            console.error('Error downloading link:', error);
+        } finally {
+            elemento_index.link_entrada.value = '';
+            setTimeout(()=>{
+                elemento_index.msg_alerta.innerText = '';
+            }, 10000)
+        }
+    }
 }
 
 function carregaPagina(response, img_btn) {
@@ -73,21 +102,25 @@ function carregaPagina(response, img_btn) {
         const divBtn = document.createElement('div');
 
         const btnDownloadLink = document.createElement('button');
+        btnDownloadLink.classList.add('btnLinksYoutube');
         btnDownloadLink.style.width = '60px';
         btnDownloadLink.style.height = '60px';
         btnDownloadLink.style.backgroundColor = '#c5c5c5ff';
 
         const btnRemoverLink = document.createElement('button');
+        btnRemoverLink.classList.add('btnLinksYoutube');
         btnRemoverLink.style.width = '60px';
         btnRemoverLink.style.height = '60px';
         btnRemoverLink.style.backgroundColor = '#c5c5c5ff';
 
         const btnAcessarLink = document.createElement('button');
+        btnAcessarLink.classList.add('btnLinksYoutube');
         btnAcessarLink.style.width = '60px';
         btnAcessarLink.style.height = '60px';
         btnAcessarLink.style.backgroundColor = '#c5c5c5ff';
 
         const img_btn_down = document.createElement('img');
+        img_btn_down.classList.add('img_btn_down');
         img_btn_down.src = img_btn.download;
         img_btn_down.style.width = '50px';
         img_btn_down.style.height = '50px';
@@ -95,6 +128,7 @@ function carregaPagina(response, img_btn) {
         img_btn_down.style.marginTop = '-10px';
 
         const img_btn_remove = document.createElement('img');
+        img_btn_remove.classList.add('img_btn_remove');
         img_btn_remove.src = img_btn.remover;
         img_btn_remove.style.width = '50px';
         img_btn_remove.style.height = '50px';
@@ -102,6 +136,7 @@ function carregaPagina(response, img_btn) {
         img_btn_remove.style.marginTop = '-10px';
 
         const img_btn_acessar = document.createElement('img');
+        img_btn_acessar.classList.add('img_btn_acessar');
         img_btn_acessar.src = img_btn.youtube;
         img_btn_acessar.style.width = '50px';
         img_btn_acessar.style.height = '50px';
@@ -129,6 +164,7 @@ function carregaPagina(response, img_btn) {
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
         pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
+        btnDownloadLink.setAttribute('data-url', element.link_download);
     });
 }
 
@@ -221,6 +257,7 @@ function requestLinksSalvos() {
 
 // Função para lidar com cliques em links
 document.addEventListener('click', (event) => {
+    event.preventDefault();
 
     const elemento = event.target
     const tag = elemento.tagName.toLowerCase();
@@ -231,9 +268,9 @@ document.addEventListener('click', (event) => {
     
     if (tag === "img") {
 
-        if (elemento_index.div_result.innerHTML !== '') {
-            elemento_index.div_result.innerHTML = '';
-        }
+        //if (elemento_index.div_result.innerHTML !== '') {
+        //    elemento_index.div_result.innerHTML = '';
+        //}
 
         if (className === 'img_btn_add') {
             console.log(className === 'img_btn_add')
@@ -267,6 +304,10 @@ document.addEventListener('click', (event) => {
         }
         else if (className === 'btnMidiasYoutube') {
             requestPlayer();
+        }
+        else if (className === 'btnLinksYoutube') {
+            const objDownLink = new objYoutube(link);
+            objDownLink.downloadlinkYoutube();
         }
     }
 })
