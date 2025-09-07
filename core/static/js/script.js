@@ -122,9 +122,11 @@ function carregaPagina(response, img_btn) {
 }
 
 function PlayerMidias(response, imgBtn) {
+    
     response.forEach(element => {
+        console.log(element.nome_midia, element.local_midia)
         const elementoDivResult = document.querySelector('.content'); 
-        const lista = document.createElement('ul');
+        
 
         const articulador = document.createElement('article');
         articulador.classList.add('views', 'class_articulador');
@@ -132,22 +134,39 @@ function PlayerMidias(response, imgBtn) {
         const cabecalho = document.createElement('header');
         cabecalho.classList.add('class_cabecalho');
 
+        const lista = document.createElement('ul');
+
         const midia = document.createElement('li');
         midia.classList.add('class_midia');
 
-        const divBtn = document.createElement('div');
+        const localMidia = document.createElement('a');
+        localMidia.className = 'class_local_midia';
 
+        const divBtn = document.createElement('div');        
         const btnPlayerMidia = document.createElement('button');
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
 
+        const img_btn_player = document.createElement('img');
+        img_btn_player.src = imgBtn.botao_play;
+        img_btn_player.style.width = '50px';
+        img_btn_player.style.height = '50px';
+        img_btn_player.style.marginLeft = '-27px'; 
+        img_btn_player.style.marginTop = '-10px';
+
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
-        articulador.appendChild(lista);
-        midia.appendChild(lista);
+
         articulador.appendChild(divBtn);
         divBtn.appendChild(btnPlayerMidia);
+        btnPlayerMidia.appendChild(img_btn_player);
+
+        articulador.appendChild(lista);
+        lista.appendChild(midia);
+        midia.appendChild(localMidia);
+        midia.textContent = element.nome_midia;
+        localMidia.textContent = element.local_midia;
     })
 }
 
@@ -165,7 +184,7 @@ async function requestPlayer() {
 
     if (response.ok) {
         const data = await response.json();
-        console.log(data.data_midia);
+        console.log(data.data_midia, data.lista_img);
         PlayerMidias(data.data_midia, data.lista_img);
     } else {
         console.error('Error fetching player media:', response.statusText);
