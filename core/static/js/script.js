@@ -21,6 +21,11 @@ class objYoutube  {
             console.warn(data.mensagem);
         } catch (error) {
             console.error('Error adding link:', error);
+        } finally {
+            elemento_index.link_entrada.value = '';
+            setTimeout(()=>{
+                elemento_index.msg_alerta.innerText = '';
+            }, 10000)
         }
     }
 
