@@ -26,7 +26,7 @@ class btn_youtube  {
     }
 
     player_midia() {
-        console.log(this.midia);
+        
         const dialog = document.querySelector('.dialog_play');
         const video = dialog.querySelector('.video_player source');
         const videoTag = dialog.querySelector('.video_player');
@@ -149,6 +149,7 @@ function PlayerMidias(response, imgBtn) {
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
 
         const img_btn_player = document.createElement('img');
+        img_btn_player.className = 'class_img_btn_player';
         img_btn_player.src = imgBtn.botao_play;
         img_btn_player.style.width = '50px';
         img_btn_player.style.height = '50px';
@@ -270,6 +271,7 @@ document.addEventListener('click', (event) => {
     }
 
     else if (tag === "img") {
+
         if (className === 'img_btn_add') {
             console.log(className === 'img_btn_add')
             const link = document.getElementById('id_input_link').value;
@@ -282,6 +284,12 @@ document.addEventListener('click', (event) => {
 
             const btn = new btn_youtube(link);
             btn.add_link();
+        }
+
+        else if (className === 'class_img_btn_player') {
+            const localMidia = document.querySelector('.class_local_midia');
+            const objPlayerMidia = new btn_youtube(localMidia);
+            objPlayerMidia.player_midia();
         }
     }
 })
