@@ -5,15 +5,15 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
 from .models import DadosYoutube
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from .app_youtube import YouTubeDownload
-midia = 'Dreams (2004 Remaster).mp4'
 
-# Create your views here.
-URL_MIDIA_LOCAL = os.path.join(settings.MEDIA_URL, 'movies', midia)
 ROOT_MIDIA_LOCAL_MUSIC = os.path.join(settings.MEDIA_ROOT, 'musics')
 ROOT_MIDIA_LOCAL_MOVIE = os.path.join(settings.MEDIA_ROOT, 'movies')
 STATIC_IMG = os.path.join(settings.STATIC_URL, 'img')
+
+@ensure_csrf_cookie  # Garante que essa view seja acessada via GET antes de qualquer POST.
 def index(request):
 
     query_links = DadosYoutube.objects.all()
@@ -24,6 +24,7 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+# @ensure_csrf_cookie
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
     link_registro = dados_json
@@ -44,6 +45,7 @@ def add_link_sistema(request):
             'mensagem': 'Por favor, insira um link válido.',
         })
 
+# @ensure_csrf_cookie
 def download_link(request):
     dados_json = json.loads(request.body)
 
@@ -69,13 +71,13 @@ def links_salvos(request):
         'local_imgs': lista_img,
     })
 
+# @ensure_csrf_cookie
 def player_midias(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
     dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
 
     for midia in dados_midia:
-        print(midia)
         lista_midias.append({
             'nome_midia': midia.replace('.mp4', ''),
             'local_midia': os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/'),
