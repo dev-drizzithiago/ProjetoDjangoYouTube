@@ -2,9 +2,8 @@ import { btn_index as btn, getCookie, elemento_index, ValidandoCampos, converter
 
 class btn_youtube  {
 
-    constructor(link, midia) {
+    constructor(link) {
         this.link = link;
-        this.midia = midia;
     }
 
     async add_link() {
@@ -32,7 +31,8 @@ class btn_youtube  {
         const video = dialog.querySelector('.video_player source');
         const videoTag = dialog.querySelector('.video_player');
 
-        video.src = this.midia;
+        video.src = encodeURI(this.link);
+        console.log(video.src)
         videoTag.load();
         dialog.showModal();
     }
@@ -122,7 +122,33 @@ function carregaPagina(response, img_btn) {
 }
 
 function PlayerMidias(response, imgBtn) {
-    
+    response.forEach(element => {
+        const elementoDivResult = document.querySelector('.content'); 
+        const lista = document.createElement('ul');
+
+        const articulador = document.createElement('article');
+        articulador.classList.add('views', 'class_articulador');
+
+        const cabecalho = document.createElement('header');
+        cabecalho.classList.add('class_cabecalho');
+
+        const midia = document.createElement('li');
+        midia.classList.add('class_midia');
+
+        const divBtn = document.createElement('div');
+
+        const btnPlayerMidia = document.createElement('button');
+        btnPlayerMidia.style.width = '60px';
+        btnPlayerMidia.style.height = '60px';
+        btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
+
+        elementoDivResult.appendChild(articulador);
+        articulador.appendChild(cabecalho);
+        articulador.appendChild(lista);
+        midia.appendChild(lista);
+        articulador.appendChild(divBtn);
+        divBtn.appendChild(btnPlayerMidia);
+    })
 }
 
 async function requestPlayer() {
@@ -216,9 +242,11 @@ document.addEventListener('click', (event) => {
             request();
         }
         else if (id === 'id_a_player_midias') {
-            const midiaTeste = './media/movies/Dreams (2004 Remaster).mp4'
+            /*const midiaTeste = './media/movies/Dreams (2004 Remaster).mp4'
             const objPlayerMidias = new btn_youtube(midiaTeste)
-            objPlayerMidias.player_midia()
+            objPlayerMidias.player_midia()*/
+
+            requestPlayer();
         }
     }
 
