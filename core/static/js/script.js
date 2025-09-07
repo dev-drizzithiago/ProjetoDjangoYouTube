@@ -16,7 +16,6 @@ class objYoutube  {
                 },
                 body: JSON.stringify(this.link)
             })
-
             const data = await response.json();
             elemento_index.msg_alerta.innerText = data.mensagem;
             console.warn(data.mensagem);
@@ -218,23 +217,18 @@ function requestLinksSalvos() {
 // Função para lidar com cliques em links
 document.addEventListener('click', (event) => {
 
-    console.log('Elemento clicado: ', event);
-
     const elemento = event.target
     const tag = elemento.tagName.toLowerCase();
     const id = elemento.id;
     const className = elemento.className;
 
-    if (tag === 'a') {
-        if (id === 'id_a_down_links') {            
-            requestLinksSalvos();
-        }
-        else if (id === 'id_a_player_midias') {
-            requestPlayer();
-        }
-    }
+    console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
     
-    else if (tag === "img") {
+    if (tag === "img") {
+
+        if (elemento_index.div_result.innerHTML !== '') {
+            elemento_index.div_result.innerHTML = '';
+        }
 
         if (className === 'img_btn_add') {
             console.log(className === 'img_btn_add')
@@ -246,7 +240,7 @@ document.addEventListener('click', (event) => {
                 return;
             }
 
-            const btn = new btn_youtube(link);
+            const btn = new objYoutube(link);
             btn.add_link();
         }
 
@@ -262,6 +256,12 @@ document.addEventListener('click', (event) => {
             } else {
                 console.warn('URL não encontrada no botão');
             }
+        }
+        else if (className === 'btnLinksYoutube') {
+            requestLinksSalvos();
+        }
+        else if (className === 'btnMidiasYoutube') {
+            requestPlayer();
         }
     }
 })
