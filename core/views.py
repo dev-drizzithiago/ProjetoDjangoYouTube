@@ -75,14 +75,16 @@ def player_midias(request):
     dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
 
     for midia in dados_midia:
+        print(midia)
         lista_midias.append({
-            midia: os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/')
+            'nome_midia': midia.replace('.mp4', ''),
+            'local_midia': os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/'),
         })
 
     lista_img = {
-        'botao-play': os.path.join(STATIC_IMG, 'botao-play.png'),
-        'remover': os.path.join(STATIC_IMG, 'remover.png'),
-        'youtube': os.path.join(STATIC_IMG, 'youtube.png'),
+        'botao_play': os.path.join(STATIC_IMG, 'botao-play.png').replace('\\', '/'),
+        'remover': os.path.join(STATIC_IMG, 'remover.png').replace('\\', '/'),
+        'youtube': os.path.join(STATIC_IMG, 'youtube.png').replace('\\', '/'),
     }
 
     return JsonResponse({
