@@ -50,8 +50,9 @@ def add_link_sistema(request):
 # @ensure_csrf_cookie
 def download_link(request):
     dados_json = json.loads(request.body)
-    
+
     print(dados_json)
+
     return JsonResponse({
         'mensagem': 'mensaagem'
     })
