@@ -106,6 +106,17 @@ button {
         display: block;
         margin: -15px -25px;
     }
+    .btn_fechar_dialog {
+        display: flex;
+        justify-content: center;
+        justify-self: center;
+        align-items: center;
+        width: 150px;
+        height: 40px;
+    }
+    .btn_fechar_dialog:hover {
+        background-color: rgb(255, 77, 77);
+    }
 
 div.links_container {
     display: block;
