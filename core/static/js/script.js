@@ -50,7 +50,7 @@ class objYoutube  {
     }
 
     async downloadlinkYoutube() {
-        console.log(this.link)
+        console.log('link', this.link)
         try {
             const response = await fetch("/download_link/", {
             method: 'POST',
@@ -308,9 +308,10 @@ document.addEventListener('click', (event) => {
         else if (className === 'img_btn_down') {
             const btn = elemento.closest('button');
             const linkYoutube = btn?.getAttribute('data-url');
+            
             if (linkYoutube) {
-                const objDownLink = new objYoutube();
-                objDownLink.downloadlinkYoutube(linkYoutube);            
+                const objDownLink = new objYoutube(linkYoutube);
+                objDownLink.downloadlinkYoutube();            
             } else {
                 console.warn('URL não encontrada no botão');
             }
