@@ -50,9 +50,7 @@ class objYoutube  {
     }
 
     async downloadlinkYoutube() {
-        const linkYoutube = btn.btn_download.getAttribute('data-url');
-        console.log(linkYoutube)
-
+        console.log(this.link)
         try {
             const response = await fetch("/download_link/", {
             method: 'POST',
@@ -61,10 +59,11 @@ class objYoutube  {
                 'X-CSRFToken': getCookie('csrftoken'),
             },
             credentials: 'include',
-            body: JSON.stringify({ link: linkYoutube }),
+            body: JSON.stringify({ link: this.link }),
         });
 
         const data = await response.json();
+        console.log(data)
         elemento_index.msg_alerta.innerText = data.mensagem;
 
         } catch (error) {
@@ -165,6 +164,7 @@ function carregaPagina(response, img_btn) {
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
         pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
         btnDownloadLink.setAttribute('data-url', element.link_download);
+        console.log(btnDownloadLink.getAttribute('data-url'))
     });
 }
 
@@ -305,9 +305,15 @@ document.addEventListener('click', (event) => {
         else if (className === 'btnMidiasYoutube') {
             requestPlayer();
         }
-        else if (className === 'btnLinksYoutube') {
-            const objDownLink = new objYoutube(link);
-            objDownLink.downloadlinkYoutube();
+        else if (className === 'img_btn_down') {
+            const btn = elemento.closest('button');
+            const linkYoutube = btn?.getAttribute('data-url');
+            if (linkYoutube) {
+                const objDownLink = new objYoutube();
+                objDownLink.downloadlinkYoutube(linkYoutube);            
+            } else {
+                console.warn('URL não encontrada no botão');
+            }
         }
     }
 })
