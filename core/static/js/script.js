@@ -217,6 +217,11 @@ document.addEventListener('click', (event) => {
     const id = elemento.id;
     const className = elemento.className;
 
+    if (elemento.closest('.class_local_midia')) {
+        const localMidia = elemento.closest('.class_local_midia').getAttribute('data-url');
+        console.log(localMidia);
+    } 
+
     if (tag === 'a') {
         if (id === 'id_a_down_links') {            
             request();
@@ -244,10 +249,6 @@ document.addEventListener('click', (event) => {
 
         else if (className === 'class_img_btn_player') {
             console.log('Player midia')
-
-            const localMidia = document.querySelector('.class_local_midia').getAttribute('data-url');
-            console.log(localMidia);
-
             const objPlayerMidia = new btn_youtube(localMidia);
             objPlayerMidia.player_midia();
         }
