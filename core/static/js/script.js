@@ -30,7 +30,7 @@ class btn_youtube  {
         console.log(this.midia);
         const dialog = document.querySelector('.dialog_play');
         const video = dialog.querySelector('.video_player source');
-        video.src = encodeURI('/media/movies/Dreams (2004 Remaster).mp4');
+        video.src = encodeURI(this.midia);
         dialog.showModal();
     }
 }
@@ -212,8 +212,10 @@ document.addEventListener('click', (event) => {
         if (id === 'id_a_down_links') {            
             request();
         }
-        else if (id === 'id_a_player_midias') {  
-            requestPlayer()
+        else if (id === 'id_a_player_midias') {
+            const midiaTeste = '../media/movies/Dreams (2004 Remaster).mp4'
+            const objPlayerMidias = new btn_youtube(midiaTeste)
+            objPlayerMidias.player_midia()
         }
     }
 
