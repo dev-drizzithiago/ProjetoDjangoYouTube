@@ -51,15 +51,12 @@ def add_link_sistema(request):
 def download_link(request):
     dados_json = json.loads(request.body)
 
-    print(dados_json)
-
     return JsonResponse({
         'mensagem': 'mensaagem'
     })
 def links_salvos(request):
     # Realiza a leitura dos dados que chegou do template
     dados_json = json.loads(request.body)
-
     lista_img = {
         'download': os.path.join(STATIC_IMG, 'download.png'),
         'remover': os.path.join(STATIC_IMG, 'remover.png'),
