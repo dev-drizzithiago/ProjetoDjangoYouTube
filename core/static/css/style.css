@@ -4,7 +4,8 @@
     --font_family: Arial, sans-serif;
     --font_size: 16px;
     --bord_teste: 1px solid #000;
-    --sombra: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --sombra: 2px 2px 2px rgba(0, 0, 0, 0.1);
+    --bord_radios_px: 5px;
 }
 
 
@@ -22,13 +23,9 @@ main {
     margin-left: auto; 
     margin-right: auto;
     width: 50%;
-    height: 60rem;
-
-    box-shadow: var(--sombra);
-
+    height: 61rem;
     justify-content: center;
     align-items: center;
-
     margin: 1px solid #000;
 }
 
@@ -134,7 +131,7 @@ div.content {
     border: none;
     display: grid;  /* Estilo de grade */
     grid-template-rows: repeat(4, 1fr); /* 4 linhas de altura igual */
-    max-height: 560px; /* altura máxima */
+    max-height: 575px; /* altura máxima */
     gap: 15px;  /* espaçamento entre os itens */
     padding: 10px;  /* preenchimento interno  */
     overflow-y: auto; /* Adiciona rolagem vertical se necessário */
@@ -149,9 +146,10 @@ div.content {
 }
 
 article.views {
-    background: #fff; /* Fundo branco */
+    background: var(--cor_background); /* Fundo branco */
     padding: 20px; /* Preenchimento interno */
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 20%); /* Sombra */
+    box-shadow: var(--sombra); /* Sombra */
+    border-radius: var(--bord_radios_px);
 }
 
 @media (min-width: 50px) {
