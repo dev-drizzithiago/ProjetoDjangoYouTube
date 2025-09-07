@@ -1,6 +1,6 @@
 import { btn_index as btn, getCookie, elemento_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
-class btn_youtube  {
+class objYoutube  {
 
     constructor(link) {
         this.link = link;
@@ -26,7 +26,7 @@ class btn_youtube  {
     }
 
     player_midia() {
-        
+        const btnFechar = document.querySelector('.btn_fechar_dialog');
         const dialog = document.querySelector('.dialog_play');
         const video = dialog.querySelector('.video_player source');
         const videoTag = dialog.querySelector('.video_player');
@@ -35,6 +35,13 @@ class btn_youtube  {
         console.log(video.src)
         videoTag.load();
         dialog.showModal();
+
+        // Evento para fechar o diálogo
+        
+        btnFechar.addEventListener('click', () => {
+            videoTag.pause();
+            dialog.close();
+        });
     }
 }
 
@@ -122,7 +129,7 @@ function carregaPagina(response, img_btn) {
 }
 
 function PlayerMidias(response, imgBtn) {
-    
+
     response.forEach(element => {
         const elementoDivResult = document.querySelector('.content');
 
@@ -188,7 +195,7 @@ async function requestPlayer() {
     } 
 }
 
-function request() {
+function requestLinksSalvos() {
 
     fetch("/links_salvos/", {
         method: 'POST',
@@ -210,6 +217,9 @@ function request() {
 
 // Função para lidar com cliques em links
 document.addEventListener('click', (event) => {
+
+    console.log('Elemento clicado: ', event);
+
     const elemento = event.target
     const tag = elemento.tagName.toLowerCase();
     const id = elemento.id;
@@ -217,7 +227,7 @@ document.addEventListener('click', (event) => {
 
     if (tag === 'a') {
         if (id === 'id_a_down_links') {            
-            request();
+            requestLinksSalvos();
         }
         else if (id === 'id_a_player_midias') {
             requestPlayer();
@@ -247,7 +257,7 @@ document.addEventListener('click', (event) => {
             const url = btn?.getAttribute('data-url');
 
             if (url) {
-                const objPlayerMidia = new btn_youtube(url);
+                const objPlayerMidia = new objYoutube(url);
                 objPlayerMidia.player_midia();
             } else {
                 console.warn('URL não encontrada no botão');
