@@ -118,15 +118,13 @@ function carregaPagina(response, img_btn) {
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
         pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
-    });   
+    });
 }
 
 function PlayerMidias(response, imgBtn) {
     
     response.forEach(element => {
-        console.log(element.nome_midia, element.local_midia)
-        const elementoDivResult = document.querySelector('.content'); 
-        
+        const elementoDivResult = document.querySelector('.content');
 
         const articulador = document.createElement('article');
         articulador.classList.add('views', 'class_articulador');
@@ -139,7 +137,7 @@ function PlayerMidias(response, imgBtn) {
         const midia = document.createElement('li');
         midia.classList.add('class_midia');
 
-        const localMidia = document.createElement('a');
+        const localMidia = document.createElement('div');
         localMidia.className = 'class_local_midia';
 
         const divBtn = document.createElement('div');        
@@ -167,7 +165,7 @@ function PlayerMidias(response, imgBtn) {
         lista.appendChild(midia);
         midia.appendChild(localMidia);
         midia.textContent = element.nome_midia;
-        localMidia.textContent = element.local_midia;
+        localMidia.setAttribute('data-url', element.local_midia);
     })
 }
 
@@ -185,15 +183,13 @@ async function requestPlayer() {
 
     if (response.ok) {
         const data = await response.json();
-        console.log(data.data_midia, data.lista_img);
         PlayerMidias(data.data_midia, data.lista_img);
     } else {
         console.error('Error fetching player media:', response.statusText);
     }
     } catch (error) {
         console.error('Error fetching player media:', error);
-    }
-    
+    } 
 }
 
 function request() {
@@ -215,41 +211,6 @@ function request() {
     });
 }
 
-/** Botão para adicionar o link no banco de dados */
-btn.btn_adicionar.addEventListener('click', (event) => {
-    event.preventDefault();
-    
-});
-
-/** Botão para baixar o vídeo */
-if (btn.btn_download !== null) {
-    btn_index.btn_download.addEventListener('click', (event) => {
-        event.preventDefault();
-        console.log('Download button clicked');
-    });
-}
-
-
-/** Botão para remover o registro na base de dados */
-if (btn.btn_remover !== null) {
-    btn_index.btn_remover.addEventListener('click', (event) => {
-        event.preventDefault();
-        console.log('Remover button clicked');
-    });
-}
-
-
-/** Botão para reproduzir o vídeo/audio */
-if (btn.btn_player !== null) {
-    btn_index.btn_player.addEventListener('click', (event) => {
-        event.preventDefault();
-        const entrada_midia = document.getElementById('id_video_teste').getAttribute('data-url');
-        console.log(entrada_midia)
-        const btn = new btn_youtube();
-        btn.player_midia();
-    });
-}
-
 // Função para lidar com cliques em links
 document.addEventListener('click', (event) => {
     const elemento = event.target
@@ -262,10 +223,6 @@ document.addEventListener('click', (event) => {
             request();
         }
         else if (id === 'id_a_player_midias') {
-            /*const midiaTeste = './media/movies/Dreams (2004 Remaster).mp4'
-            const objPlayerMidias = new btn_youtube(midiaTeste)
-            objPlayerMidias.player_midia()*/
-
             requestPlayer();
         }
     }
@@ -287,7 +244,11 @@ document.addEventListener('click', (event) => {
         }
 
         else if (className === 'class_img_btn_player') {
-            const localMidia = document.querySelector('.class_local_midia');
+            console.log('Player midia')
+
+            const localMidia = document.querySelector('.class_local_midia').getAttribute('data-url');
+            console.log(localMidia);
+
             const objPlayerMidia = new btn_youtube(localMidia);
             objPlayerMidia.player_midia();
         }
