@@ -122,6 +122,7 @@ function carregaPagina(response, img_btn) {
 }
 
 function PlayerMidias(response, imgBtn) {
+    
     response.forEach(element => {
         const elementoDivResult = document.querySelector('.content');
 
@@ -135,15 +136,14 @@ function PlayerMidias(response, imgBtn) {
 
         const midia = document.createElement('li');
         midia.classList.add('class_midia');
-
-        const localMidia = document.createElement('div');
-        localMidia.className = 'class_local_midia';
+        midia.textContent = element.nome_midia;
 
         const divBtn = document.createElement('div');        
         const btnPlayerMidia = document.createElement('button');
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
+        btnPlayerMidia.setAttribute('data-url', element.local_midia);
 
         const img_btn_player = document.createElement('img');
         img_btn_player.className = 'class_img_btn_player';
@@ -162,30 +162,27 @@ function PlayerMidias(response, imgBtn) {
 
         articulador.appendChild(lista);
         lista.appendChild(midia);
-        midia.appendChild(localMidia);
-        midia.textContent = element.nome_midia;
-        localMidia.setAttribute('data-url', element.local_midia);
-    })
+    })    
 }
 
-async function requestPlayer() {
-    
+async function requestPlayer() {   
     try {
         const response = await fetch("/player_midias/", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken'),
-        },
-        body: JSON.stringify('requesting'),
-    });
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            credentials: 'include',
+            body: JSON.stringify({action: 'requesting'}),
+        });
 
-    if (response.ok) {
-        const data = await response.json();
-        PlayerMidias(data.data_midia, data.lista_img);
-    } else {
-        console.error('Error fetching player media:', response.statusText);
-    }
+        if (response.ok) {
+            const data = await response.json();
+            PlayerMidias(data.data_midia, data.lista_img);
+        } else {
+            console.error('Error fetching player media:', response.statusText);
+        }
     } catch (error) {
         console.error('Error fetching player media:', error);
     } 
@@ -199,6 +196,7 @@ function request() {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken'),
         },
+        credentials: 'include',
         body: JSON.stringify('requesting'),
     })
     .then(response => response.json())
@@ -217,11 +215,6 @@ document.addEventListener('click', (event) => {
     const id = elemento.id;
     const className = elemento.className;
 
-    if (elemento.closest('.class_local_midia')) {
-        const localMidia = elemento.closest('.class_local_midia').getAttribute('data-url');
-        console.log(localMidia);
-    } 
-
     if (tag === 'a') {
         if (id === 'id_a_down_links') {            
             request();
@@ -230,7 +223,7 @@ document.addEventListener('click', (event) => {
             requestPlayer();
         }
     }
-
+    
     else if (tag === "img") {
 
         if (className === 'img_btn_add') {
@@ -248,9 +241,17 @@ document.addEventListener('click', (event) => {
         }
 
         else if (className === 'class_img_btn_player') {
-            console.log('Player midia')
-            const objPlayerMidia = new btn_youtube(localMidia);
-            objPlayerMidia.player_midia();
+            console.log('Player midia');
+
+            const btn = elemento.closest('button');
+            const url = btn?.getAttribute('data-url');
+
+            if (url) {
+                const objPlayerMidia = new btn_youtube(url);
+                objPlayerMidia.player_midia();
+            } else {
+                console.warn('URL não encontrada no botão');
+            }
         }
     }
 })
