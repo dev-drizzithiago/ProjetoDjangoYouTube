@@ -21,6 +21,8 @@ def index(request):
     context = {
         'midia_local': ROOT_MIDIA_LOCAL_MUSIC.replace('\\', '/'),
         'img_btn_add': os.path.join(STATIC_IMG, 'adicionar.png'),
+        'img_links_yt': os.path.join(STATIC_IMG, 'pasta_links.png').replace('\\', '/'),
+        'img_path_midias': os.path.join(STATIC_IMG, 'movies.png').replace('\\', '/'),
     }
     return render(request, 'index.html', context)
 
