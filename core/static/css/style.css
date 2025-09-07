@@ -12,6 +12,7 @@
 html {
     background-color: var(--cor_background);
 }
+
 body {
     height: 100%;
     margin: 0;
@@ -60,26 +61,21 @@ div.div_input_link{
         font-family: var(--font_family);
         font-size: var(--font_size);
     }
-/* Estilo para a DIV que contém o botão de adicionar */
-div.div_btns_add{
-    display: block;
-    justify-content: left; 
-    margin-top: 35px;
-    margin-left: 25px;
-    width: 70px;
-}
 
 /* Estilo para a DIV que contém a mensagem de alerta */
 div#id_div_msg_alerta {
     position: absolute;
-    display: block;
-    box-shadow: var(--sombra);
+    display: block;    
     justify-content: center;
     text-align: center;
     width: 25%;
+    height: 50px;
     margin-left: 250px;
-    margin-top: 35px;
+    margin-top: 5px;
+    box-shadow: var(--sombra);
+    border-radius: var(--bord_radios_px);
 }
+
 
 /* Estilo para os botões */
 button {
@@ -92,18 +88,31 @@ button {
     display: inline-block;
     font-size: 16px;
     margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
+    cursor: pointer;    
     width: 60px;
     height: 60px;
+    border-radius: var(--bord_radios_px);
 }       
-    .img_btn_add{
+    img.img_btn_add{
         width: 50px;
         height: 50px;
         display: block;
         margin: -15px -25px;
     }
-    .btn_fechar_dialog {
+    img.btnLinksYoutube {
+        width: 50px;
+        height: 50px;
+        display: block;
+        margin: -15px -25px;
+    }
+
+    img.btnMidiasYoutube {
+        width: 50px;
+        height: 50px;
+        display: block;
+        margin: -15px -25px;
+    }
+    img.btn_fechar_dialog {
         display: flex;
         justify-content: center;
         justify-self: center;
@@ -119,11 +128,12 @@ div.links_container {
     display: block;
     margin-left: auto; 
     margin-right: auto;
+    margin-top: 70px;
     width: 90%;
     padding: 10px;
     box-shadow: var(--sombra);
     background-color: var(--cor_background);
-    margin-top: 20px;
+    border-radius: var(--bord_radios_px);
 }
 
 /* Estilo para a DIV que contém os links */
@@ -164,14 +174,4 @@ img.img_miniatura {
     display: grid;
     width: 90px;
     height: 60px;
-}
-
-img.btnLinksYoutube {
-    width: 50px;
-    height: 50px;
-}
-
-img.btnMidiasYoutube {
-    width: 50px;
-    height: 50px;
 }
