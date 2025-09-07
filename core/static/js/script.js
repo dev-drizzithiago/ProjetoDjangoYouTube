@@ -163,7 +163,7 @@ function carregaPagina(response, img_btn) {
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
         pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
-        btnDownloadLink.setAttribute('data-url', element.link_download);
+        btnDownloadLink.setAttribute('data-url', element.link_tube);
         console.log(btnDownloadLink.getAttribute('data-url'))
     });
 }
