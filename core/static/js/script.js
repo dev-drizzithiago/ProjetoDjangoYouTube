@@ -122,7 +122,6 @@ function carregaPagina(response, img_btn) {
 }
 
 function PlayerMidias(response, imgBtn) {
-    
     response.forEach(element => {
         const elementoDivResult = document.querySelector('.content');
 
