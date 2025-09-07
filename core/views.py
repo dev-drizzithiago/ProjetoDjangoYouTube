@@ -70,8 +70,12 @@ def links_salvos(request):
     })
 
 def player_midias(request):
+    lista_midias = list()
     dados_json = json.loads(request.body)
     dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
+
+    for midia in dados_midia:
+        lista_midias.append(os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/'))
 
     lista_img = {
         'botao-play': os.path.join(STATIC_IMG, 'botao-play.png'),
@@ -80,6 +84,6 @@ def player_midias(request):
     }
 
     return JsonResponse({
-        'data_midia': dados_midia,
+        'data_midia': lista_midias,
         'lista_img': lista_img,
     })
