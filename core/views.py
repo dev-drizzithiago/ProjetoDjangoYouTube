@@ -75,7 +75,9 @@ def player_midias(request):
     dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
 
     for midia in dados_midia:
-        lista_midias.append(os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/'))
+        lista_midias.append({
+            midia: os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/')
+        })
 
     lista_img = {
         'botao-play': os.path.join(STATIC_IMG, 'botao-play.png'),
