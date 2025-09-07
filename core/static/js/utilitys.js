@@ -38,6 +38,9 @@ export class ValidandoCampos {
             elemento_index.msg_alerta.innerText = "O campo link é obrigatório.";
             return false
         }
+        setTimeout(()=>{
+            elemento_index.msg_alerta.innerText = '';
+        }, 10000)
         return true;
     }
 }
