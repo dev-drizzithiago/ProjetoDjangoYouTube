@@ -9,6 +9,7 @@ export const btn_index = {
 export const elemento_index = {
     msg_alerta: document.getElementById('id_msg_alerta'),
     link_entrada: document.getElementById('id_input_link'),
+    div_result: document.querySelector('.content'), 
 }
 
 // Função para "autenticar" o django.
