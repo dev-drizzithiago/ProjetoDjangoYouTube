@@ -112,7 +112,7 @@ button {
         display: block;
         margin: -15px -25px;
     }
-    img.btn_fechar_dialog {
+    button.btn_fechar_dialog {
         display: flex;
         justify-content: center;
         justify-self: center;
@@ -120,7 +120,7 @@ button {
         width: 150px;
         height: 40px;
     }
-    .btn_fechar_dialog:hover {
+    .btn_fechar_dialog:hover {        
         background-color: rgb(255, 77, 77);
     }
 
