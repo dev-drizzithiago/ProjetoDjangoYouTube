@@ -1,4 +1,4 @@
-import { btn_index as btn, getCookie, elemento_index, ValidandoCampos, converterDuracao } from './utilitys.js';
+import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
 class objYoutube  {
 
@@ -317,4 +317,13 @@ document.addEventListener('click', (event) => {
             }
         }
     }
+})
+
+/** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
+btn_index.btn_img_add.addEventListener('mouseenter', (event) => {
+    elemento_index.msg_alerta.innerText = 'Adicionar Link'
+})
+
+btn_index.btn_img_add.addEventListener('mouseout', (event) => {
+    elemento_index.msg_alerta.innerText = ''
 })
