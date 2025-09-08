@@ -78,7 +78,9 @@ class objYoutube  {
 }
 
 function carregaPagina(response, img_btn) {
-
+    if (elemento_index.div_result.innerHTML !== '') {
+        elemento_index.div_result.innerHTML = '';
+    }
     response.forEach(element => {
         const elementoDivResult = document.querySelector('.content'); 
         const lista = document.createElement('ul');
@@ -169,22 +171,31 @@ function carregaPagina(response, img_btn) {
 }
 
 function PlayerMidias(response, imgBtn) {
-
+    if (elemento_index.div_result.innerHTML !== '') {
+        elemento_index.div_result.innerHTML = '';
+    }
     response.forEach(element => {
+
+        // busca o elemento <div> onde ficará todos os elementos que serão criados. 
         const elementoDivResult = document.querySelector('.content');
 
+        // Cria uma tag <article>
         const articulador = document.createElement('article');
         articulador.classList.add('views', 'class_articulador');
 
+        // Cria uma tag <header>
         const cabecalho = document.createElement('header');
         cabecalho.classList.add('class_cabecalho');
 
+        // Cria uma tag <ul> para receber uma lista de informações
         const lista = document.createElement('ul');
 
+        // Recebe o nome da mídia, onde ficará exposta para o usuário
         const midia = document.createElement('li');
         midia.classList.add('class_midia');
         midia.textContent = element.nome_midia;
 
+        // btn para abrir a midia em uma tag de videos
         const divBtn = document.createElement('div');        
         const btnPlayerMidia = document.createElement('button');
         btnPlayerMidia.style.width = '60px';
@@ -192,6 +203,7 @@ function PlayerMidias(response, imgBtn) {
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
         btnPlayerMidia.setAttribute('data-url', element.local_midia);
 
+        // imagem para abrir a midia em uma tag de videos
         const img_btn_player = document.createElement('img');
         img_btn_player.className = 'class_img_btn_player';
         img_btn_player.src = imgBtn.botao_play;
@@ -267,11 +279,6 @@ document.addEventListener('click', (event) => {
     console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
     
     if (tag === "img") {
-
-        //if (elemento_index.div_result.innerHTML !== '') {
-        //    elemento_index.div_result.innerHTML = '';
-        //}
-
         if (className === 'img_btn_add') {
             console.log(className === 'img_btn_add')
             const link = document.getElementById('id_input_link').value;
@@ -325,5 +332,23 @@ btn_index.btn_img_add.addEventListener('mouseenter', (event) => {
 })
 
 btn_index.btn_img_add.addEventListener('mouseout', (event) => {
+    elemento_index.msg_alerta.innerText = ''
+})
+
+/** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
+btn_index.btn_img_view.addEventListener('mouseenter', (event) => {
+    elemento_index.msg_alerta.innerText = 'Links Salvos'
+})
+
+btn_index.btn_img_view.addEventListener('mouseout', (event) => {
+    elemento_index.msg_alerta.innerText = ''
+})
+
+/** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
+btn_index.btn_img_midias.addEventListener('mouseenter', (event) => {
+    elemento_index.msg_alerta.innerText = 'Midias Salvas'
+})
+
+btn_index.btn_img_midias.addEventListener('mouseout', (event) => {
     elemento_index.msg_alerta.innerText = ''
 })
