@@ -28,9 +28,9 @@ SECRET_KEY = "zhlXG{p4cd/8{JATwwi5N\mvOx*dd:Q0451E:4!>pL$.~.|gy,NoZ(N!ZnPw=Nig"
 # CSRF_TRUSTED_ORIGINS = ['http://192.168.15.254']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["192.168.15.250"]
 
 
 # Application definition
