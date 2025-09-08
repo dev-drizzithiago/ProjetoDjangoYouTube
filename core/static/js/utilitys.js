@@ -1,6 +1,8 @@
 
 export const btn_index = {
-    btn_img_add: document.querySelector('.img_btn_add')
+    btn_img_add: document.querySelector('.img_btn_add'),
+    btn_img_view: document.querySelector('.btnLinksYoutube'),
+    btn_img_midias: document.querySelector('.btnMidiasYoutube')
 
 }
 
