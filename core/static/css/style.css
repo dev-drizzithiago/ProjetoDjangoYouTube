@@ -122,7 +122,8 @@ button {
     }
     .btn_fechar_dialog:hover {        
         background-color: rgb(255, 77, 77);
-    }
+    } 
+    
 
 div.links_container {
     display: block;
