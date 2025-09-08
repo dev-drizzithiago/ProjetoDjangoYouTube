@@ -1,15 +1,13 @@
 
 export const btn_index = {
-    btn_adicionar: document.getElementById('id_btn_add_link'),
-    btn_download: document.getElementById('id_btn_download'),
-    btn_remover: document.getElementById('id_btn_remover'),
-    btn_player: document.getElementById('id_btn_player'),
+    btn_img_add: document.querySelector('.img_btn_add')
+
 }
 
 export const elemento_index = {
     msg_alerta: document.getElementById('id_msg_alerta'),
     link_entrada: document.getElementById('id_input_link'),
-    div_result: document.querySelector('.content'), 
+    div_result: document.querySelector('.content'),
 }
 
 // Função para "autenticar" o django.
