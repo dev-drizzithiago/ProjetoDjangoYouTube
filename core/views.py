@@ -53,7 +53,7 @@ def download_link(request):
 
     lnk_down = dados_json['link']
     midia_down = dados_json['midia']
-    
+
     inicio_obj_yt_registro = YouTubeDownload()
 
     if midia_down == 'musics':
