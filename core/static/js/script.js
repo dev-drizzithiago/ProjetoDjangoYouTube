@@ -51,6 +51,12 @@ class objYoutube  {
 
     async downloadlinkYoutube() {
         console.log('link', this.link)
+        
+        const data_to_django = {
+            link: this.link,
+            midia: '',
+        }
+
         try {
             const response = await fetch("/download_link/", {
             method: 'POST',
@@ -103,19 +109,19 @@ function carregaPagina(response, img_btn) {
         const divBtn = document.createElement('div');
 
         const btnDownloadLink = document.createElement('button');
-        btnDownloadLink.classList.add('btnLinksYoutube');
+        btnDownloadLink.classList.add('btnDownloadYoutube');
         btnDownloadLink.style.width = '60px';
         btnDownloadLink.style.height = '60px';
         btnDownloadLink.style.backgroundColor = '#c5c5c5ff';
 
         const btnRemoverLink = document.createElement('button');
-        btnRemoverLink.classList.add('btnLinksYoutube');
+        btnRemoverLink.classList.add('btnRemoveYoutube');
         btnRemoverLink.style.width = '60px';
         btnRemoverLink.style.height = '60px';
         btnRemoverLink.style.backgroundColor = '#c5c5c5ff';
 
         const btnAcessarLink = document.createElement('button');
-        btnAcessarLink.classList.add('btnLinksYoutube');
+        btnAcessarLink.classList.add('btnAcessarYoutube');
         btnAcessarLink.style.width = '60px';
         btnAcessarLink.style.height = '60px';
         btnAcessarLink.style.backgroundColor = '#c5c5c5ff';
@@ -166,7 +172,6 @@ function carregaPagina(response, img_btn) {
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
         pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
         btnDownloadLink.setAttribute('data-url', element.link_tube);
-        console.log(btnDownloadLink.getAttribute('data-url'))
     });
 }
 
