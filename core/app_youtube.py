@@ -70,11 +70,12 @@ class YouTubeDownload:
 
     PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
+    PATH_MIDIA_TEMP  = os.path.join(settings.MEDIA_ROOT, 'temp')
 
-    def __init__(self):
+    def __init__(self, link_download):
         self.conexao_banco = None
         self.cursor = None
-        self.link_validado = None
+        self.link_validado = link_download
         self._auto_link = None
         self._titulo_link = None
         self._duracao = None
@@ -117,86 +118,35 @@ class YouTubeDownload:
 
     # Faz download do arquivo em MP3.
     def download_music(self):
-        """
-        1º O arquivo M4A é baixado para pasta "temp".
-        2º O metodo mp4_to_mp3 é chamado e transforma o arquivo em MP3.
-        :param dados_youtube: Entra o link do youtube.
-        :return: Retorna a confirmação do processo em forma de string.
-        """
-        print()
-        print(self.linha)
-        download_yt = YouTube(dados_youtube, on_progress_callback=on_progress_)
-        verificacao_sistema_pastas = self.validando_sistema()
-        print(f'Realizando downloado do arquivo: {download_yt.author}-{download_yt.title}')
-        print()
+
+        download_yt = YouTube(self.link_validado, on_progress_callback=on_progress_)
         stream = download_yt.streams.get_audio_only()
-        stream.download(self.path_temp)
+        stream.download(self.PATH_MIDIA_TEMP)
 
         # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
         self.mp4_to_mp3(autor_midia=download_yt.author)
 
     # Faz o download do arquivo em MP4
     def download_movie(self, link_down):
-        """
-        O download é simples, como não preciso converter nenhum arquivo. O vídeo é transferido direto para pasta
-        padrão do app.
-        :return: Retorna a confirmação do processo em forma de string.
-        """
-
         download_yt = YouTube(link_down, on_progress_callback=on_progress_)
-        verificacao_sistema_pastas_one_drive = self.validando_sistema()
-
         stream = download_yt.streams.get_highest_resolution()
-
-        if verificacao_sistema_pastas_one_drive:
-            stream.download(self.path_down_mp4_one)
-        else:
-            stream.download(self.path_down_mp4)
-
-        print(self.linha)
-        print('Download concluído!')
-
-        # Arruma uma forma de voltar para a lista de urls
-        print()
-        print()
-
-        sleep(2)
-        self.limpeza_cmd()
+        stream.download(self.PATH_MIDIA_MOVIES)
 
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, autor_midia):
 
-        """
-       - Aqui, é realizado uma listage na pasta Temp, aonde fica alocado o arquivo mp4;
-       - após localizar o arquivo mp4, é realizado a junção do local, para ser processado;
-       - O mesmo procedimento é realizado para o arquivo mp3, mas nessa opção é dado o mesmo nome, mas muda apenas
-       a extensão;
-       - Logo depois é precessado o arquivo para transformar em mp3;
-       - Depois que finaliza o processo, o arquivo mp4 é removido da pasta temp
-       :param autor_midia: Geralmente os vídeos não acompanham o nome do autor, então eu acrescento no final do mp3,
-       mas os nomes podem vir com caracteres especiais, então para evitar problemas, chama-se uma função interna para
-       remove os caracteres especiais e evitar erros.
-       """
-
-        for arquivo_m4a in listdir(self.path_temp):
+        for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
             if search('m4a', arquivo_m4a):
-                m4a_file_abs = path.join(self.path_temp, arquivo_m4a)
+                m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
 
                 # valida os nomes do arquivo, removendo os caracteres especiais, caso tenham.
                 nome_arquivo_m4a_validado = validacao_nome_arquivo(arquivo_m4a)
                 autor_validado = validacao_nome_arquivo(autor_midia)
 
-                if self.validando_sistema():
-                    mp3_file = path.join(
-                        self.path_down_mp3_one, f"{autor_validado}_{arquivo_m4a.replace('m4a', 'mp3')}"
-                    )
-                else:
-                    mp3_file = path.join(
-                        self.path_down_mp3, f"{autor_validado}_{arquivo_m4a.replace('m4a', 'mp3')}"
-                    )
-
-                print(mp3_file)
+                mp3_file = path.join(
+                    self.PATH_MIDIA_MUSICS, f"{autor_validado}_{arquivo_m4a.replace('m4a', 'mp3')}"
+                )
 
                 """#### Processa o MP4 para MP3"""
                 novo_mp3 = AudioFileClip(m4a_file_abs)
@@ -217,76 +167,4 @@ class YouTubeDownload:
         else:
             return True
 
-    def criando_tabela_dados(self):
-        """
-        Cria a tabela padrão para ser utilizado no banco.
-        :return:
-        """
-        tabela = """
-        CREATE TABLE IF NOT EXISTS INFO_TUBE(
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            autor_link VARCHAR(255), 
-            titulo_link VARCHAR(255), 
-            duracao VARCHAR(255), 
-            miniatura VARCHAR(500), 
-            link_tube VARCHAR(500) 
-        );
-        """
-        try:
-            # Valida se a tabela existe
-            self.cursor.execute(
-                "SELECT * FROM sqlite_master WHERE type='table' AND name='INFO_TUBE';"
-            )
-            verif_exist_base_dados = self.cursor.fetchone()
 
-            # Caso a tabela exista finaliza o metodo. Geralmente ela não exista no primeiro acesso.
-            if verif_exist_base_dados:
-                print('Tabela de dados validado.')
-                return
-            else:
-                self.cursor.execute(tabela)
-                print('Tabela criada...')
-        except Exception as error:
-            print(f'Erro ao criar a tabela {error}')
-
-    # Sempre que o programa é iniciado, é conectado a base de dados.
-    def conectando_base_dados(self):
-        try:
-            listdir(self.pasta_com_onedrive)
-            self.conexao_banco = sqlite3.connect(self.DB_YOUTUBE_ONE)
-            print('Base de dados conectado.')
-            self.cursor = self.conexao_banco.cursor()
-            return self.conexao_banco
-        except FileNotFoundError:
-            self.conexao_banco = sqlite3.connect(self.DB_YOUTUBE)
-            print('Base de dados conectado...')
-            self.cursor = self.conexao_banco.cursor()
-            return self.conexao_banco
-
-    # Cria as pastas para caso o windows tenha o onedrive instalado
-    def criando_pastas_destino_onedrive(self):
-        try:
-            makedirs(self.path_down_mp3_one)
-            makedirs(self.path_down_mp4_one)
-        except FileExistsError:
-            ...
-
-    # Cria as pastas sem o onedrive instalado
-    def criando_pastas_destina_normal(self):
-        try:
-            makedirs(self.path_down_mp3)
-            makedirs(self.path_down_mp4)
-        except FileExistsError:
-            return
-
-    def validando_sistema(self):
-        try:
-            listdir(self.pasta_com_onedrive)
-            self.criando_pastas_destino_onedrive()
-            return True
-        except FileExistsError:
-            self.criando_pastas_destina_normal()
-            return False
-
-    def limpeza_cmd(self):
-        system('cls')
