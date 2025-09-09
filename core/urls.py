@@ -11,4 +11,4 @@ urlpatterns = [
     path('player_midias/', player_midias, name='player_midias'),
     path('download_link/', download_link, name='download_link'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=[settings.MEDIA_ROOT, settings.STATIC_ROOT])
