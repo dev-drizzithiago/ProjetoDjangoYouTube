@@ -11,3 +11,7 @@ class DadosYoutube(Base):
     duracao = models.IntegerField()
     miniatura = models.CharField(max_length=255)
     link_tube = models.CharField(max_length=255)
+
+class MidiasSalvasServidor(Base):
+    path_miniatura = models.FileField(upload_to='/miniaturas')
+    
