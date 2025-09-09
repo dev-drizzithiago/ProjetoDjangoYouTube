@@ -72,10 +72,10 @@ class YouTubeDownload:
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
     PATH_MIDIA_TEMP  = os.path.join(settings.MEDIA_ROOT, 'temp')
 
-    def __init__(self, link_download):
+    def __init__(self):
+        self.link = None
         self.conexao_banco = None
         self.cursor = None
-        self.link_validado = link_download
         self._auto_link = None
         self._titulo_link = None
         self._duracao = None
@@ -107,19 +107,10 @@ class YouTubeDownload:
         :return: Retorna a confirmação que o link foi deletado.
         """
 
-    # Listando Tabela INFO_TUBE
-    def listando_info_base_dados(self):
-        """
-        Metodo responsável por lista as urls dentro da base de dados.
-        :return: Sempre vai retornar um tubla. O "fronte" vai ser responsável em mostrar os dados.
-        """
-
-        query_dados_youtube = DadosYoutube.objects.all()
-
     # Faz download do arquivo em MP3.
-    def download_music(self):
+    def download_music(self, link):
 
-        download_yt = YouTube(self.link_validado, on_progress_callback=on_progress_)
+        download_yt = YouTube(link, on_progress_callback=on_progress_)
         stream = download_yt.streams.get_audio_only()
         stream.download(self.PATH_MIDIA_TEMP)
 
@@ -127,8 +118,8 @@ class YouTubeDownload:
         self.mp4_to_mp3(autor_midia=download_yt.author)
 
     # Faz o download do arquivo em MP4
-    def download_movie(self, link_down):
-        download_yt = YouTube(link_down, on_progress_callback=on_progress_)
+    def download_movie(self):
+        download_yt = YouTube(self.link, on_progress_callback=on_progress_)
         stream = download_yt.streams.get_highest_resolution()
         stream.download(self.PATH_MIDIA_MOVIES)
 
