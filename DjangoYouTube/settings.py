@@ -20,17 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-0^2$av^#1@qmh*zhov!v9rp6@2g2t!ryy#&+%u-jfj=u8&5^!_"
-SECRET_KEY = "zhlXG{p4cd/8{JATwwi5N\mvOx*dd:Q0451E:4!>pL$.~.|gy,NoZ(N!ZnPw=Nig"
+SECRET_KEY = "django-insecure-0^2$av^#1@qmh*zhov!v9rp6@2g2t!ryy#&+%u-jfj=u8&5^!_"
+# SECRET_KEY = "zhlXG{p4cd/8{JATwwi5N\mvOx*dd:Q0451E:4!>pL$.~.|gy,NoZ(N!ZnPw=Nig"
 #
 # CSRF_COOKIE_SECURE = False
 # SESSION_COOKIE_SECURE = False
 # CSRF_TRUSTED_ORIGINS = ['http://192.168.15.254']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.15.250"]
+ALLOWED_HOSTS = ["192.168.15.250", '192.168.15.254']
 
 
 # Application definition
@@ -54,6 +54,12 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+]
+
 
 ROOT_URLCONF = "DjangoYouTube.urls"
 
@@ -121,10 +127,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / 'productionfiles'
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
