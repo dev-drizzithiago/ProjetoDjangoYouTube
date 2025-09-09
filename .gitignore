@@ -186,3 +186,4 @@ cython_debug/
 *.mp4
 /media
 /productionfiles
+*.py~
