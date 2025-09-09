@@ -51,9 +51,20 @@ def add_link_sistema(request):
 def download_link(request):
     dados_json = json.loads(request.body)
 
+    lnk_down = dados_json['link']
+    midia_down = dados_json['midia']
+    
+    inicio_obj_yt_registro = YouTubeDownload()
+
+    if midia_down == 'musics':
+        inicio_obj_yt_registro.download_music()
+    elif midia_down == 'movies':
+        inicio_obj_yt_registro.download_movie()
+
     return JsonResponse({
         'mensagem': 'mensaagem'
     })
+
 def links_salvos(request):
     # Realiza a leitura dos dados que chegou do template
     dados_json = json.loads(request.body)
