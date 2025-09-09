@@ -1,0 +1,75 @@
+###############################################################################
+# Replace
+# ProjetoGunicorn the name of the gunicorn file you want
+# thiago your user name
+# ProjetoDjangoYouTube the folder name of your project
+# DjangoYouTube the folder name where you find a file called wsgi.py
+#
+###############################################################################
+# Criando o arquivo ProjetoGunicorn.socket
+sudo nano /etc/systemd/system/ProjetoGunicorn.socket
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=gunicorn ProjetoGunicorn socket
+
+[Socket]
+ListenStream=/run/ProjetoGunicorn.socket
+
+[Install]
+WantedBy=sockets.target
+
+###############################################################################
+# Criando o arquivo ProjetoGunicorn.service
+sudo nano /etc/systemd/system/ProjetoGunicorn.service
+
+###############################################################################
+# Conteúdo do arquivo
+[Unit]
+Description=Gunicorn daemon (You can change if you want)
+Requires=ProjetoGunicorn.socket
+After=network.target
+
+[Service]
+User=thiago
+Group=www-data
+Restart=on-failure
+# EnvironmentFile=/home/thiago/ProjetoDjangoYouTube/.env
+WorkingDirectory=/home/thiago/ProjetoDjangoYouTube
+# --error-logfile --enable-stdio-inheritance --log-level and --capture-output
+# are all for debugging purposes.
+ExecStart=/home/thiago/ProjetoDjangoYouTube/venv/bin/gunicorn \
+          --error-logfile /home/thiago/ProjetoDjangoYouTube/gunicorn-error-log \
+          --enable-stdio-inheritance \
+          --log-level "debug" \
+          --capture-output \
+          --access-logfile - \
+          --workers 6 \
+          --bind unix:/run/ProjetoGunicorn.socket \
+          DjangoYouTube.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+
+###############################################################################
+# Ativando
+sudo systemctl start ProjetoGunicorn.socket
+sudo systemctl enable ProjetoGunicorn.socket
+
+# Checando
+sudo systemctl status ProjetoGunicorn.socket
+curl --unix-socket /run/ProjetoGunicorn.socket localhost
+sudo systemctl status ProjetoGunicorn
+
+# Restarting
+sudo systemctl restart ProjetoGunicorn.service
+sudo systemctl restart ProjetoGunicorn.socket
+sudo systemctl restart ProjetoGunicorn
+
+# After changing something
+sudo systemctl daemon-reload
+
+# Debugging
+sudo journalctl -u ProjetoGunicorn.service
+sudo journalctl -u ProjetoGunicorn.socket
