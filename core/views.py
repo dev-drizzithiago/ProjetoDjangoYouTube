@@ -54,12 +54,13 @@ def download_link(request):
     lnk_down = dados_json['link']
     midia_down = dados_json['midia']
 
+    print(lnk_down)
     inicio_obj_yt_registro = YouTubeDownload()
 
-    if midia_down == 'musics':
-        inicio_obj_yt_registro.download_music()
-    elif midia_down == 'movies':
-        inicio_obj_yt_registro.download_movie()
+    if midia_down == 'MP3':
+        inicio_obj_yt_registro.download_music(lnk_down)
+    elif midia_down == 'MP4':
+        inicio_obj_yt_registro.download_movie(lnk_down)
 
     return JsonResponse({
         'mensagem': 'mensaagem'
