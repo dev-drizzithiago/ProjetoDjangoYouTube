@@ -10,7 +10,9 @@ export const elemento_index = {
     msg_alerta: document.getElementById('id_msg_alerta'),
     link_entrada: document.getElementById('id_input_link'),
     div_result: document.querySelector('.content'),
-    modalOpcMidia: document.querySelector('.modalOpcMidia')
+    modalOpcMidia: document.querySelector('.modalOpcMidia'),
+    divSpinner: document.querySelector('.divSpinner'),
+    imgSpiiner: document.querySelector('.imgSpinner')
 }
 
 // Função para "autenticar" o django.
