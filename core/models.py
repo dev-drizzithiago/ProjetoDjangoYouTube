@@ -18,5 +18,5 @@ class DadosYoutube(Base):
 class MoviesSalvasServidor(Base):
     nome_arquivo = models.CharField(max_length=255, null=True)
     path_arquivo = models.CharField(max_length=255, null=True)
-    path_miniatura = models.FileField(upload_to=os.path.join(settings.MEDIA_ROOT, 'movies'))
+    path_miniatura = models.FileField(upload_to=os.path.join(settings.MEDIA_ROOT, '/miniaturas'))
 
