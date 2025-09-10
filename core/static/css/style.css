@@ -1,6 +1,6 @@
 
 :root {
-    --cor_background: rgba(223, 221, 221, 0.863);
+    --cor_background: #dfdddddc;
     --font_family: Arial, sans-serif;
     --font_size: 16px;
     --bord_teste: 1px solid #000;
@@ -75,6 +75,10 @@ div#id_div_msg_alerta {
     box-shadow: var(--sombra);
     border-radius: var(--bord_radios_px);
 }
+    #id_msg_alerta {
+        display: flex;
+        justify-content: center;
+    }
 
 
 /* Estilo para os botões */
