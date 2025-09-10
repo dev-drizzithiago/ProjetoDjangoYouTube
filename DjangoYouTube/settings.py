@@ -25,10 +25,6 @@ SECRET_KEY = "django-insecure-0^2$av^#1@qmh*zhov!v9rp6@2g2t!ryy#&+%u-jfj=u8&5^!_
 
 # Quando for para produção ativar
 # SECRET_KEY = "zhlXG{p4cd/8{JATwwi5N\mvOx*dd:Q0451E:4!>pL$.~.|gy,NoZ(N!ZnPw=Nig"
-#
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
-# CSRF_TRUSTED_ORIGINS = ['http://192.168.15.254']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -131,7 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / 'productionfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
