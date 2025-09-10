@@ -70,7 +70,7 @@ class YouTubeDownload:
 
     PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
-    PATH_MIDIA_TEMP  = os.path.join(settings.MEDIA_ROOT, 'temp')
+    PATH_MIDIA_TEMP = os.path.join(settings.MEDIA_ROOT, 'temp')
 
     def __init__(self):
         self.link = None
@@ -108,8 +108,8 @@ class YouTubeDownload:
         """
 
     # Faz download do arquivo em MP3.
-    def download_music(self, link):
-
+    def download_music(self, link: str):
+        print('Download Musics')
         download_yt = YouTube(link, on_progress_callback=on_progress_)
         stream = download_yt.streams.get_audio_only()
         stream.download(self.PATH_MIDIA_TEMP)
@@ -118,8 +118,9 @@ class YouTubeDownload:
         self.mp4_to_mp3(autor_midia=download_yt.author)
 
     # Faz o download do arquivo em MP4
-    def download_movie(self):
-        download_yt = YouTube(self.link, on_progress_callback=on_progress_)
+    def download_movie(self, link: str):
+        print('Download Movies')
+        download_yt = YouTube(link)
         stream = download_yt.streams.get_highest_resolution()
         stream.download(self.PATH_MIDIA_MOVIES)
 
