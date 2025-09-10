@@ -182,7 +182,7 @@ function PlayerMidias(response, imgBtn) {
         elemento_index.div_result.innerHTML = '';
     }
     response.forEach(element => {
-
+        
         // busca o elemento <div> onde ficará todos os elementos que serão criados. 
         const elementoDivResult = document.querySelector('.content');
 
@@ -208,7 +208,7 @@ function PlayerMidias(response, imgBtn) {
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
-        btnPlayerMidia.setAttribute('data-url', element.local_midia);
+        btnPlayerMidia.setAttribute('data-url', String(element.local_midia));
 
         // imagem para abrir a midia em uma tag de videos
         const img_btn_player = document.createElement('img');
@@ -219,12 +219,29 @@ function PlayerMidias(response, imgBtn) {
         img_btn_player.style.marginLeft = '-27px'; 
         img_btn_player.style.marginTop = '-10px';
 
+        
+        const btnDownloadMidia = document.createElement('button');
+        btnDownloadMidia.style.width = '60px';
+        btnDownloadMidia.style.height = '60px';
+        btnDownloadMidia.style.backgroundColor = '#c5c5c5ff';
+        btnDownloadMidia.setAttribute('data-url', element.local_midia);
+
+        const img_download_midia = document.createElement('img');
+        img_download_midia.className = 'class_img_down_midia';
+        img_download_midia.src = imgBtn.download;
+        img_download_midia.style.width = '50px';
+        img_download_midia.style.height = '50px';
+        img_download_midia.style.marginLeft = '-27px'; 
+        img_download_midia.style.marginTop = '-10px';
+
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
 
         articulador.appendChild(divBtn);
         divBtn.appendChild(btnPlayerMidia);
+        divBtn.appendChild(btnDownloadMidia);
         btnPlayerMidia.appendChild(img_btn_player);
+        btnDownloadMidia.appendChild(img_download_midia);
 
         articulador.appendChild(lista);
         lista.appendChild(midia);
@@ -312,6 +329,9 @@ document.addEventListener('click', (event) => {
             } else {
                 console.warn('URL não encontrada no botão');
             }
+        }
+        else if (className === 'class_img_down_midia'){
+            console.log('Download midia')
         }
         else if (className === 'btnLinksYoutube') {
             requestLinksSalvos();
