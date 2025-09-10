@@ -22,8 +22,10 @@ def index(request):
         'midia_local': ROOT_MIDIA_LOCAL_MUSIC.replace('\\', '/'),
         'img_btn_add': os.path.join(STATIC_IMG, 'adicionar.png'),
         'img_links_yt': os.path.join(STATIC_IMG, 'pasta_links.png').replace('\\', '/'),
-        'img_path_midias': os.path.join(STATIC_IMG, 'movies.png').replace('\\', '/'),
-        'img_spinner': os.path.join(STATIC_IMG, 'loading.gif').replace('\\', '/')
+        'img_btn_mp4': os.path.join(STATIC_IMG, 'mp4.png').replace('\\', '/'),
+        'img_btn_mp3': os.path.join(STATIC_IMG, 'mp3.png').replace('\\', '/'),
+        'img_spinner': os.path.join(STATIC_IMG, 'loading.gif').replace('\\', '/'),
+
     }
     return render(request, 'index.html', context)
 
@@ -86,7 +88,7 @@ def links_salvos(request):
     })
 
 # @ensure_csrf_cookie
-def player_midias(request):
+def player_midias_mp4(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
     dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
@@ -96,6 +98,29 @@ def player_midias(request):
         lista_midias.append({
             'nome_midia': midia.replace('.mp4', ''),
             'local_midia': os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/'),
+        })
+
+    lista_img = {
+        'botao_play': os.path.join(STATIC_IMG, 'botao-play.png').replace('\\', '/'),
+        'remover': os.path.join(STATIC_IMG, 'remover.png').replace('\\', '/'),
+        'youtube': os.path.join(STATIC_IMG, 'youtube.png').replace('\\', '/'),
+        'download': os.path.join(STATIC_IMG, 'download.png').replace('\\', '/'),
+    }
+
+    return JsonResponse({
+        'data_midia': lista_midias,
+        'lista_img': lista_img,
+    })
+
+def player_midias_mp3(request):
+    lista_midias = list()
+    dados_json = json.loads(request.body)
+    dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MUSIC)
+
+    for midia in dados_midia:
+        lista_midias.append({
+            'nome_midia': midia.replace('.mp3', ''),
+            'local_midia': os.path.join(settings.MEDIA_URL, 'musics', midia).replace('\\', '/'),
         })
 
     lista_img = {
