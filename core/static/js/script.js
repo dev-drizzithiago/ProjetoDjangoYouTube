@@ -174,7 +174,7 @@ function carregaPagina(response, img_btn) {
 
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link} ${String.fromCodePoint(0x1F3B5)}`;
-        pDuracao.textContent = `${String.fromCodePoint(0x1F550)} ${converterDuracao(element.duracao)}`;
+        pDuracao.textContent = `${String.fromCodePoint(0x23F3)} ${converterDuracao(element.duracao)}`;
         btnDownloadLink.setAttribute('data-url', element.link_tube);
         btnAcessarLink.setAttribute('data-url', element.link_tube);
     });
