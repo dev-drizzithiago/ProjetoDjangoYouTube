@@ -177,7 +177,7 @@ function carregaPagina(response, img_btn) {
     });
 }
 
-function PlayerMidias(response, imgBtn) {
+function PlayerMidiasMp4(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     }
@@ -248,9 +248,80 @@ function PlayerMidias(response, imgBtn) {
     })    
 }
 
-async function requestPlayer() {   
+function PlayerMidiasMp3(response, imgBtn) {
+    if (elemento_index.div_result.innerHTML !== '') {
+        elemento_index.div_result.innerHTML = '';
+    }
+    response.forEach(element => {
+        
+        // busca o elemento <div> onde ficará todos os elementos que serão criados. 
+        const elementoDivResult = document.querySelector('.content');
+
+        // Cria uma tag <article>
+        const articulador = document.createElement('article');
+        articulador.classList.add('views', 'class_articulador');
+
+        // Cria uma tag <header>
+        const cabecalho = document.createElement('header');
+        cabecalho.classList.add('class_cabecalho');
+
+        // Cria uma tag <ul> para receber uma lista de informações
+        const lista = document.createElement('ul');
+
+        // Recebe o nome da mídia, onde ficará exposta para o usuário
+        const midia = document.createElement('li');
+        midia.classList.add('class_midia');
+        midia.textContent = element.nome_midia;
+
+        // btn para abrir a midia em uma tag de videos
+        const divBtn = document.createElement('div');        
+        const btnPlayerMidia = document.createElement('button');
+        btnPlayerMidia.style.width = '60px';
+        btnPlayerMidia.style.height = '60px';
+        btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
+        btnPlayerMidia.setAttribute('data-url', String(element.local_midia));
+
+        // imagem para abrir a midia em uma tag de videos
+        const img_btn_player = document.createElement('img');
+        img_btn_player.className = 'class_img_btn_player';
+        img_btn_player.src = imgBtn.botao_play;
+        img_btn_player.style.width = '50px';
+        img_btn_player.style.height = '50px';
+        img_btn_player.style.marginLeft = '-27px'; 
+        img_btn_player.style.marginTop = '-10px';
+
+        
+        const btnDownloadMidia = document.createElement('button');
+        btnDownloadMidia.style.width = '60px';
+        btnDownloadMidia.style.height = '60px';
+        btnDownloadMidia.style.backgroundColor = '#c5c5c5ff';
+        btnDownloadMidia.setAttribute('data-url', element.local_midia);
+
+        const img_download_midia = document.createElement('img');
+        img_download_midia.className = 'class_img_down_midia';
+        img_download_midia.src = imgBtn.download;
+        img_download_midia.style.width = '50px';
+        img_download_midia.style.height = '50px';
+        img_download_midia.style.marginLeft = '-27px'; 
+        img_download_midia.style.marginTop = '-10px';
+
+        elementoDivResult.appendChild(articulador);
+        articulador.appendChild(cabecalho);
+
+        articulador.appendChild(divBtn);
+        divBtn.appendChild(btnPlayerMidia);
+        divBtn.appendChild(btnDownloadMidia);
+        btnPlayerMidia.appendChild(img_btn_player);
+        btnDownloadMidia.appendChild(img_download_midia);
+
+        articulador.appendChild(lista);
+        lista.appendChild(midia);
+    })  
+}
+
+async function requestPlayerMp4() {   
     try {
-        const response = await fetch("/player_midias/", {
+        const response = await fetch("/player_midias_mp4/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -262,7 +333,30 @@ async function requestPlayer() {
 
         if (response.ok) {
             const data = await response.json();
-            PlayerMidias(data.data_midia, data.lista_img);
+            PlayerMidiasMp4(data.data_midia, data.lista_img);
+        } else {
+            console.error('Error fetching player media:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching player media:', error);
+    } 
+}
+
+async function requestPlayerMp3() {
+    try {
+        const response = await fetch("/player_midias_mp3/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            credentials: 'include',
+            body: JSON.stringify({action: 'requesting'}),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            PlayerMidiasMp3(data.data_midia, data.lista_img);
         } else {
             console.error('Error fetching player media:', response.statusText);
         }
@@ -336,8 +430,11 @@ document.addEventListener('click', (event) => {
         else if (className === 'btnLinksYoutube') {
             requestLinksSalvos();
         }
-        else if (className === 'btnMidiasYoutube') {
-            requestPlayer();
+        else if (className === 'btnMidiasYoutubeMp4') {
+            requestPlayerMp4();
+        }
+        else if (className === 'btnMidiasYoutubeMp3') {
+            requestPlayerMp3()
         }
         else if (className === 'img_btn_down') {
             const modal = elemento_index.modalOpcMidia;
