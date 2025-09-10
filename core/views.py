@@ -23,6 +23,7 @@ def index(request):
         'img_btn_add': os.path.join(STATIC_IMG, 'adicionar.png'),
         'img_links_yt': os.path.join(STATIC_IMG, 'pasta_links.png').replace('\\', '/'),
         'img_path_midias': os.path.join(STATIC_IMG, 'movies.png').replace('\\', '/'),
+        'img_spinner': os.path.join(STATIC_IMG, 'loading.gif').replace('\\', '/')
     }
     return render(request, 'index.html', context)
 
@@ -58,12 +59,12 @@ def download_link(request):
     inicio_obj_yt_registro = YouTubeDownload()
 
     if midia_down == 'MP3':
-        inicio_obj_yt_registro.download_music(lnk_down)
+        resultado_download = inicio_obj_yt_registro.download_music(lnk_down)
     elif midia_down == 'MP4':
-        inicio_obj_yt_registro.download_movie(lnk_down)
+        resultado_download = inicio_obj_yt_registro.download_movie(lnk_down)
 
     return JsonResponse({
-        'mensagem': 'mensaagem'
+        'mensagem': resultado_download,
     })
 
 def links_salvos(request):
