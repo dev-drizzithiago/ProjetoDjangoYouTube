@@ -176,3 +176,37 @@ img.img_miniatura {
     width: 90px;
     height: 60px;
 }
+
+dialog.modalOpcMidia{
+    display: block;
+    width: 225px;
+    height: 200px;
+    align-items: center;
+    align-content: center;
+}   
+    .opcMidiadownload{        
+        width: 200px;
+        height: 150px;
+
+        display: inline-flex;
+        align-items: center;
+        align-content: center;
+    }
+    .opcRadioMidia{
+        display: inline-flex;
+        align-items: center;
+        align-content: center;
+    }
+    .continuarOpcMidia {
+        display: grid;
+        align-items: center;
+        align-content: center;
+    }
+    .btnOpcMidia {
+        display: flex;
+        justify-content: center;
+        justify-self: center;
+        align-items: center;
+        width: 150px;
+        height: 40px;
+    }
