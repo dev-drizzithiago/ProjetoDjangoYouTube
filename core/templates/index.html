@@ -23,18 +23,25 @@
         <!-- Mensagem de alerta -->
         <div id="id_div_msg_alerta">
             <h4 id="id_msg_alerta"></h4>
+
+            <div class="divSpinner">
+                <img src="{{ img_spinner }}" alt="carregando..." class="imgSpinner">
+            </div>
+            
         </div>
 
         <div class="div links_container">
             <button id="id_btn_add_link">
                 <img src="{{ img_btn_add }}" class="img_btn_add" title="Adicionar link">
             </button>
+
             <button><img src="{{ img_links_yt }}" class="btnLinksYoutube"></button>
             <button><img src="{{ img_path_midias }}" class="btnMidiasYoutube"></button>
+                       
         </div>
         
         <!-- Recebe os links salvos, todo processo é feito pelo js.-->
-        <div class="content"></div>        
+        <div class="content"></div>
 
         <dialog class="dialog dialog_play">
             <div class="div div_dialog_play">
