@@ -418,8 +418,8 @@ document.addEventListener('click', (event) => {
             btn.add_link();
         }
 
+        // Evento responsável em abrir o player
         else if (className === 'class_img_btn_player') {
-            console.log('Player midia');
 
             const btn = elemento.closest('button');
             const url = btn?.getAttribute('data-url');
@@ -435,12 +435,21 @@ document.addEventListener('click', (event) => {
             console.log('Download midia')
         }
         else if (className === 'btnLinksYoutube') {
+            btn_index.divBtnLinksYoutube.style.backgroundColor = '#9838f1ff';
+            btn_index.divBtnMidiasMp4.style.backgroundColor = "#afafb4";
+            btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
             requestLinksSalvos();
         }
         else if (className === 'btnMidiasYoutubeMp4') {
+            btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
+            btn_index.divBtnMidiasMp4.style.backgroundColor = '#9838f1ff';
+            btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
             requestPlayerMp4();
         }
         else if (className === 'btnMidiasYoutubeMp3') {
+            btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
+            btn_index.divBtnMidiasMp4.style.backgroundColor = '#afafb4';
+            btn_index.divBtnMidiasMp3.style.backgroundColor = "#9838f1ff";
             requestPlayerMp3()
         }
         else if (className === 'img_btn_down') {
