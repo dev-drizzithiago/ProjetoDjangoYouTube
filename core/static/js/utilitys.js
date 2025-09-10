@@ -2,11 +2,17 @@
 export const btn_index = {
     btn_img_add: document.querySelector('.img_btn_add'),
     btn_img_view: document.querySelector('.btnLinksYoutube'),
-    btn_img_midias: document.querySelector('.btnMidiasYoutube')
+    btnMidiasYoutubeMp4: document.querySelector('.btnMidiasYoutubeMp4'),
+    btnMidiasYoutubeMp3: document.querySelector('.btnMidiasYoutubeMp3'),
+
+    divBtnLinksYoutube: document.querySelector('.divBtnLinks'),
+    divBtnMidiasMp4: document.querySelector('.divBtnMp4'),
+    divBtnMidiasMp3: document.querySelector('.divBtnMp3'),
 
 }
 
 export const elemento_index = {
+    div_msg_alerta: document.getElementById('id_div_msg_alerta'),
     msg_alerta: document.getElementById('id_msg_alerta'),
     link_entrada: document.getElementById('id_input_link'),
     div_result: document.querySelector('.content'),
@@ -33,16 +39,20 @@ export function getCookie(name) {
 
 export class ValidandoCampos {
     constructor(link_entrada) {
-        this.link_entrada = elemento_index.link_entrada; 
+        this.link_entrada = link_entrada;
     }
     
+    
     validar_campos() {
-        if (this.link_entrada.value.trim() === "") {
+        console.log(this.link_entrada)
+        
+        if (this.link_entrada === "") {
             elemento_index.msg_alerta.innerText = "O campo link é obrigatório.";
             return false
         }
         setTimeout(()=>{
             elemento_index.msg_alerta.innerText = '';
+            elemento_index.div_msg_alerta.style.background = '#dfdddddc'
         }, 10000)
         return true;
     }
