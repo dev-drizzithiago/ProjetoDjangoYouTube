@@ -54,9 +54,16 @@ class objYoutube  {
         const modal = elemento_index.modalOpcMidia;
         modal.showModal();
 
+        const btnContinuar = document.querySelector('.btnOpcMidia')
+            btnContinuar.addEventListener('click', () => {
+            modal.close()
+            const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
+            console.log(opcaoMidia.value)
+        })
+            
         const data_to_django = {
             link: this.link,
-            midia: opcaoMidia,
+            midia: 'opcaoMidia',
         }
 
         try {
@@ -276,8 +283,6 @@ function requestLinksSalvos() {
 
 // Função para lidar com cliques em links
 document.addEventListener('click', (event) => {
-    event.preventDefault();
-
     const elemento = event.target
     const tag = elemento.tagName.toLowerCase();
     const id = elemento.id;
@@ -286,6 +291,8 @@ document.addEventListener('click', (event) => {
     console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
     
     if (tag === "img") {
+        event.preventDefault();
+
         if (className === 'img_btn_add') {
             console.log(className === 'img_btn_add')
             const link = document.getElementById('id_input_link').value;
@@ -330,10 +337,7 @@ document.addEventListener('click', (event) => {
                 console.warn('URL não encontrada no botão');
             }
         }
-    }
-    else if (tag === 'button') {
-        if (className === )
-    }
+    }    
 })
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
