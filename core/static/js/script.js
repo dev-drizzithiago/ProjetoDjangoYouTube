@@ -51,7 +51,7 @@ class objYoutube  {
     }
 
     async downloadlinkYoutube() {
-            
+        
         const data_to_django = {
             link: this.link,
             midia: this.opcMidia,
@@ -75,6 +75,7 @@ class objYoutube  {
         } catch (error) {
             console.error('Error downloading link:', error);
         } finally {
+            elemento_index.divSpinner.style.display = "none";
             elemento_index.link_entrada.value = '';
             setTimeout(()=>{
                 elemento_index.msg_alerta.innerText = '';
@@ -113,6 +114,7 @@ function carregaPagina(response, img_btn) {
         btnDownloadLink.style.width = '60px';
         btnDownloadLink.style.height = '60px';
         btnDownloadLink.style.backgroundColor = '#c5c5c5ff';
+        btnDownloadLink.title = 'Salvar no seu Perfil'
 
         const btnRemoverLink = document.createElement('button');
         btnRemoverLink.classList.add('btnRemoveYoutube');
@@ -324,6 +326,9 @@ document.addEventListener('click', (event) => {
             const btnContinuar = document.querySelector('.btnOpcMidia')
                 btnContinuar.addEventListener('click', () => {
                 modal.close()
+
+                elemento_index.divSpinner.style.display = "block";
+
                 const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
 
                 const btn = elemento.closest('button');
@@ -340,6 +345,7 @@ document.addEventListener('click', (event) => {
         }
     }    
 })
+
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
 btn_index.btn_img_add.addEventListener('mouseenter', (event) => {
