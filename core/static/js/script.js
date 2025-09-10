@@ -54,10 +54,14 @@ class objYoutube  {
         const modal = elemento_index.modalOpcMidia;
         modal.showModal();
 
+        const tipoMidia = document.querySelector('.radio')
+
         const data_to_django = {
             link: this.link,
-            midia: '',
+            midia: tipoMidia,
         }
+
+        console.log(data_to_django)
 
         try {
             const response = await fetch("/download_link/", {
@@ -67,7 +71,7 @@ class objYoutube  {
                 'X-CSRFToken': getCookie('csrftoken'),
             },
             credentials: 'include',
-            body: JSON.stringify({ link: this.link }),
+            body: JSON.stringify(data_to_django),
         });
 
         const data = await response.json();
