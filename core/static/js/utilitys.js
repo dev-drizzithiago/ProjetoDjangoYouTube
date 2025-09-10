@@ -43,9 +43,7 @@ export class ValidandoCampos {
     }
     
     
-    validar_campos() {
-        console.log(this.link_entrada)
-        
+    validar_campos() {        
         if (this.link_entrada === "") {
             elemento_index.msg_alerta.innerText = "O campo link é obrigatório.";
             return false
