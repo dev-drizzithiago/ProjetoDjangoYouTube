@@ -35,20 +35,17 @@ import os.path
 
 from .models import DadosYoutube
 from django.conf import settings
+from django.core.files.base import ContentFile
 
+from os import path, listdir, remove
 
-from os import path, listdir, makedirs, remove, system
-
-from pathlib import Path
 from re import search
-from time import sleep
 
 from moviepy import AudioFileClip
 from pytubefix import YouTube
-from pytubefix.cli import on_progress
-from pytubefix import Playlist
 
-import sqlite3
+import requests
+
 import re
 
 
@@ -109,7 +106,6 @@ class YouTubeDownload:
 
     # Faz download do arquivo em MP3.
     def download_music(self, link: str):
-        print('Download Musics')
         download_yt = YouTube(link, on_progress_callback=on_progress_)
         stream = download_yt.streams.get_audio_only()
         stream.download(self.PATH_MIDIA_TEMP)
@@ -119,10 +115,18 @@ class YouTubeDownload:
 
     # Faz o download do arquivo em MP4
     def download_movie(self, link: str):
-        print('Download Movies')
-        download_yt = YouTube(link)
-        stream = download_yt.streams.get_highest_resolution()
-        stream.download(self.PATH_MIDIA_MOVIES)
+        try:
+            download_yt = YouTube(link)
+            miniatura = download_yt.thumbnail_url
+
+            response = requests.get(miniatura)
+
+            stream = download_yt.streams.get_highest_resolution()
+            stream.download(self.PATH_MIDIA_MOVIES)
+            return f'Download do vídeo realizado com sucesso'
+
+        except FileExistsError as error:
+            return f"Erro no download do vídeo: {error}"
 
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
