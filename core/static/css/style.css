@@ -179,7 +179,8 @@ img.img_miniatura {
 
 dialog.modalOpcMidia{
     width: 225px;
-    height: 100px;    
+    height: 100px;
+    overflow: hidden;
 }   
     .opcMidiadownload{        
         width: 200px;
