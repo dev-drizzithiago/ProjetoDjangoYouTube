@@ -173,9 +173,10 @@ function carregaPagina(response, img_btn) {
         btnAcessarLink.appendChild(img_btn_acessar);
 
         img_miniatura.src = element.miniatura;
-        pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link}`;
-        pDuracao.textContent = `Duração: ${converterDuracao(element.duracao)}`;
+        pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link} ${String.fromCodePoint(0x1F3B5)}`;
+        pDuracao.textContent = `${String.fromCodePoint(0x1F550)} ${converterDuracao(element.duracao)}`;
         btnDownloadLink.setAttribute('data-url', element.link_tube);
+        btnAcessarLink.setAttribute('data-url', element.link_tube);
     });
 }
 
@@ -398,18 +399,19 @@ document.addEventListener('click', (event) => {
     const id = elemento.id;
     const className = elemento.className;
 
-    console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
+    // Consele para debug
+    //console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
     
     if (tag === "img") {
         event.preventDefault();
 
         if (className === 'img_btn_add') {
-            console.log(className === 'img_btn_add')
             const link = document.getElementById('id_input_link').value;
             
             /** Valida se o campo input de link esta vazio */
             const validar_link = new ValidandoCampos(link);
-
+            
+            // Se o retorno da validação do link for false, termina o processo. 
             if (!validar_link.validar_campos()) {
                 return;
             }
