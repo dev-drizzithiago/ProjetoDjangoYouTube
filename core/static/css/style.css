@@ -180,27 +180,22 @@ img.img_miniatura {
 dialog.modalOpcMidia{
     display: block;
     width: 225px;
-    height: 200px;
-    align-items: center;
-    align-content: center;
+    height: 100px;    
 }   
     .opcMidiadownload{        
         width: 200px;
         height: 150px;
-
-        display: inline-flex;
-        align-items: center;
-        align-content: center;
+        display: block;
     }
     .opcRadioMidia{
         display: inline-flex;
-        align-items: center;
-        align-content: center;
+        margin-top: 15px;
+        margin-left: 60px;
     }
-    .continuarOpcMidia {
-        display: grid;
-        align-items: center;
-        align-content: center;
+    .btnContinuarOpcMidia {
+        display: block;
+        margin-top: 15px;
+        margin-left: 15px;
     }
     .btnOpcMidia {
         display: flex;
