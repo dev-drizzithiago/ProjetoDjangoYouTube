@@ -48,13 +48,18 @@
         </dialog>
 
         <dialog class="modalOpcMidia">
-            <div class="div opcMidiadownload">
-                <input type="radio" value="MP3">
-                <input type="radio" value="MP4">
-            </div>
-            <button class="btnOpcMidia">Continuar</button>
+            <div class="opcMidiadownload">
+                <div class="opcRadioMidia ">
+                    <label class="lblOpcao">MP3</label>
+                    <input type="radio" value="MP3" name="nOpcao">
+                    <label class="lblOpcao">MP4</label>
+                    <input type="radio" value="MP4" name="nOpcao">                    
+                </div>
+                <div class="continuarOpcMidia">
+                    <button class="btnOpcMidia">Continuar</button>
+                </div>
+            </div>            
         </dialog>
-    
     </main>
     
     <div id="id_video_teste" data-url="{{ midia_local }}"></div>
