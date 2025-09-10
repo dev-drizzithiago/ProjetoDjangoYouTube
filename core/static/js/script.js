@@ -50,8 +50,10 @@ class objYoutube  {
     }
 
     async downloadlinkYoutube() {
-        console.log('link', this.link)
-        
+        console.log('link', this.link);
+        const modal = elemento_index.modalOpcMidia;
+        modal.showModal();
+
         const data_to_django = {
             link: this.link,
             midia: '',
