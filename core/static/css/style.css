@@ -68,6 +68,7 @@ div#id_div_msg_alerta {
     display: block;    
     justify-content: center;
     text-align: center;
+    padding-bottom: 5px;
     width: 25%;
     height: 50px;
     margin-left: 250px;
@@ -83,7 +84,7 @@ div#id_div_msg_alerta {
 
 /* Estilo para os botões */
 button {
-    background-color: #afafb4; /* Verde */
+    background-color: #afafb4; 
     border: none;
     color: rgb(0, 0, 0);
     padding: 15px 32px;
@@ -130,7 +131,7 @@ button {
         height: 40px;
     }
     .btn_fechar_dialog:hover {        
-        background-color: rgb(255, 77, 77);
+        background-color: #ff4d4d;
     } 
     .divSpinner {
         display: none;
