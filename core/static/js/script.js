@@ -1,5 +1,6 @@
 import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
+/**************************************************************************************************************/
 class objYoutube  {
 
     constructor(link, opcMidia) {
@@ -84,6 +85,7 @@ class objYoutube  {
     }
 }
 
+/**************************************************************************************************************/
 function carregaPagina(response, img_btn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
@@ -177,6 +179,7 @@ function carregaPagina(response, img_btn) {
     });
 }
 
+/**************************************************************************************************************/
 function PlayerMidiasMp4(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
@@ -248,6 +251,30 @@ function PlayerMidiasMp4(response, imgBtn) {
     })    
 }
 
+async function requestPlayerMp4() {   
+    try {
+        const response = await fetch("/player_midias_mp4/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            credentials: 'include',
+            body: JSON.stringify({action: 'requesting'}),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            PlayerMidiasMp4(data.data_midia, data.lista_img);
+        } else {
+            console.error('Error fetching player media:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching player media:', error);
+    } 
+}
+
+/**************************************************************************************************************/
 function PlayerMidiasMp3(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
@@ -319,29 +346,6 @@ function PlayerMidiasMp3(response, imgBtn) {
     })  
 }
 
-async function requestPlayerMp4() {   
-    try {
-        const response = await fetch("/player_midias_mp4/", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken'),
-            },
-            credentials: 'include',
-            body: JSON.stringify({action: 'requesting'}),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            PlayerMidiasMp4(data.data_midia, data.lista_img);
-        } else {
-            console.error('Error fetching player media:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error fetching player media:', error);
-    } 
-}
-
 async function requestPlayerMp3() {
     try {
         const response = await fetch("/player_midias_mp3/", {
@@ -365,6 +369,7 @@ async function requestPlayerMp3() {
     } 
 }
 
+/**************************************************************************************************************/
 function requestLinksSalvos() {
 
     fetch("/links_salvos/", {
@@ -385,6 +390,7 @@ function requestLinksSalvos() {
     });
 }
 
+/**************************************************************************************************************/
 // Função para lidar com cliques em links
 document.addEventListener('click', (event) => {
     const elemento = event.target
@@ -402,7 +408,8 @@ document.addEventListener('click', (event) => {
             const link = document.getElementById('id_input_link').value;
             
             /** Valida se o campo input de link esta vazio */
-            const validar_link = new ValidandoCampos();
+            const validar_link = new ValidandoCampos(link);
+
             if (!validar_link.validar_campos()) {
                 return;
             }
@@ -463,30 +470,32 @@ document.addEventListener('click', (event) => {
     }    
 })
 
-
+/**************************************************************************************************************/
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
 btn_index.btn_img_add.addEventListener('mouseenter', (event) => {
     elemento_index.msg_alerta.innerText = 'Adicionar Link'
-})
-
-btn_index.btn_img_add.addEventListener('mouseout', (event) => {
-    elemento_index.msg_alerta.innerText = ''
 })
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
 btn_index.btn_img_view.addEventListener('mouseenter', (event) => {
     elemento_index.msg_alerta.innerText = 'Links Salvos'
 })
-
 btn_index.btn_img_view.addEventListener('mouseout', (event) => {
     elemento_index.msg_alerta.innerText = ''
 })
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
-btn_index.btn_img_midias.addEventListener('mouseenter', (event) => {
-    elemento_index.msg_alerta.innerText = 'Midias Salvas'
+btn_index.btnMidiasYoutubeMp4.addEventListener('mouseenter', (event) => {
+    elemento_index.msg_alerta.innerText = 'Midias MP4'
+})
+btn_index.btnMidiasYoutubeMp4.addEventListener('mouseout', (event) => {
+    elemento_index.msg_alerta.innerText = ''
 })
 
-btn_index.btn_img_midias.addEventListener('mouseout', (event) => {
+/** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
+btn_index.btnMidiasYoutubeMp3.addEventListener('mouseenter', (event) => {
+    elemento_index.msg_alerta.innerText = 'Midias MP3'
+})
+btn_index.btnMidiasYoutubeMp3.addEventListener('mouseout', (event) => {
     elemento_index.msg_alerta.innerText = ''
 })
