@@ -54,14 +54,10 @@ class objYoutube  {
         const modal = elemento_index.modalOpcMidia;
         modal.showModal();
 
-        const tipoMidia = document.querySelector('.radio')
-
         const data_to_django = {
             link: this.link,
-            midia: tipoMidia,
+            midia: opcaoMidia,
         }
-
-        console.log(data_to_django)
 
         try {
             const response = await fetch("/download_link/", {
@@ -334,6 +330,9 @@ document.addEventListener('click', (event) => {
                 console.warn('URL não encontrada no botão');
             }
         }
+    }
+    else if (tag === 'button') {
+        if (className === )
     }
 })
 
