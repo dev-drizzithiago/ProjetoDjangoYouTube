@@ -2,8 +2,9 @@ import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos
 
 class objYoutube  {
 
-    constructor(link) {
+    constructor(link, opcMidia) {
         this.link = link;
+        this.opcMidia = opcMidia
     }
 
     async add_link() {
@@ -50,22 +51,12 @@ class objYoutube  {
     }
 
     async downloadlinkYoutube() {
-        console.log('link', this.link);
-        const modal = elemento_index.modalOpcMidia;
-        modal.showModal();
-
-        const btnContinuar = document.querySelector('.btnOpcMidia')
-            btnContinuar.addEventListener('click', () => {
-            modal.close()
-            const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
-            console.log(opcaoMidia.value)
-        })
             
         const data_to_django = {
             link: this.link,
-            midia: 'opcaoMidia',
+            midia: this.opcMidia,
         }
-
+        console.log(data_to_django)
         try {
             const response = await fetch("/download_link/", {
             method: 'POST',
@@ -327,15 +318,25 @@ document.addEventListener('click', (event) => {
             requestPlayer();
         }
         else if (className === 'img_btn_down') {
-            const btn = elemento.closest('button');
-            const linkYoutube = btn?.getAttribute('data-url');
+            const modal = elemento_index.modalOpcMidia;
+            modal.showModal();
+
+            const btnContinuar = document.querySelector('.btnOpcMidia')
+                btnContinuar.addEventListener('click', () => {
+                modal.close()
+                const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
+
+                const btn = elemento.closest('button');
+                const linkYoutube = btn?.getAttribute('data-url');
+                
+                if (linkYoutube) {
+                    const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value);
+                    objDownLink.downloadlinkYoutube();            
+                } else {
+                    console.warn('URL não encontrada no botão');
+                }
+            })
             
-            if (linkYoutube) {
-                const objDownLink = new objYoutube(linkYoutube);
-                objDownLink.downloadlinkYoutube();            
-            } else {
-                console.warn('URL não encontrada no botão');
-            }
         }
     }    
 })
