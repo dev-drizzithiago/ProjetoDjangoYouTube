@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.conf import settings
 from .models import DadosYoutube
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.contrib.auth import authenticate
 
 from .app_youtube import YouTubeDownload
 
@@ -15,8 +16,6 @@ STATIC_IMG = os.path.join(settings.STATIC_URL, 'img')
 
 @ensure_csrf_cookie  # Garante que essa view seja acessada via GET antes de qualquer POST.
 def index(request):
-
-    query_links = DadosYoutube.objects.all()
 
     context = {
         'midia_local': ROOT_MIDIA_LOCAL_MUSIC.replace('\\', '/'),
@@ -28,6 +27,22 @@ def index(request):
 
     }
     return render(request, 'index.html', context)
+
+def login(request):
+
+    dados_json = json.loads(request.body)
+
+    USER = dados_json
+    PASS = dados_json
+
+    usuario = authenticate(username=USER, password=PASS)
+
+    if usuario is not None:
+        ...
+
+    return JsonResponse ({
+
+    })
 
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
