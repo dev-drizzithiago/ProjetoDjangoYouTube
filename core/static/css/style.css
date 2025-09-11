@@ -83,9 +83,9 @@ div#id_div_msg_alerta {
         display: flex;
         justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
         align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
-    } 
+    }
     .divSpinner {
-        display: flex;
+        display: none;
         justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
         align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
         width: 150px;
