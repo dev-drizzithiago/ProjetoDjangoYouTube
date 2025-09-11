@@ -479,16 +479,25 @@ document.addEventListener('click', (event) => {
             
         }
         else if (className === 'img_btn_acessar'){
-            const btn = elemento.closest('button');
-            /**
-             * optional chaining (operador de encadeamento opcional)
-             * O ?. verifica se btnnão é null nem undefined antes de tentar 
-             * acessar o método getAttribute. Se btn for null ou undefined, 
-             * o resultado será undefined em vez de lançar um erro.
-             * const linkYoutube = btn ? btn.getAttribute('data-url') : null; <= tambem funciona.
-             */
-            const linkYoutube = btn?.getAttribute('data-url') 
-
+            const resposta = window.confirm('Deseja acessar o Youtube?')
+            if (resposta) {
+                const btn = elemento.closest('button');
+                /**
+                 * optional chaining (operador de encadeamento opcional)
+                 * O ?. verifica se btnnão é null nem undefined antes de tentar 
+                 * acessar o método getAttribute. Se btn for null ou undefined, 
+                 * o resultado será undefined em vez de lançar um erro.
+                 * const linkYoutube = btn ? btn.getAttribute('data-url') : null; <= tambem funciona.
+                 */
+                const linkYoutube = btn?.getAttribute('data-url');
+                const url = document.createElement('a');
+                console.log(linkYoutube)
+                url.href = linkYoutube;
+                url.target = '_blank';
+                url.click();
+            } else {
+                console.warn('Operação cancelada pelo usuário')
+            }
         }
     }    
 })
