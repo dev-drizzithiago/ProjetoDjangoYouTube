@@ -52,7 +52,7 @@ div.div_input_link{
     /* Estilo para o input de link */
     input#id_input_link {
         display: block;
-        max-width: 96%;
+        max-width: 97%;
         height: 50px;
         width: 100%;
         padding: 10px 15px;
@@ -65,8 +65,9 @@ div.div_input_link{
 div#id_div_msg_alerta {
     border: var(--bord_teste);
     position: absolute;
-    display: block;    
-    justify-items: center; /* Centraliza o conteúdo ao meio da DIV*/
+    display: block;
+    justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
+    align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
     text-align: center;
     padding-bottom: 5px;
     max-width: 50%;
@@ -80,14 +81,31 @@ div#id_div_msg_alerta {
 }
     #id_msg_alerta {
         display: flex;
-        justify-content: center;
-        padding: 10px 15px;
+        justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
+        align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
     }
 
+div.links_container {
+    border: var(--bord_teste);
+    display: flex;    
+    justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
+    align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
+    max-width: 50%;
+    width: 100%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto; 
+    margin-top: 70px;
+    width: 90%;
+    padding: 10px;
+    box-shadow: var(--sombra);
+    background-color: var(--cor_background);
+    border-radius: var(--bord_radios_px);
+}
 
 /* Estilo para os botões */
 button {
-    background-color: #afafb4; 
+    background-color: #afafb4;
     border: none;
     color: rgb(0, 0, 0);
     padding: 15px 32px;
@@ -135,12 +153,15 @@ button {
     }
     .btn_fechar_dialog:hover {        
         background-color: #ff4d4d;
-    } 
+    }
+
     .divSpinner {
-        display: block;
+        display: flex;
+        justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
+        align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
         width: 150px;
         height: 50px;
-        margin-top: -50px;
+        margin-top: -15px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -148,19 +169,6 @@ button {
         width: 150px;
         margin-top: -50px;
     }
-        
-
-div.links_container {
-    display: block;
-    margin-left: auto; 
-    margin-right: auto;
-    margin-top: 70px;
-    width: 90%;
-    padding: 10px;
-    box-shadow: var(--sombra);
-    background-color: var(--cor_background);
-    border-radius: var(--bord_radios_px);
-}
 
 /* Estilo para a DIV que contém os links */
 div.content {
