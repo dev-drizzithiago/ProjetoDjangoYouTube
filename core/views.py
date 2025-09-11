@@ -29,7 +29,6 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-# @ensure_csrf_cookie
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
     link_registro = dados_json
@@ -50,7 +49,6 @@ def add_link_sistema(request):
             'mensagem': 'Por favor, insira um link válido.',
         })
 
-# @ensure_csrf_cookie
 def download_link(request):
     dados_json = json.loads(request.body)
 
@@ -87,7 +85,6 @@ def links_salvos(request):
         'local_imgs': lista_img,
     })
 
-# @ensure_csrf_cookie
 def player_midias_mp4(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
