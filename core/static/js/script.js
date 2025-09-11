@@ -116,19 +116,7 @@ function carregaPagina(response, img_btn) {
         btnDownloadLink.style.width = '60px';
         btnDownloadLink.style.height = '60px';
         btnDownloadLink.style.backgroundColor = '#c5c5c5ff';
-        btnDownloadLink.title = 'Salvar no seu Perfil'
-
-        const btnRemoverLink = document.createElement('button');
-        btnRemoverLink.classList.add('btnRemoveYoutube');
-        btnRemoverLink.style.width = '60px';
-        btnRemoverLink.style.height = '60px';
-        btnRemoverLink.style.backgroundColor = '#c5c5c5ff';
-
-        const btnAcessarLink = document.createElement('button');
-        btnAcessarLink.classList.add('btnAcessarYoutube');
-        btnAcessarLink.style.width = '60px';
-        btnAcessarLink.style.height = '60px';
-        btnAcessarLink.style.backgroundColor = '#c5c5c5ff';
+        btnDownloadLink.title = 'Salvar no seu Perfil';
 
         const img_btn_down = document.createElement('img');
         img_btn_down.classList.add('img_btn_down');
@@ -138,6 +126,12 @@ function carregaPagina(response, img_btn) {
         img_btn_down.style.marginLeft = '-27px'; 
         img_btn_down.style.marginTop = '-10px';
 
+        const btnRemoverLink = document.createElement('button');
+        btnRemoverLink.classList.add('btnRemoveYoutube');
+        btnRemoverLink.style.width = '60px';
+        btnRemoverLink.style.height = '60px';
+        btnRemoverLink.style.backgroundColor = '#c5c5c5ff';
+
         const img_btn_remove = document.createElement('img');
         img_btn_remove.classList.add('img_btn_remove');
         img_btn_remove.src = img_btn.remover;
@@ -145,6 +139,12 @@ function carregaPagina(response, img_btn) {
         img_btn_remove.style.height = '50px';
         img_btn_remove.style.marginLeft = '-27px'; 
         img_btn_remove.style.marginTop = '-10px';
+
+        const btnAcessarLink = document.createElement('button');
+        btnAcessarLink.classList.add('btnAcessarYoutube');
+        btnAcessarLink.style.width = '60px';
+        btnAcessarLink.style.height = '60px';
+        btnAcessarLink.style.backgroundColor = '#c5c5c5ff';
 
         const img_btn_acessar = document.createElement('img');
         img_btn_acessar.classList.add('img_btn_acessar');
@@ -400,7 +400,7 @@ document.addEventListener('click', (event) => {
     const className = elemento.className;
 
     // Consele para debug
-    //console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
+    console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
     
     if (tag === "img") {
         event.preventDefault();
@@ -477,6 +477,18 @@ document.addEventListener('click', (event) => {
                 }
             })
             
+        }
+        else if (className === 'img_btn_acessar'){
+            const btn = elemento.closest('button');
+            /**
+             * optional chaining (operador de encadeamento opcional)
+             * O ?. verifica se btnnão é null nem undefined antes de tentar 
+             * acessar o método getAttribute. Se btn for null ou undefined, 
+             * o resultado será undefined em vez de lançar um erro.
+             * const linkYoutube = btn ? btn.getAttribute('data-url') : null; <= tambem funciona.
+             */
+            const linkYoutube = btn?.getAttribute('data-url') 
+
         }
     }    
 })
