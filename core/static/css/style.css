@@ -83,6 +83,19 @@ div#id_div_msg_alerta {
         display: flex;
         justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
         align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
+    } 
+    .divSpinner {
+        display: flex;
+        justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
+        align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
+        width: 150px;
+        height: 25px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .imgSpinner {
+        width: 150px;
+        margin-top: -50px;
     }
 
 div.links_container {
@@ -101,7 +114,7 @@ div.links_container {
     box-shadow: var(--sombra);
     background-color: var(--cor_background);
     border-radius: var(--bord_radios_px);
-}
+} 
 
 /* Estilo para os botões */
 button {
@@ -153,22 +166,7 @@ button {
     }
     .btn_fechar_dialog:hover {        
         background-color: #ff4d4d;
-    }
-
-    .divSpinner {
-        display: flex;
-        justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
-        align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
-        width: 150px;
-        height: 50px;
-        margin-top: -15px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .imgSpinner {
-        width: 150px;
-        margin-top: -50px;
-    }
+    }    
 
 /* Estilo para a DIV que contém os links */
 div.content {
