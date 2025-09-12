@@ -33,12 +33,12 @@ Duration: 534 sec
 """
 import os.path
 
-from .models import DadosYoutube
+from .models import DadosYoutube, MoviesSalvasServidor
 from django.conf import settings
 from django.core.files.base import ContentFile
 
 from os import path, listdir, remove
-
+from pathlib import Path
 from re import search
 
 from moviepy import AudioFileClip
@@ -91,8 +91,9 @@ class YouTubeDownload:
             miniatura=youtube.thumbnail_url,
             link_tube=youtube.watch_url,
         )
+
         try:
-            resultado = dados_link.save()
+            dados_link.save()
             return f'Link salvo na base de dados com sucesso'
         except Exception as error:
             return f'Dados não foram salvos: {error}'
@@ -117,10 +118,25 @@ class YouTubeDownload:
     def download_movie(self, link: str):
         try:
             download_yt = YouTube(link)
-            miniatura = download_yt.thumbnail_url
 
+            nome_midia = f"{download_yt.title}"
+            ducarao_midia = f"{download_yt.length}"
+            miniatura = download_yt.thumbnail_url
+            path_midia = Path(self.PATH_MIDIA_MOVIES, nome_midia)
+
+            print(nome_midia)
             response = requests.get(miniatura)
 
+            videos = MoviesSalvasServidor(
+                nome_arquivo=nome_midia,
+                path_arquivo=path_midia,
+                ducarao_midia=ducarao_midia,
+            )
+            video.arquivo.save(
+                f'{miniatura}.png',
+                ContentFile(response),
+                save=True,
+            )
             stream = download_yt.streams.get_highest_resolution()
             stream.download(self.PATH_MIDIA_MOVIES)
             return f'Download do vídeo realizado com sucesso'
