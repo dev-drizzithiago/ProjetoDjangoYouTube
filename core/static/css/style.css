@@ -85,7 +85,7 @@ div#id_div_msg_alerta {
         align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
     }
     .divSpinner {
-        display: block;
+        display: none;
         justify-content: center; /* Centraliza o conteúdo ao meio da DIV Y*/
         align-items: center; /* Centraliza o conteúdo ao meio da DIV X*/
         width: 150px;
