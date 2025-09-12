@@ -116,13 +116,20 @@ class YouTubeDownload:
 
     # Faz o download do arquivo em MP4
     def download_movie(self, link: str):
+        """
+        ** Se você colocasse save=True, o Django salvaria o objeto video imediatamente após salvar o arquivo,
+        o que pode ser indesejado se o objeto ainda estiver incompleto ou se você quiser controlar melhor
+        o momento do save().
+        :param link: Recebe uma string contendo o link do vídeo
+        :return: Mensagem de sucesso quando finalizar o download do vídeo.
+        """
         try:
             download_yt = YouTube(link)
 
-            nome_midia = f"{download_yt.title}"
+            nome_midia = f"{download_yt.author}_{download_yt.title}"
             ducarao_midia = f"{download_yt.length}"
             miniatura = download_yt.thumbnail_url
-            path_midia = Path(self.PATH_MIDIA_MOVIES, nome_midia)
+            path_midia = str(Path(self.PATH_MIDIA_MOVIES, nome_midia))
 
             print(nome_midia)
             response = requests.get(miniatura)
@@ -130,15 +137,16 @@ class YouTubeDownload:
             videos = MoviesSalvasServidor(
                 nome_arquivo=nome_midia,
                 path_arquivo=path_midia,
-                ducarao_midia=ducarao_midia,
+                duracao_midia=ducarao_midia,
             )
-            video.arquivo.save(
+            videos.path_miniatura.save(
                 f'{miniatura}.png',
-                ContentFile(response),
-                save=True,
+                ContentFile(response.content),
+                save=False,  # **
             )
+
             stream = download_yt.streams.get_highest_resolution()
-            stream.download(self.PATH_MIDIA_MOVIES)
+            stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
             return f'Download do vídeo realizado com sucesso'
 
         except FileExistsError as error:
