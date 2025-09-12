@@ -464,21 +464,18 @@ document.addEventListener('click', (event) => {
 
                 elemento_index.divSpinner.style.display = "block";
 
-                let opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
+                const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
 
                 const btn = elemento.closest('button');
-                let linkYoutube = btn?.getAttribute('data-url');
+                const linkYoutube = btn?.getAttribute('data-url');
                 
                 if (linkYoutube) {
                     const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value);
                     objDownLink.downloadlinkYoutube();
-                    opcaoMidia = '';
-                    linkYoutube = '';
                 } else {
                     console.warn('URL não encontrada no botão');
                 }
-            })
-            
+            }, { once: true }) // once: true - Isso garante que o evento será executado apenas uma vez:
         }
         else if (className === 'img_btn_acessar'){
             const resposta = window.confirm('Deseja acessar o Youtube?')
@@ -500,7 +497,7 @@ document.addEventListener('click', (event) => {
                 console.warn('Operação cancelada pelo usuário')
             }
         }
-    }    
+    }
 })
 
 /**************************************************************************************************************/
