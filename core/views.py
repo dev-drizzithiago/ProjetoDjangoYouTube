@@ -69,6 +69,9 @@ def download_link(request):
     lnk_down = dados_json['link']
     midia_down = dados_json['midia']
 
+    print(type(dados_json), len(dados_json))
+    print(lnk_down)
+
     inicio_obj_yt_registro = YouTubeDownload()
 
     if midia_down == 'MP3':
@@ -77,7 +80,8 @@ def download_link(request):
         resultado_download = inicio_obj_yt_registro.download_movie(lnk_down)
 
     # Limpa a lista para receber novos valores.
-    del dados_json[:]
+    dados_json['link'] = 'Teste1'
+    dados_json['midia'] = 'Teste2'
 
     return JsonResponse({
         'mensagem': resultado_download,
