@@ -140,8 +140,9 @@ class YouTubeDownload:
             videos.path_miniatura.save(
                 f'{nome_midia}.png',
                 ContentFile(response.content),
-                save=False,  # **
+                save=False  # **
             )
+            videos.save()
 
             stream = download_yt.streams.get_highest_resolution()
             stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
