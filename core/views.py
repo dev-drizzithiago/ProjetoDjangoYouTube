@@ -24,7 +24,6 @@ def index(request):
         'img_btn_mp4': os.path.join(STATIC_IMG, 'mp4.png').replace('\\', '/'),
         'img_btn_mp3': os.path.join(STATIC_IMG, 'mp3.png').replace('\\', '/'),
         'img_spinner': os.path.join(STATIC_IMG, 'loading.gif').replace('\\', '/'),
-
     }
     return render(request, 'index.html', context)
 
@@ -70,13 +69,15 @@ def download_link(request):
     lnk_down = dados_json['link']
     midia_down = dados_json['midia']
 
-    print(lnk_down)
     inicio_obj_yt_registro = YouTubeDownload()
 
     if midia_down == 'MP3':
         resultado_download = inicio_obj_yt_registro.download_music(lnk_down)
     elif midia_down == 'MP4':
         resultado_download = inicio_obj_yt_registro.download_movie(lnk_down)
+
+    # Limpa a lista para receber novos valores.
+    del dados_json[:]
 
     return JsonResponse({
         'mensagem': resultado_download,
@@ -104,7 +105,6 @@ def player_midias_mp4(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
     dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
-
 
     for midia in dados_midia:
         lista_midias.append({
