@@ -126,12 +126,6 @@ class YouTubeDownload:
 
         try:
             download_yt = YouTube(link)
-            print(download_yt.caption_tracks)
-            print(download_yt.captions)
-            print(download_yt.channel_url)
-            print(download_yt.description)
-            print(download_yt.vid_info)
-
 
             nome_midia = f"{download_yt.author}_{download_yt.title}"
             ducarao_midia = f"{download_yt.length}"
@@ -147,7 +141,7 @@ class YouTubeDownload:
                 duracao_midia=ducarao_midia,
             )
             videos.path_miniatura.save(
-                f'{miniatura}.png',
+                f'{nome_midia}.png',
                 ContentFile(response.content),
                 save=False,  # **
             )
