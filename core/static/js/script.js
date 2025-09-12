@@ -491,7 +491,6 @@ document.addEventListener('click', (event) => {
                  */
                 const linkYoutube = btn?.getAttribute('data-url');
                 const url = document.createElement('a');
-                console.log(linkYoutube)
                 url.href = linkYoutube;
                 url.target = '_blank';
                 url.click();
