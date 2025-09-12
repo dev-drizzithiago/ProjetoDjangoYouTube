@@ -48,7 +48,6 @@ import requests
 
 import re
 
-
 def on_progress_(stream, chunk, bytes_remaining):
     total_size = stream.filesize
     bytes_download = total_size - bytes_remaining
@@ -123,8 +122,16 @@ class YouTubeDownload:
         :param link: Recebe uma string contendo o link do vídeo
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
+        print(len(r"""'C:\\Users\\thiago.pinheiro\\OneDrive - SEGETI CONSULTORIA CONTABIL E COMPLIANCE LTDA\\Documentos\\GitHub\\ProjetoDjangoYouTube\\media\\miniaturas\\https://youtube.com/watch?v=oC1SMWyt5e8'"""))
+
         try:
             download_yt = YouTube(link)
+            print(download_yt.caption_tracks)
+            print(download_yt.captions)
+            print(download_yt.channel_url)
+            print(download_yt.description)
+            print(download_yt.vid_info)
+
 
             nome_midia = f"{download_yt.author}_{download_yt.title}"
             ducarao_midia = f"{download_yt.length}"
