@@ -122,17 +122,15 @@ class YouTubeDownload:
         :param link: Recebe uma string contendo o link do vídeo
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
-        print(len(r"""'C:\\Users\\thiago.pinheiro\\OneDrive - SEGETI CONSULTORIA CONTABIL E COMPLIANCE LTDA\\Documentos\\GitHub\\ProjetoDjangoYouTube\\media\\miniaturas\\https://youtube.com/watch?v=oC1SMWyt5e8'"""))
-
         try:
             download_yt = YouTube(link)
 
-            nome_midia = f"{download_yt.author}_{download_yt.title}"
+            nome_midia =  validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
             ducarao_midia = f"{download_yt.length}"
             miniatura = download_yt.thumbnail_url
             path_midia = str(Path(self.PATH_MIDIA_MOVIES, nome_midia))
 
-            print(nome_midia)
+            print('Nome mídia: ', nome_midia)
             response = requests.get(miniatura)
 
             videos = MoviesSalvasServidor(
