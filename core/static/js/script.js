@@ -464,14 +464,16 @@ document.addEventListener('click', (event) => {
 
                 elemento_index.divSpinner.style.display = "block";
 
-                const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
+                let opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
 
                 const btn = elemento.closest('button');
-                const linkYoutube = btn?.getAttribute('data-url');
+                let linkYoutube = btn?.getAttribute('data-url');
                 
                 if (linkYoutube) {
                     const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value);
-                    objDownLink.downloadlinkYoutube();            
+                    objDownLink.downloadlinkYoutube();
+                    opcaoMidia = '';
+                    linkYoutube = '';
                 } else {
                     console.warn('URL não encontrada no botão');
                 }
