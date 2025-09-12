@@ -130,7 +130,6 @@ class YouTubeDownload:
             miniatura = download_yt.thumbnail_url
             path_midia = str(Path(self.PATH_MIDIA_MOVIES, nome_midia))
 
-            print('Nome mídia: ', nome_midia)
             response = requests.get(miniatura)
 
             videos = MoviesSalvasServidor(
