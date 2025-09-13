@@ -115,7 +115,7 @@ class YouTubeDownload:
         self.mp4_to_mp3(autor_midia=download_yt.author)
 
     # Faz o download do arquivo em MP4
-    def download_movie(self, link: str):
+    def download_movie(self, id_dados):
         """
         ** Se você colocasse save=True, o Django salvaria o objeto video imediatamente após salvar o arquivo,
         o que pode ser indesejado se o objeto ainda estiver incompleto ou se você quiser controlar melhor
@@ -124,6 +124,11 @@ class YouTubeDownload:
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
         try:
+
+            query_validador_dados = DadosYoutube.objects.filter(id_dados=id_dados)
+            link = query_validador_dados.link_tube
+            id_dados = query_validador_dados.link_tube
+
             download_yt = YouTube(link)
 
             nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
@@ -132,26 +137,30 @@ class YouTubeDownload:
             path_midia = str(Path(self.PATH_MIDIA_MOVIES, nome_midia))
 
             query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=nome_midia)
-            id_movies = query_validador_midia.id_movies
 
-            response = requests.get(miniatura)
+            if query_validador_midia.exists():
+                return f'Midia já existe'
+            else:
 
-            video = MoviesSalvasServidor(
-                nome_arquivo=nome_midia,
-                path_arquivo=path_midia,
-                duracao_midia=ducarao_midia,
-                dados_youtube=id_movies,
-            )
-            video.path_miniatura.save(
-                f'{nome_midia}.png',
-                ContentFile(response.content),
-                save=False  # **
-            )
-            video.save()
 
-            stream = download_yt.streams.get_highest_resolution()
-            stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
-            return f'Download do vídeo realizado com sucesso'
+                response = requests.get(miniatura)
+
+                video = MoviesSalvasServidor(
+                    nome_arquivo=nome_midia,
+                    path_arquivo=path_midia,
+                    duracao_midia=ducarao_midia,
+                    dados_youtube_id=id_dados,
+                )
+                video.path_miniatura.save(
+                    f'{nome_midia}.png',
+                    ContentFile(response.content),
+                    save=False  # **
+                )
+                video.save()
+
+                stream = download_yt.streams.get_highest_resolution()
+                stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
+                return f'Download do vídeo realizado com sucesso'
 
         except FileExistsError as error:
             return f"Erro no download do vídeo: {error}"
