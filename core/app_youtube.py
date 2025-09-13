@@ -126,24 +126,28 @@ class YouTubeDownload:
         try:
             download_yt = YouTube(link)
 
-            nome_midia =  validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
+            nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
             ducarao_midia = f"{download_yt.length}"
             miniatura = download_yt.thumbnail_url
             path_midia = str(Path(self.PATH_MIDIA_MOVIES, nome_midia))
 
+            query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=nome_midia)
+            id_movies = query_validador_midia.id_movies
+
             response = requests.get(miniatura)
 
-            videos = MoviesSalvasServidor(
+            video = MoviesSalvasServidor(
                 nome_arquivo=nome_midia,
                 path_arquivo=path_midia,
                 duracao_midia=ducarao_midia,
+                dados_youtube=id_movies,
             )
-            videos.path_miniatura.save(
+            video.path_miniatura.save(
                 f'{nome_midia}.png',
                 ContentFile(response.content),
                 save=False  # **
             )
-            videos.save()
+            video.save()
 
             stream = download_yt.streams.get_highest_resolution()
             stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
