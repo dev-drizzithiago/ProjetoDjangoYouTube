@@ -77,6 +77,7 @@ class YouTubeDownload:
         self._duracao = None
         self._miniatura = None
         self._link_tube = None
+        self._usuario = None
 
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
