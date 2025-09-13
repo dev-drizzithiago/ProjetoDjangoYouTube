@@ -7,8 +7,13 @@ from django.db.models import CASCADE, PROTECT
 class Base(models.Model):
     data_criacao = models.DateField('data_criacao', auto_now_add=True)
 
+    # Não cria base_ptr_id, nem tabela Base
+    class Meta:
+        abstract = True
+
+
 class DadosYoutube(Base):
-    id_dados_yt = models.IntegerField(primary_key=True)
+    id_dados = models.AutoField(primary_key=True)
     autor_link = models.CharField(max_length=255)
     titulo_link = models.CharField(max_length=255)
     duracao = models.IntegerField()
