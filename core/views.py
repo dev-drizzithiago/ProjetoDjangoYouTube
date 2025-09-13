@@ -4,7 +4,7 @@ import os.path
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.conf import settings
-from .models import DadosYoutube
+from .models import DadosYoutube, MoviesSalvasServidor, MusicsSalvasServidor
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth import authenticate
 
@@ -101,7 +101,7 @@ def links_salvos(request):
 def player_midias_mp4(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
-    dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MOVIE)
+    dados_midia = MoviesSalvasServidor.objects.all().order_by('-id_movies')
 
     for midia in dados_midia:
         lista_midias.append({
@@ -124,7 +124,7 @@ def player_midias_mp4(request):
 def player_midias_mp3(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
-    dados_midia = os.listdir(ROOT_MIDIA_LOCAL_MUSIC)
+    dados_midia = MusicsSalvasServidor.objects.all().order_by('-id_music')
 
     for midia in dados_midia:
         lista_midias.append({
