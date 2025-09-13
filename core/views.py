@@ -90,7 +90,7 @@ def links_salvos(request):
     }
 
     # Faz a leitura dos dados que estão dentro do mysql
-    query_info_links = DadosYoutube.objects.all().values().order_by('-base_ptr_id')
+    query_info_links = DadosYoutube.objects.all().values().order_by('-id_dados')
 
     # Retorna o valor, em forma de json, do query para o javascript do modelo.
     return JsonResponse({
