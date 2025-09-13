@@ -1,3 +1,4 @@
+import { createElement } from 'react';
 import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
 /**************************************************************************************************************/
@@ -177,6 +178,10 @@ function carregaPagina(response, img_btn) {
         pDuracao.textContent = `${String.fromCodePoint(0x23F3)} ${converterDuracao(element.duracao)}`;
         btnDownloadLink.setAttribute('data-url', element.link_tube);
         btnAcessarLink.setAttribute('data-url', element.link_tube);
+
+        const div_id_elemento = document.createElement('div')
+        div_id_elemento.classList.add('divIdLinkYt')
+        div_id_elemento.setAttribute('data-url', element.id);
     });
 }
 
