@@ -19,7 +19,15 @@ class DadosYoutube(Base):
     link_tube = models.CharField(max_length=255)
 
 class MoviesSalvasServidor(Base):
-    id_dados_yt = models.IntegerField(primary_key=True)
+    id_movies = models.IntegerField(primary_key=True)
+    nome_arquivo = models.CharField(max_length=255, null=True)
+    path_arquivo = models.CharField(max_length=255, null=True)
+    duracao_midia = models.IntegerField()
+    path_miniatura = models.FileField(upload_to='miniaturas/', max_length=255)
+    dados_youtube = models.ForeignKey(DadosYoutube, on_delete=PROTECT)
+
+class MusicsSalvasServidor(Base):
+    id_music = models.IntegerField(primary_key=True)
     nome_arquivo = models.CharField(max_length=255, null=True)
     path_arquivo = models.CharField(max_length=255, null=True)
     duracao_midia = models.IntegerField()
