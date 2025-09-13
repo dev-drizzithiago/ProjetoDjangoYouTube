@@ -4,9 +4,6 @@ from django.db import models
 from django.conf import settings
 from django.db.models import CASCADE, PROTECT
 
-
-# Create your models here.
-
 class Base(models.Model):
     data_criacao = models.DateField('data_criacao', auto_now_add=True)
 
