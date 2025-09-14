@@ -33,7 +33,7 @@ Duration: 534 sec
 """
 import os.path
 
-from .models import DadosYoutube, MoviesSalvasServidor
+from .models import DadosYoutube, MoviesSalvasServidor, MusicsSalvasServidor
 from django.conf import settings
 from django.core.files.base import ContentFile
 
@@ -67,6 +67,7 @@ class YouTubeDownload:
     PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
     PATH_MIDIA_MOVIES_URL = os.path.join(settings.MEDIA_URL, 'movies')
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
+    PATH_MIDIA_MUSICS_URL = os.path.join(settings.MEDIA_URL, 'musics')
     PATH_MIDIA_TEMP = os.path.join(settings.MEDIA_ROOT, 'temp')
 
     def __init__(self):
@@ -107,10 +108,41 @@ class YouTubeDownload:
         """
 
     # Faz download do arquivo em MP3.
-    def download_music(self, link: str):
-        download_yt = YouTube(link, on_progress_callback=on_progress_)
+    def download_music(self, id_entrada: int):
+
+        query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
+        for item in query_validador_dados:
+            id_dados = item['id_dados']
+            link_tube = item['link_tube']
+
+        download_yt = YouTube(link_tube)
+
+        nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp3")
+        ducarao_midia = f"{download_yt.length}"
+        miniatura = download_yt.thumbnail_url
+        path_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
+
+        query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
+        if query_validador_midia.exists():
+            return f'Midia já existe'
+        else:
+            response = requests.get(miniatura)
+
+            musica = MusicsSalvasServidor(
+                nome_arquivo=nome_midia,
+                path_arquivo=path_midia,
+                duracao_midia=ducarao_midia,
+                dados_youtube_id=id_dados,
+            )
+            musica.path_miniatura.save(
+                f'{nome_midia.replace('.mp3', '')}.png',
+                ContentFile(response.content),
+                save=False  # **
+            )
+            musica.save()
+
         stream = download_yt.streams.get_audio_only()
-        stream.download(self.PATH_MIDIA_TEMP)
+        stream.download(output_path=self.PATH_MIDIA_TEMP, filename=validacao_nome_arquivo(nome_midia))
 
         # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
         self.mp4_to_mp3(autor_midia=download_yt.author)
@@ -167,7 +199,7 @@ class YouTubeDownload:
 
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
-    def mp4_to_mp3(self, autor_midia):
+    def mp4_to_mp3(self):
 
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
             if search('m4a', arquivo_m4a):
@@ -175,10 +207,9 @@ class YouTubeDownload:
 
                 # valida os nomes do arquivo, removendo os caracteres especiais, caso tenham.
                 nome_arquivo_m4a_validado = validacao_nome_arquivo(arquivo_m4a)
-                autor_validado = validacao_nome_arquivo(autor_midia)
 
                 mp3_file = path.join(
-                    self.PATH_MIDIA_MUSICS, f"{autor_validado}_{arquivo_m4a.replace('m4a', 'mp3')}"
+                    self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}"
                 )
 
                 """#### Processa o MP4 para MP3"""
