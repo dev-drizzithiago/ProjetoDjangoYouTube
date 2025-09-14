@@ -111,6 +111,12 @@ function carregaPagina(response, img_btn) {
 
         const img_miniatura = document.createElement('img'); // cria um elemento de imagem 
         img_miniatura.classList.add('img_miniatura');
+        img_miniatura.style.width = '290px';
+        img_miniatura.style.height = '180px';
+        img_miniatura.style.marginLeft = '0px'; 
+        img_miniatura.style.marginTop = '0px';
+        img_miniatura.style.display = 'flex';
+        img_miniatura.style.alignItems = 'center'
 
         const divBtn = document.createElement('div');
 
@@ -256,10 +262,12 @@ function PlayerMidiasMp4(response, imgBtn) {
         const img_miniatura = document.createElement('img');
         img_miniatura.className = 'class_img_miniatura';
         img_miniatura.src = `/media/${element.path_miniatura}`;
-        img_miniatura.style.width = '150px';
-        img_miniatura.style.height = '130px';
-        img_miniatura.style.marginLeft = '-27px'; 
-        img_miniatura.style.marginTop = '-10px';
+        img_miniatura.style.width = '290px';
+        img_miniatura.style.height = '180px';
+        img_miniatura.style.marginLeft = '0px'; 
+        img_miniatura.style.marginTop = '0px';
+        img_miniatura.style.display = 'flex';
+        img_miniatura.style.alignItems = 'center'
 
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
