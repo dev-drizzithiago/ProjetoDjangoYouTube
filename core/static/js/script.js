@@ -215,15 +215,19 @@ function PlayerMidiasMp4(response, imgBtn) {
         // Recebe o nome da mídia, onde ficará exposta para o usuário
         const midia = document.createElement('li');
         midia.classList.add('class_midia');
-        midia.textContent = element.nome_midia;
+        midia.textContent = element.nome_arquivo;
+
+        const duracao = document.createElement('li');
+        duracao.classList.add('class_duracao');
+        duracao.textContent = `${String.fromCodePoint(0x23F3)} - ${converterDuracao(element.duracao_midia)} min.`;
 
         // btn para abrir a midia em uma tag de videos
-        const divBtn = document.createElement('div');        
+        const divBtn = document.createElement('div');
         const btnPlayerMidia = document.createElement('button');
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
-        btnPlayerMidia.setAttribute('data-url', String(element.local_midia));
+        btnPlayerMidia.setAttribute('data-url', String(element.path_arquivo));
 
         // imagem para abrir a midia em uma tag de videos
         const img_btn_player = document.createElement('img');
@@ -239,7 +243,7 @@ function PlayerMidiasMp4(response, imgBtn) {
         btnDownloadMidia.style.width = '60px';
         btnDownloadMidia.style.height = '60px';
         btnDownloadMidia.style.backgroundColor = '#c5c5c5ff';
-        btnDownloadMidia.setAttribute('data-url', element.local_midia);
+        btnDownloadMidia.setAttribute('data-url', element.path_arquivo);
 
         const img_download_midia = document.createElement('img');
         img_download_midia.className = 'class_img_down_midia';
@@ -249,8 +253,17 @@ function PlayerMidiasMp4(response, imgBtn) {
         img_download_midia.style.marginLeft = '-27px'; 
         img_download_midia.style.marginTop = '-10px';
 
+        const img_miniatura = document.createElement('img');
+        img_miniatura.className = 'class_img_miniatura';
+        img_miniatura.src = `/media/${element.path_miniatura}`;
+        img_miniatura.style.width = '150px';
+        img_miniatura.style.height = '130px';
+        img_miniatura.style.marginLeft = '-27px'; 
+        img_miniatura.style.marginTop = '-10px';
+
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
+        articulador.appendChild(img_miniatura);
 
         articulador.appendChild(divBtn);
         divBtn.appendChild(btnPlayerMidia);
@@ -260,6 +273,7 @@ function PlayerMidiasMp4(response, imgBtn) {
 
         articulador.appendChild(lista);
         lista.appendChild(midia);
+        lista.appendChild(duracao)
     })    
 }
 
