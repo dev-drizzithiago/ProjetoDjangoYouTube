@@ -136,7 +136,7 @@ class YouTubeDownload:
             nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp4")
             ducarao_midia = f"{download_yt.length}"
             miniatura = download_yt.thumbnail_url
-            path_midia = str(Path(self.PATH_MIDIA_MOVIES_URL)).replace('\\', '/')
+            path_midia = str(Path(self.PATH_MIDIA_MOVIES_URL, nome_midia)).replace('\\', '/')
 
             query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=nome_midia)
 
