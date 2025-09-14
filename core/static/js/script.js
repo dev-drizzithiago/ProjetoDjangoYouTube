@@ -229,6 +229,15 @@ function PlayerMidiasMp4(response, imgBtn) {
 
         // btn para abrir a midia em uma tag de videos
         const divBtn = document.createElement('div');
+
+        const img_download_midia = document.createElement('img');
+        img_download_midia.className = 'class_img_down_midia';
+        img_download_midia.src = imgBtn.download;
+        img_download_midia.style.width = '50px';
+        img_download_midia.style.height = '50px';
+        img_download_midia.style.marginLeft = '-27px'; 
+        img_download_midia.style.marginTop = '-10px';
+        
         const btnPlayerMidia = document.createElement('button');
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
@@ -250,14 +259,6 @@ function PlayerMidiasMp4(response, imgBtn) {
         btnDownloadMidia.style.height = '60px';
         btnDownloadMidia.style.backgroundColor = '#c5c5c5ff';
         btnDownloadMidia.setAttribute('data-url', element.path_arquivo);
-
-        const img_download_midia = document.createElement('img');
-        img_download_midia.className = 'class_img_down_midia';
-        img_download_midia.src = imgBtn.download;
-        img_download_midia.style.width = '50px';
-        img_download_midia.style.height = '50px';
-        img_download_midia.style.marginLeft = '-27px'; 
-        img_download_midia.style.marginTop = '-10px';
 
         const img_miniatura = document.createElement('img');
         img_miniatura.className = 'class_img_miniatura';
