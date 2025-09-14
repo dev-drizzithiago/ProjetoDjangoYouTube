@@ -3,10 +3,10 @@ import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos
 /**************************************************************************************************************/
 class objYoutube  {
 
-    constructor(link, opcMidia, idLinkYoutube) {
+    constructor(link, opcMidia, idYoutube) {
         this.link = link;
         this.opcMidia = opcMidia;
-        this.idLink = idLinkYoutube;
+        this.idLink = idYoutube;
     }
 
     async add_link() {
@@ -92,9 +92,7 @@ function carregaPagina(response, img_btn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     }
-   console.log(response)
     response.forEach(element => {
-        console.log()
         const elementoDivResult = document.querySelector('.content'); 
         const lista = document.createElement('ul');
 
@@ -175,16 +173,19 @@ function carregaPagina(response, img_btn) {
         btnDownloadLink.appendChild(img_btn_down);
         btnRemoverLink.appendChild(img_btn_remove);
         btnAcessarLink.appendChild(img_btn_acessar);
-
+        
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link} ${String.fromCodePoint(0x1F3B5)}`;
         pDuracao.textContent = `${String.fromCodePoint(0x23F3)} ${converterDuracao(element.duracao)}`;
-        btnDownloadLink.setAttribute('data-url', element.link_tube);
-        btnAcessarLink.setAttribute('data-url', element.link_tube);
 
-        const btn_id_elemento = document.createElement('button')
-        btn_id_elemento.classList.add('divIdLinkYt')
-        btn_id_elemento.setAttribute('data-url', element.id_dados);
+        const dadosLink = {
+            'url': element.link_tube, 
+            'id': element.id_dados,
+        }
+        console.log(dadosLink)
+        btnDownloadLink.setAttribute('data-url', JSON.stringify(dadosLink));
+
+        btnAcessarLink.setAttribute('data-url', element.link_tube);
     });
 }
 
@@ -475,14 +476,13 @@ document.addEventListener('click', (event) => {
                 const opcaoMidia = document.querySelector('input[name="nOpcao"]:checked')
 
                 const btn = elemento.closest('button');
-                const linkYoutube = btn?.getAttribute('data-url');
-
-                const btnId = elemento.closest('button');
-                const idLinkYoutube = btnId?.getAttribute('data-url');
-                console.log(idLinkYoutube)
+                const AtributoLinksDownload = btn?.getAttribute('data-url');
+                const DadosLinkDownload = JSON.parse(AtributoLinksDownload)
+                const linkYoutube = DadosLinkDownload.url
+                const idYoutube = DadosLinkDownload.id
                 
                 if (linkYoutube) {
-                    const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value, idLinkYoutube);
+                    const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value, idYoutube);
                     objDownLink.downloadlinkYoutube();
                 } else {
                     console.warn('URL não encontrada no botão');
