@@ -53,7 +53,7 @@ class objYoutube  {
     }
 
     async downloadlinkYoutube() {
-        
+        elemento_index.msg_alerta.innerText = '';
         const data_to_django = {
             link: this.link,
             midia: this.opcMidia,
