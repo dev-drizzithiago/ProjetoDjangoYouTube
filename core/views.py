@@ -65,7 +65,6 @@ def add_link_sistema(request):
 
 def download_link(request):
     dados_json = json.loads(request.body)
-    print(dados_json)
     id_dados = dados_json['id_dados']
     midia_down = dados_json['midia']
 
