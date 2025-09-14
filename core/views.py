@@ -65,16 +65,16 @@ def add_link_sistema(request):
 
 def download_link(request):
     dados_json = json.loads(request.body)
-
-    lnk_down = dados_json['link']
+    print(dados_json)
+    id_dados = dados_json['id_dados']
     midia_down = dados_json['midia']
 
     inicio_obj_yt_registro = YouTubeDownload()
 
     if midia_down == 'MP3':
-        resultado_download = inicio_obj_yt_registro.download_music(lnk_down)
+        resultado_download = inicio_obj_yt_registro.download_music(id_dados)
     elif midia_down == 'MP4':
-        resultado_download = inicio_obj_yt_registro.download_movie(lnk_down)
+        resultado_download = inicio_obj_yt_registro.download_movie(id_dados)
 
     return JsonResponse({
         'mensagem': resultado_download,
