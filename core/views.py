@@ -101,13 +101,12 @@ def links_salvos(request):
 def player_midias_mp4(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
-    dados_midia = MoviesSalvasServidor.objects.all().order_by('-id_movies')
+    dados_midia = MoviesSalvasServidor.objects.all().order_by('-id_movies').values()
 
     for midia in dados_midia:
-        lista_midias.append({
-            'nome_midia': midia.replace('.mp4', ''),
-            'local_midia': os.path.join(settings.MEDIA_URL, 'movies', midia).replace('\\', '/'),
-        })
+        lista_midias.append(midia)
+
+    print(lista_midias)
 
     lista_img = {
         'botao_play': os.path.join(STATIC_IMG, 'botao-play.png').replace('\\', '/'),
