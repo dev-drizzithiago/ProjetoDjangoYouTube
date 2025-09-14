@@ -1,12 +1,12 @@
-import { createElement } from 'react';
 import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos, converterDuracao } from './utilitys.js';
 
 /**************************************************************************************************************/
 class objYoutube  {
 
-    constructor(link, opcMidia) {
+    constructor(link, opcMidia, idLinkYoutube) {
         this.link = link;
-        this.opcMidia = opcMidia
+        this.opcMidia = opcMidia;
+        this.idLink = idLinkYoutube;
     }
 
     async add_link() {
@@ -57,6 +57,7 @@ class objYoutube  {
         const data_to_django = {
             link: this.link,
             midia: this.opcMidia,
+            id_dados: this.idLink,
         }
         console.log(data_to_django)
         try {
@@ -91,7 +92,9 @@ function carregaPagina(response, img_btn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     }
+   console.log(response)
     response.forEach(element => {
+        console.log()
         const elementoDivResult = document.querySelector('.content'); 
         const lista = document.createElement('ul');
 
@@ -179,9 +182,9 @@ function carregaPagina(response, img_btn) {
         btnDownloadLink.setAttribute('data-url', element.link_tube);
         btnAcessarLink.setAttribute('data-url', element.link_tube);
 
-        const div_id_elemento = document.createElement('div')
-        div_id_elemento.classList.add('divIdLinkYt')
-        div_id_elemento.setAttribute('data-url', element.id);
+        const btn_id_elemento = document.createElement('button')
+        btn_id_elemento.classList.add('divIdLinkYt')
+        btn_id_elemento.setAttribute('data-url', element.id_dados);
     });
 }
 
@@ -473,9 +476,13 @@ document.addEventListener('click', (event) => {
 
                 const btn = elemento.closest('button');
                 const linkYoutube = btn?.getAttribute('data-url');
+
+                const btnId = elemento.closest('button');
+                const idLinkYoutube = btnId?.getAttribute('data-url');
+                console.log(idLinkYoutube)
                 
                 if (linkYoutube) {
-                    const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value);
+                    const objDownLink = new objYoutube(linkYoutube, opcaoMidia.value, idLinkYoutube);
                     objDownLink.downloadlinkYoutube();
                 } else {
                     console.warn('URL não encontrada no botão');
