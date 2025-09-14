@@ -115,7 +115,7 @@ class YouTubeDownload:
         self.mp4_to_mp3(autor_midia=download_yt.author)
 
     # Faz o download do arquivo em MP4
-    def download_movie(self, id_dados):
+    def download_movie(self, id_entrada: int):
         """
         ** Se você colocasse save=True, o Django salvaria o objeto video imediatamente após salvar o arquivo,
         o que pode ser indesejado se o objeto ainda estiver incompleto ou se você quiser controlar melhor
@@ -125,11 +125,11 @@ class YouTubeDownload:
         """
         try:
 
-            query_validador_dados = DadosYoutube.objects.filter(id_dados=id_dados)
-            link = query_validador_dados.link_tube
-            id_dados = query_validador_dados.link_tube
+            query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
+            for item in query_validador_dados:
+                print(item['id_dados'])
 
-            download_yt = YouTube(link)
+            download_yt = YouTube('link')
 
             nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
             ducarao_midia = f"{download_yt.length}"
@@ -141,8 +141,6 @@ class YouTubeDownload:
             if query_validador_midia.exists():
                 return f'Midia já existe'
             else:
-
-
                 response = requests.get(miniatura)
 
                 video = MoviesSalvasServidor(
