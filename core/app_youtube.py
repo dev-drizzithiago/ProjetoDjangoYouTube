@@ -120,16 +120,17 @@ class YouTubeDownload:
         ** Se você colocasse save=True, o Django salvaria o objeto video imediatamente após salvar o arquivo,
         o que pode ser indesejado se o objeto ainda estiver incompleto ou se você quiser controlar melhor
         o momento do save().
-        :param link: Recebe uma string contendo o link do vídeo
+        :param id_entrada: Recebe o id para ser feito uma query na base de dados
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
         try:
 
             query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
             for item in query_validador_dados:
-                print(item['id_dados'])
+                id_dados = item['id_dados']
+                link_tube = item['link_tube']
 
-            download_yt = YouTube('link')
+            download_yt = YouTube(link_tube)
 
             nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
             ducarao_midia = f"{download_yt.length}"
