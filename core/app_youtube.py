@@ -139,13 +139,18 @@ class YouTubeDownload:
                 ContentFile(response.content),
                 save=False  # **
             )
+
+        try:
+            stream = download_yt.streams.get_audio_only()
+            stream.download(output_path=self.PATH_MIDIA_TEMP, filename=validacao_nome_arquivo(nome_midia))
+
+            # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
+            self.mp4_to_mp3(nome_midia)
+
+            # Se tudo estiver bem, salva no banco de dados.
             musica.save()
-
-        stream = download_yt.streams.get_audio_only()
-        stream.download(output_path=self.PATH_MIDIA_TEMP, filename=validacao_nome_arquivo(nome_midia))
-
-        # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
-        self.mp4_to_mp3(autor_midia=download_yt.author)
+        except Exception as error:
+            print(error)
 
     # Faz o download do arquivo em MP4
     def download_movie(self, id_entrada: int):
@@ -189,21 +194,24 @@ class YouTubeDownload:
                     save=False  # **
                 )
                 video.save()
-
-                stream = download_yt.streams.get_highest_resolution()
-                stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
-                return f'Download do vídeo realizado com sucesso'
-
+                try:
+                    stream = download_yt.streams.get_highest_resolution()
+                    stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
+                    return f'Download do vídeo realizado com sucesso'
+                except Exception as error:
+                    print('Não foi possível fazer o download do vídeo...')
+                    return 'Não foi possível fazer o download do vídeo...'
         except FileExistsError as error:
             return f"Erro no download do vídeo: {error}"
 
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
-    def mp4_to_mp3(self):
+    def mp4_to_mp3(self, nome_midia):
 
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
-            if search('m4a', arquivo_m4a):
+            if search(f'{nome_midia}.m4a', arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
+                print(m4a_file_abs)
 
                 # valida os nomes do arquivo, removendo os caracteres especiais, caso tenham.
                 nome_arquivo_m4a_validado = validacao_nome_arquivo(arquivo_m4a)
