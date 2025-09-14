@@ -106,8 +106,6 @@ def player_midias_mp4(request):
     for midia in dados_midia:
         lista_midias.append(midia)
 
-    print(lista_midias)
-
     lista_img = {
         'botao_play': os.path.join(STATIC_IMG, 'botao-play.png').replace('\\', '/'),
         'remover': os.path.join(STATIC_IMG, 'remover.png').replace('\\', '/'),
