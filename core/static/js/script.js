@@ -92,6 +92,7 @@ function carregaPagina(response, img_btn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     }
+
     response.forEach(element => {
         const elementoDivResult = document.querySelector('.content'); 
         const lista = document.createElement('ul');
@@ -193,7 +194,8 @@ function carregaPagina(response, img_btn) {
 function PlayerMidiasMp4(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
-    }
+    } 
+    console.log(response)
     response.forEach(element => {
         
         // busca o elemento <div> onde ficará todos os elementos que serão criados. 
@@ -275,6 +277,7 @@ async function requestPlayerMp4() {
 
         if (response.ok) {
             const data = await response.json();
+            console.log(data)
             PlayerMidiasMp4(data.data_midia, data.lista_img);
         } else {
             console.error('Error fetching player media:', response.statusText);
