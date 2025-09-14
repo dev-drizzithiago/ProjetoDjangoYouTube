@@ -65,6 +65,7 @@ def validacao_nome_arquivo(filename):
 class YouTubeDownload:
 
     PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
+    PATH_MIDIA_MOVIES_URL = os.path.join(settings.MEDIA_URL, 'movies')
     PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
     PATH_MIDIA_TEMP = os.path.join(settings.MEDIA_ROOT, 'temp')
 
@@ -132,10 +133,10 @@ class YouTubeDownload:
 
             download_yt = YouTube(link_tube)
 
-            nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}")
+            nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp4")
             ducarao_midia = f"{download_yt.length}"
             miniatura = download_yt.thumbnail_url
-            path_midia = str(Path(self.PATH_MIDIA_MOVIES, nome_midia))
+            path_midia = str(Path(self.PATH_MIDIA_MOVIES_URL)).replace('\\', '/')
 
             query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=nome_midia)
 
@@ -151,7 +152,7 @@ class YouTubeDownload:
                     dados_youtube_id=id_dados,
                 )
                 video.path_miniatura.save(
-                    f'{nome_midia}.png',
+                    f'{nome_midia.replace('.mp4', '')}.png',
                     ContentFile(response.content),
                     save=False  # **
                 )
