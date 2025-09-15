@@ -120,13 +120,10 @@ def player_midias_mp4(request):
 def player_midias_mp3(request):
     lista_midias = list()
     dados_json = json.loads(request.body)
-    dados_midia = MusicsSalvasServidor.objects.all().order_by('-id_music')
+    dados_midia = MusicsSalvasServidor.objects.all().order_by('-id_music').values()
 
     for midia in dados_midia:
-        lista_midias.append({
-            'nome_midia': str(midia).replace('.mp3', ''),
-            'local_midia': os.path.join(settings.MEDIA_URL, 'musics', midia).replace('\\', '/'),
-        })
+        lista_midias.append(midia)
 
     lista_img = {
         'botao_play': os.path.join(STATIC_IMG, 'botao-play.png').replace('\\', '/'),
