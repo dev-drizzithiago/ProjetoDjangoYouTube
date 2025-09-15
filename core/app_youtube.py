@@ -120,8 +120,9 @@ class YouTubeDownload:
         nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp3")
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
-        path_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
+        path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
         nome_m4a_to_mp3 = str(nome_midia).replace('.mp3', 'm4a')
+        nome_miniatura_png = f'{nome_midia.replace('.mp3', '_mp3')}.png',
 
         query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
         if query_validador_midia.exists():
@@ -131,12 +132,12 @@ class YouTubeDownload:
 
             musica = MusicsSalvasServidor(
                 nome_arquivo=nome_midia,
-                path_arquivo=path_midia,
+                path_arquivo=path_url_midia,
                 duracao_midia=ducarao_midia,
                 dados_youtube_id=id_dados,
             )
             musica.path_miniatura.save(
-                f'{nome_midia.replace('.mp3', '_mp3')}.png',
+                nome_miniatura_png,
                 ContentFile(response.content),
                 save=False  # **
             )
