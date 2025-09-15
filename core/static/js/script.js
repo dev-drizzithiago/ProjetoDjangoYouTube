@@ -317,7 +317,7 @@ function PlayerMidiasMp3(response, imgBtn) {
     }
     response.forEach(element => {
         
-        // busca o elemento <div> onde ficará todos os elementos que serão criados. 
+         // busca o elemento <div> onde ficará todos os elementos que serão criados. 
         const elementoDivResult = document.querySelector('.content');
 
         // Cria uma tag <article>
@@ -334,15 +334,28 @@ function PlayerMidiasMp3(response, imgBtn) {
         // Recebe o nome da mídia, onde ficará exposta para o usuário
         const midia = document.createElement('li');
         midia.classList.add('class_midia');
-        midia.textContent = element.nome_midia;
+        midia.textContent = element.nome_arquivo;
+
+        const duracao = document.createElement('li');
+        duracao.classList.add('class_duracao');
+        duracao.textContent = `${String.fromCodePoint(0x23F3)} - ${converterDuracao(element.duracao_midia)} min.`;
 
         // btn para abrir a midia em uma tag de videos
-        const divBtn = document.createElement('div');        
+        const divBtn = document.createElement('div');
+
+        const img_download_midia = document.createElement('img');
+        img_download_midia.className = 'class_img_down_midia';
+        img_download_midia.src = imgBtn.download;
+        img_download_midia.style.width = '50px';
+        img_download_midia.style.height = '50px';
+        img_download_midia.style.marginLeft = '-27px'; 
+        img_download_midia.style.marginTop = '-10px';
+        
         const btnPlayerMidia = document.createElement('button');
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
-        btnPlayerMidia.setAttribute('data-url', String(element.local_midia));
+        btnPlayerMidia.setAttribute('data-url', String(element.path_arquivo));
 
         // imagem para abrir a midia em uma tag de videos
         const img_btn_player = document.createElement('img');
@@ -352,24 +365,26 @@ function PlayerMidiasMp3(response, imgBtn) {
         img_btn_player.style.height = '50px';
         img_btn_player.style.marginLeft = '-27px'; 
         img_btn_player.style.marginTop = '-10px';
-
         
         const btnDownloadMidia = document.createElement('button');
         btnDownloadMidia.style.width = '60px';
         btnDownloadMidia.style.height = '60px';
         btnDownloadMidia.style.backgroundColor = '#c5c5c5ff';
-        btnDownloadMidia.setAttribute('data-url', element.local_midia);
+        btnDownloadMidia.setAttribute('data-url', element.path_arquivo);
 
-        const img_download_midia = document.createElement('img');
-        img_download_midia.className = 'class_img_down_midia';
-        img_download_midia.src = imgBtn.download;
-        img_download_midia.style.width = '50px';
-        img_download_midia.style.height = '50px';
-        img_download_midia.style.marginLeft = '-27px'; 
-        img_download_midia.style.marginTop = '-10px';
+        const img_miniatura = document.createElement('img');
+        img_miniatura.className = 'class_img_miniatura';
+        img_miniatura.src = `/media/${element.path_miniatura}`;
+        img_miniatura.style.width = '290px';
+        img_miniatura.style.height = '180px';
+        img_miniatura.style.marginLeft = '0px'; 
+        img_miniatura.style.marginTop = '0px';
+        img_miniatura.style.display = 'flex';
+        img_miniatura.style.alignItems = 'center'
 
         elementoDivResult.appendChild(articulador);
         articulador.appendChild(cabecalho);
+        articulador.appendChild(img_miniatura);
 
         articulador.appendChild(divBtn);
         divBtn.appendChild(btnPlayerMidia);
@@ -379,6 +394,7 @@ function PlayerMidiasMp3(response, imgBtn) {
 
         articulador.appendChild(lista);
         lista.appendChild(midia);
+        lista.appendChild(duracao)
     })  
 }
 
