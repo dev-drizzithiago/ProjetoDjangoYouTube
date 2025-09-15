@@ -34,21 +34,24 @@ class objYoutube  {
     }
 
     player_midia() {
+        
         const btnFechar = document.querySelector('.btn_fechar_dialog');
-        const dialog = document.querySelector('.dialog_play');
+        const dialog = elemento_index.modalPlayerVideo;
         const video = dialog.querySelector('.video_player source');
         const videoTag = dialog.querySelector('.video_player');
 
+        dialog.style.display = 'block';
+        
         video.src = encodeURI(this.link);
-        console.log(video.src)
         videoTag.load();
         dialog.showModal();
 
         // Evento para fechar o diálogo
         
         btnFechar.addEventListener('click', () => {
-            videoTag.pause();
-            dialog.close();
+            //videoTag.pause();
+            //dialog.close(); 
+            dialog.style.display = 'none'
         });
     }
 
@@ -415,7 +418,6 @@ async function requestPlayerMp3() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
                 elemento_index.msg_alerta.textContent = 'Pasta vázia. Faça o download...'
@@ -483,7 +485,6 @@ document.addEventListener('click', (event) => {
 
         // Evento responsável em abrir o player
         else if (className === 'class_img_btn_player') {
-
             const btn = elemento.closest('button');
             const url = btn?.getAttribute('data-url');
 
@@ -494,27 +495,32 @@ document.addEventListener('click', (event) => {
                 console.warn('URL não encontrada no botão');
             }
         }
+        // Evento para fazer o download das MIDIAS dentro do servidor
         else if (className === 'class_img_down_midia'){
             console.log('Download midia')
         }
+        // Eventa para abrir os links que estão salvos na base de dados.
         else if (className === 'btnLinksYoutube') {
             btn_index.divBtnLinksYoutube.style.backgroundColor = '#9838f1ff';
             btn_index.divBtnMidiasMp4.style.backgroundColor = "#afafb4";
             btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
             requestLinksSalvos();
         }
+        // Evento responsável em abrir as midias em MP4 salvas no servidor
         else if (className === 'btnMidiasYoutubeMp4') {
             btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
             btn_index.divBtnMidiasMp4.style.backgroundColor = '#9838f1ff';
             btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
             requestPlayerMp4();
         }
+        // Evento responsável em abrir as midias em MP3 salvas no servidor
         else if (className === 'btnMidiasYoutubeMp3') {
             btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
             btn_index.divBtnMidiasMp4.style.backgroundColor = '#afafb4';
             btn_index.divBtnMidiasMp3.style.backgroundColor = "#9838f1ff";
             requestPlayerMp3()
-        }
+        }  
+        // Evento para fazer o download dos LINKS salvos na base de dados
         else if (className === 'img_btn_down') {
             const modal = elemento_index.modalOpcMidia;
             modal.showModal();
@@ -541,6 +547,7 @@ document.addEventListener('click', (event) => {
                 }
             }, { once: true }) // once: true - Isso garante que o evento será executado apenas uma vez:
         }
+        // Evento para acessar o site do youtube, direciona para o link do videos
         else if (className === 'img_btn_acessar'){
             const resposta = window.confirm('Deseja acessar o Youtube?')
             if (resposta) {
