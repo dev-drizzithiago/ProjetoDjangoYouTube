@@ -135,17 +135,22 @@ class YouTubeDownload:
                 dados_youtube_id=id_dados,
             )
             musica.path_miniatura.save(
-                f'{nome_midia.replace('.mp3', '')}.png',
+                f'{nome_midia.replace('.mp3', '_mp3')}.png',
                 ContentFile(response.content),
                 save=False  # **
             )
 
         try:
             stream = download_yt.streams.get_audio_only()
-            stream.download(output_path=self.PATH_MIDIA_TEMP, filename=validacao_nome_arquivo(nome_midia))
+            stream.download(
+                output_path=self.PATH_MIDIA_TEMP,
+                filename=validacao_nome_arquivo(
+                    str(nome_midia).replace('.mp3', 'm4a')
+                )
+            )
 
             # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
-            self.mp4_to_mp3(nome_midia)
+            self.mp4_to_mp3(str(nome_midia))
 
             # Se tudo estiver bem, salva no banco de dados.
             musica.save()
@@ -189,7 +194,7 @@ class YouTubeDownload:
                     dados_youtube_id=id_dados,
                 )
                 video.path_miniatura.save(
-                    f'{nome_midia.replace('.mp4', '')}.png',
+                    f'{nome_midia.replace('.mp4', '_mp4')}.png',
                     ContentFile(response.content),
                     save=False  # **
                 )
@@ -212,9 +217,6 @@ class YouTubeDownload:
             if search(f'{nome_midia}.m4a', arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
                 print(m4a_file_abs)
-
-                # valida os nomes do arquivo, removendo os caracteres especiais, caso tenham.
-                nome_arquivo_m4a_validado = validacao_nome_arquivo(arquivo_m4a)
 
                 mp3_file = path.join(
                     self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}"
