@@ -60,7 +60,8 @@ def validacao_nome_arquivo(filename):
     :param filename: recebe o nome do arquivo, caso tenha erro, arquivo será corrigido.
     :return:
     """
-    return re.sub(r'[\/:*?"<>|()[]{}!@#$%¨&*`^]', '_', filename)
+    return re.sub(r'[\\/:*?"<>|()\[\]{}!@#$%¨&`^_]', '', filename)
+
 
 class YouTubeDownload:
 
@@ -125,38 +126,39 @@ class YouTubeDownload:
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
-        nome_m4a_to_mp3 = str(nome_midia).replace('.mp3', '.m4a')
-        nome_miniatura_png = f'{nome_midia.replace('.mp3', '_mp3')}.png'
+        nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
+        nome_miniatura_png = f'{nome_validado.replace('.mp3', '_mp3')}.png'
 
-        query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
-        if query_validador_midia.exists():
-            return f'Midia já existe'
-        else:
-            response = requests.get(miniatura)
-
-            musica = MusicsSalvasServidor(
-                nome_arquivo=nome_midia,
-                path_arquivo=path_url_midia,
-                duracao_midia=ducarao_midia,
-                dados_youtube_id=id_dados,
-            )
-            musica.path_miniatura.save(
-                nome_miniatura_png,
-                ContentFile(response.content),
-                save=False  # **
-            )
+        if int(len(os.path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
+            return 'Nome do arquivo muito extenso'
 
         try:
             stream = download_yt.streams.get_audio_only()
-            stream.download(
-                output_path=self.PATH_MIDIA_TEMP, filename=validacao_nome_arquivo(nome_m4a_to_mp3)
-            )
+            stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
 
             # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
             response_convert = self.mp4_to_mp3(nome_m4a_to_mp3)
 
             if response_convert:
                 # Se tudo estiver bem, salva no banco de dados.
+
+                query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
+                if query_validador_midia.exists():
+                    return f'Midia já existe'
+                else:
+                    response = requests.get(miniatura)
+
+                    musica = MusicsSalvasServidor(
+                        nome_arquivo=nome_validado,
+                        path_arquivo=path_url_midia,
+                        duracao_midia=ducarao_midia,
+                        dados_youtube_id=id_dados,
+                    )
+                    musica.path_miniatura.save(
+                        nome_miniatura_png,
+                        ContentFile(response.content),
+                        save=False  # **
+                    )
                 musica.save()
                 return f'Download concluido com sucesso.'
             else:
