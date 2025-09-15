@@ -1,4 +1,8 @@
 import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos, converterDuracao } from './utilitys.js';
+let listaAtivaMP4
+let listaAtivaMP3
+let listaAtivalnks
+
 
 /**************************************************************************************************************/
 class objYoutube  {
@@ -21,7 +25,7 @@ class objYoutube  {
                 body: JSON.stringify(this.link),
             })
             const data = await response.json();
-            elemento_index.msg_alerta.innerText = data.mensagem;
+            elemento_index.msg_alerta.innerText = data.mensagem;            
             console.warn(data.mensagem);
         } catch (error) {
             console.error('Error adding link:', error);
@@ -501,24 +505,72 @@ document.addEventListener('click', (event) => {
         }
         // Eventa para abrir os links que estão salvos na base de dados.
         else if (className === 'btnLinksYoutube') {
+            const elementoDivResult = document.querySelector('.content');
             btn_index.divBtnLinksYoutube.style.backgroundColor = '#9838f1ff';
             btn_index.divBtnMidiasMp4.style.backgroundColor = "#afafb4";
             btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
+
             requestLinksSalvos();
+
+            if (listaAtivalnks) {
+                listaAtivalnks = false;                 
+                elementoDivResult.style.display = 'none';
+                btn_index.divBtnLinksYoutube.style.backgroundColor = '#afafb4';
+                console.log(listaAtivalnks);
+            }
+            else {
+                elementoDivResult.style.display = 'grid';
+                listaAtivaMP4 = false;
+                listaAtivaMP3 = false;
+                listaAtivalnks = true;
+                console.log(listaAtivalnks);
+            }
         }
         // Evento responsável em abrir as midias em MP4 salvas no servidor
         else if (className === 'btnMidiasYoutubeMp4') {
+            const elementoDivResult = document.querySelector('.content');
             btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
             btn_index.divBtnMidiasMp4.style.backgroundColor = '#9838f1ff';
             btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
+            
             requestPlayerMp4();
+
+            if (listaAtivaMP4) {
+                listaAtivaMP4 = false;                 
+                elementoDivResult.style.display = 'none';
+                btn_index.divBtnMidiasMp4.style.backgroundColor = '#afafb4';
+                console.log(listaAtivaMP4);
+            }
+            else {
+                elementoDivResult.style.display = 'grid';
+                listaAtivaMP3 = false;
+                listaAtivalnks = false;
+                listaAtivaMP4 = true;
+                console.log(listaAtivaMP4);
+            }
         }
         // Evento responsável em abrir as midias em MP3 salvas no servidor
         else if (className === 'btnMidiasYoutubeMp3') {
+            const elementoDivResult = document.querySelector('.content');
             btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
             btn_index.divBtnMidiasMp4.style.backgroundColor = '#afafb4';
             btn_index.divBtnMidiasMp3.style.backgroundColor = "#9838f1ff";
+
             requestPlayerMp3()
+
+            if (listaAtivaMP3) {
+                listaAtivaMP3 = false;                 
+                elementoDivResult.style.display = 'none';
+                btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
+                console.log(listaAtivaMP3);
+            } 
+            else {
+                elementoDivResult.style.display = 'grid';
+                listaAtivaMP3 = true;
+                listaAtivalnks = false;
+                listaAtivaMP4 = false;                
+                console.log(listaAtivaMP3);
+            }
         }  
         // Evento para fazer o download dos LINKS salvos na base de dados
         else if (className === 'img_btn_down') {
