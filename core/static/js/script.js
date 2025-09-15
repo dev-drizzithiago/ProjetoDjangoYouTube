@@ -201,7 +201,6 @@ function PlayerMidiasMp4(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     } 
-    console.log(response)
     response.forEach(element => {
         
         // busca o elemento <div> onde ficará todos os elementos que serão criados. 
@@ -300,7 +299,12 @@ async function requestPlayerMp4() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
+            console.log(data.data_midia)
+            if (data.data_midia.length === 0){
+                console.warn('Não existe mídias para carregar');
+                elemento_index.msg_alerta.textContent = 'Não existe mídias para carregar. Faça o download...'
+                return
+            }
             PlayerMidiasMp4(data.data_midia, data.lista_img);
         } else {
             console.error('Error fetching player media:', response.statusText);
@@ -412,6 +416,12 @@ async function requestPlayerMp3() {
 
         if (response.ok) {
             const data = await response.json();
+            console.log(data.data_midia)
+            if (data.data_midia.length === 0){
+                console.warn('Não existe mídias para carregar');
+                elemento_index.msg_alerta.textContent = 'Pasta vázia. Faça o download...'
+                return
+            }
             PlayerMidiasMp3(data.data_midia, data.lista_img);
         } else {
             console.error('Error fetching player media:', response.statusText);
