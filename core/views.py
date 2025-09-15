@@ -124,7 +124,7 @@ def player_midias_mp3(request):
 
     for midia in dados_midia:
         lista_midias.append({
-            'nome_midia': midia.replace('.mp3', ''),
+            'nome_midia': str(midia).replace('.mp3', ''),
             'local_midia': os.path.join(settings.MEDIA_URL, 'musics', midia).replace('\\', '/'),
         })
 
