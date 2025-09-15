@@ -189,9 +189,8 @@ function carregaPagina(response, img_btn) {
             'url': element.link_tube, 
             'id': element.id_dados,
         }
-        console.log(dadosLink)
+        
         btnDownloadLink.setAttribute('data-url', JSON.stringify(dadosLink));
-
         btnAcessarLink.setAttribute('data-url', element.link_tube);
     });
 }
@@ -299,7 +298,6 @@ async function requestPlayerMp4() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data.data_midia)
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
                 elemento_index.msg_alerta.textContent = 'Não existe mídias para carregar. Faça o download...'
@@ -417,7 +415,6 @@ async function requestPlayerMp3() {
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data.data_midia)
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
                 elemento_index.msg_alerta.textContent = 'Pasta vázia. Faça o download...'
