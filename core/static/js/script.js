@@ -303,6 +303,7 @@ async function requestPlayerMp4() {
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
                 elemento_index.msg_alerta.textContent = 'Não existe mídias para carregar. Faça o download...'
+                elemento_index.msg_alerta.style.color = 'rgba(236, 52, 52, 1)';
                 return
             }
             PlayerMidiasMp4(data.data_midia, data.lista_img);
@@ -420,6 +421,7 @@ async function requestPlayerMp3() {
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
                 elemento_index.msg_alerta.textContent = 'Pasta vázia. Faça o download...'
+                elemento_index.msg_alerta.style.color = 'rgba(236, 52, 52, 1)';
                 return
             }
             PlayerMidiasMp3(data.data_midia, data.lista_img);
@@ -567,7 +569,13 @@ document.addEventListener('click', (event) => {
 /**************************************************************************************************************/
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
 btn_index.btn_img_add.addEventListener('mouseenter', (event) => {
-    elemento_index.msg_alerta.innerText = 'Adicionar Link'
+    elemento_index.msg_alerta.innerText = 'Adicionar Link';
+    elemento_index.msg_alerta.style.color = 'rgba(7, 177, 35, 1)';
+})
+
+btn_index.btn_img_add.addEventListener('mouseout', (event) => {
+    elemento_index.msg_alerta.innerText = '';
+    elemento_index.msg_alerta.style.color = 'rgba(0, 0, 0, 1)';
 })
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
@@ -576,6 +584,7 @@ btn_index.btn_img_view.addEventListener('mouseenter', (event) => {
 })
 btn_index.btn_img_view.addEventListener('mouseout', (event) => {
     elemento_index.msg_alerta.innerText = ''
+    elemento_index.msg_alerta.style.color = 'rgba(0, 0, 0, 1)';
 })
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
@@ -584,6 +593,7 @@ btn_index.btnMidiasYoutubeMp4.addEventListener('mouseenter', (event) => {
 })
 btn_index.btnMidiasYoutubeMp4.addEventListener('mouseout', (event) => {
     elemento_index.msg_alerta.innerText = ''
+    elemento_index.msg_alerta.style.color = 'rgba(0, 0, 0, 1)';
 })
 
 /** Adicionar o evento de quando o mouse entra no elemento. colocar uma msg no campo de alerta */
@@ -592,4 +602,5 @@ btn_index.btnMidiasYoutubeMp3.addEventListener('mouseenter', (event) => {
 })
 btn_index.btnMidiasYoutubeMp3.addEventListener('mouseout', (event) => {
     elemento_index.msg_alerta.innerText = ''
+    elemento_index.msg_alerta.style.color = 'rgba(0, 0, 0, 1)';
 })
