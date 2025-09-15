@@ -60,7 +60,7 @@ def validacao_nome_arquivo(filename):
     :param filename: recebe o nome do arquivo, caso tenha erro, arquivo será corrigido.
     :return:
     """
-    return re.sub(r'[\/:*?"<>|]', '-', filename)
+    return re.sub(r'[\/:*?"<>|()[]{}!@#$%¨&*`^]', '_', filename)
 
 class YouTubeDownload:
 
@@ -117,7 +117,11 @@ class YouTubeDownload:
 
         download_yt = YouTube(link_tube)
 
-        nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp3")
+        nome_midia = str(f"{download_yt.author}_{download_yt.title}.mp3").strip()
+        nome_validado = validacao_nome_arquivo(nome_midia)
+
+        print(nome_validado)
+
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
@@ -145,17 +149,19 @@ class YouTubeDownload:
         try:
             stream = download_yt.streams.get_audio_only()
             stream.download(
-                output_path=self.PATH_MIDIA_TEMP,filename=validacao_nome_arquivo(nome_m4a_to_mp3)
+                output_path=self.PATH_MIDIA_TEMP, filename=validacao_nome_arquivo(nome_m4a_to_mp3)
             )
 
             # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
             response_convert = self.mp4_to_mp3(nome_m4a_to_mp3)
 
-            print(response_convert)
-            if response:
+            if response_convert:
                 # Se tudo estiver bem, salva no banco de dados.
                 musica.save()
                 return f'Download concluido com sucesso.'
+            else:
+                print('Mídia não foi encontrada...')
+
             return f'Não foi possível converter a mídia para MP3...'
         except Exception as error:
             print(error)
@@ -215,6 +221,7 @@ class YouTubeDownload:
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
+        print(nome_midia)
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
             if search(f'{nome_midia}', arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
