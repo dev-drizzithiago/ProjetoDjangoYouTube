@@ -117,12 +117,14 @@ class YouTubeDownload:
             logging.error(f'Não foi possível registrar o link: [{link}]')
             return f'Dados não foram salvos: {error}'
 
-    def removendo_link_base_dados(self):
+    def removendo_link_base_dados(self, id_link: int):
         """
         Metódo responsável por remover o link da base de dados.
         :param link_remove: Recebe o valor do número do id do link.
         :return: Retorna a confirmação que o link foi deletado.
         """
+
+        query_remocao_link = DadosYoutube.objects.filter(id_link=id_link).values()
 
     # Faz download do arquivo em MP3.
     def download_music(self, id_entrada: int):
