@@ -31,7 +31,7 @@ Duration: 534 sec
 ---
 
 """
-import os.path
+import logging
 
 from .models import DadosYoutube, MoviesSalvasServidor, MusicsSalvasServidor
 from django.conf import settings
@@ -39,14 +39,20 @@ from django.core.files.base import ContentFile
 
 from os import path, listdir, remove
 from pathlib import Path
-from re import search
+from re import search, sub
+import requests
 
 from moviepy import AudioFileClip
 from pytubefix import YouTube
 
-import requests
-
-import re
+logging.basicConfig(
+    # level=logging.INFO, # Nível mínimo de log
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("log_events_views.log"), # Salva em arquivo
+        logging.StreamHandler(),  # Também mostra no console
+    ]
+)
 
 def on_progress_(stream, chunk, bytes_remaining):
     total_size = stream.filesize
@@ -60,8 +66,17 @@ def validacao_nome_arquivo(filename):
     :param filename: recebe o nome do arquivo, caso tenha erro, arquivo será corrigido.
     :return:
     """
-    return re.sub(r'[\\/:*?"<>|()\[\]{}!@#$%¨&`^_]', '', filename)
+    return sub(r'[\\/:*?"<>|()\[\]{}!@#$%¨&`^_]', '', filename)
 
+
+def data_hora_certa():
+    """
+    Função pode ser chamddo em qualquer lugar do projeto, não recebe nenhum valor, apenas retorna.
+    :return: Retorna a data com a "/" e no padrão pt-BR
+    """
+    valor_data = datetime.now()
+    data_certa = valor_data.strftime('%d/%m/%Y - %H:%m')
+    return data_certa
 
 class YouTubeDownload:
 
@@ -120,8 +135,6 @@ class YouTubeDownload:
 
         creater_nome_midia = str(f"{download_yt.author}_{download_yt.title}.mp3").strip()
         nome_validado = validacao_nome_arquivo(creater_nome_midia)
-
-        print(nome_validado)
 
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
@@ -223,17 +236,19 @@ class YouTubeDownload:
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
-        print(nome_midia)
+        logging.info(f'Conversão de mídia - {nome_midia} - {data_hora_certa()}')
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
             if search(f'{nome_midia}', arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
                 mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
+                
                 """#### Processa o MP4 para MP3"""
                 novo_mp3 = AudioFileClip(m4a_file_abs)
                 novo_mp3.write_audiofile(mp3_file)
                 remove(m4a_file_abs)
                 return True
             else:
+                logging.info(f'Conversão de mídia - {nome_midia} - {data_hora_certa()}: Falha')
                 return False
 
     # Valida se o link é valido.
