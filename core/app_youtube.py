@@ -121,8 +121,8 @@ class YouTubeDownload:
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
-        nome_m4a_to_mp3 = str(nome_midia).replace('.mp3', 'm4a')
-        nome_miniatura_png = f'{nome_midia.replace('.mp3', '_mp3')}.png',
+        nome_m4a_to_mp3 = str(nome_midia).replace('.mp3', '.m4a')
+        nome_miniatura_png = f'{nome_midia.replace('.mp3', '_mp3')}.png'
 
         query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
         if query_validador_midia.exists():
@@ -149,10 +149,14 @@ class YouTubeDownload:
             )
 
             # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
-            self.mp4_to_mp3(nome_m4a_to_mp3)
+            response_convert = self.mp4_to_mp3(nome_m4a_to_mp3)
 
-            # Se tudo estiver bem, salva no banco de dados.
-            musica.save()
+            print(response_convert)
+            if response:
+                # Se tudo estiver bem, salva no banco de dados.
+                musica.save()
+                return f'Download concluido com sucesso.'
+            return f'Não foi possível converter a mídia para MP3...'
         except Exception as error:
             print(error)
 
@@ -211,20 +215,17 @@ class YouTubeDownload:
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
-
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
-            if search(f'{nome_midia}.m4a', arquivo_m4a):
+            if search(f'{nome_midia}', arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
-                print(m4a_file_abs)
-
-                mp3_file = path.join(
-                    self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}"
-                )
-
+                mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
                 """#### Processa o MP4 para MP3"""
                 novo_mp3 = AudioFileClip(m4a_file_abs)
                 novo_mp3.write_audiofile(mp3_file)
                 remove(m4a_file_abs)
+                return True
+            else:
+                return False
 
     # Valida se o link é valido.
     def validar_link_youtube(self, link):
