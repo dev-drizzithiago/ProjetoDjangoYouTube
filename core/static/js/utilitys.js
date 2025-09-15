@@ -18,7 +18,8 @@ export const elemento_index = {
     div_result: document.querySelector('.content'),
     modalOpcMidia: document.querySelector('.modalOpcMidia'),
     divSpinner: document.querySelector('.divSpinner'),
-    imgSpiiner: document.querySelector('.imgSpinner')
+    imgSpiiner: document.querySelector('.imgSpinner'),
+    modalPlayerVideo: document.querySelector('.dialog_play'),
 }
 
 // Função para "autenticar" o django.
