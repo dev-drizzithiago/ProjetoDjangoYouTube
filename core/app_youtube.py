@@ -49,7 +49,7 @@ logging.basicConfig(
     # level=logging.INFO, # Nível mínimo de log
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("log_events_views.log"), # Salva em arquivo
+        logging.FileHandler("log_events_app_yt.log"), # Salva em arquivo
         logging.StreamHandler(),  # Também mostra no console
     ]
 )
@@ -80,11 +80,11 @@ def data_hora_certa():
 
 class YouTubeDownload:
 
-    PATH_MIDIA_MOVIES = os.path.join(settings.MEDIA_ROOT, 'movies')
-    PATH_MIDIA_MOVIES_URL = os.path.join(settings.MEDIA_URL, 'movies')
-    PATH_MIDIA_MUSICS = os.path.join(settings.MEDIA_ROOT, 'musics')
-    PATH_MIDIA_MUSICS_URL = os.path.join(settings.MEDIA_URL, 'musics')
-    PATH_MIDIA_TEMP = os.path.join(settings.MEDIA_ROOT, 'temp')
+    PATH_MIDIA_MOVIES = path.join(settings.MEDIA_ROOT, 'movies')
+    PATH_MIDIA_MOVIES_URL = path.join(settings.MEDIA_URL, 'movies')
+    PATH_MIDIA_MUSICS = path.join(settings.MEDIA_ROOT, 'musics')
+    PATH_MIDIA_MUSICS_URL = path.join(settings.MEDIA_URL, 'musics')
+    PATH_MIDIA_TEMP = path.join(settings.MEDIA_ROOT, 'temp')
 
     def __init__(self):
         self.link = None
@@ -99,9 +99,9 @@ class YouTubeDownload:
 
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
+        logging.info(f'Registrando link [{link}] na base de dados')
 
         youtube = YouTube(link)
-
         dados_link = DadosYoutube(
             autor_link=youtube.author,
             titulo_link=youtube.title,
@@ -114,6 +114,7 @@ class YouTubeDownload:
             dados_link.save()
             return f'Link salvo na base de dados com sucesso'
         except Exception as error:
+            logging.error(f'Não foi possível registrar o link: [{link}]')
             return f'Dados não foram salvos: {error}'
 
     def removendo_link_base_dados(self):
@@ -125,7 +126,7 @@ class YouTubeDownload:
 
     # Faz download do arquivo em MP3.
     def download_music(self, id_entrada: int):
-
+        logging.info(f'Baixando mídia em MP3')
         query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
         for item in query_validador_dados:
             id_dados = item['id_dados']
@@ -141,8 +142,10 @@ class YouTubeDownload:
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
         nome_miniatura_png = f'{nome_validado.replace('.mp3', '_mp3')}.png'
+        print(nome_miniatura_png)
+        print(nome_validado)
 
-        if int(len(os.path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
+        if int(len(path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
             return 'Nome do arquivo muito extenso'
 
         try:
@@ -175,8 +178,10 @@ class YouTubeDownload:
                 musica.save()
                 return f'Download concluido com sucesso.'
             else:
+                logging.error(f'Mídia não foi encontrada: {nome_validado}')
                 print('Mídia não foi encontrada...')
 
+            logging.error(f'Não foi possível converter a mídia para MP3: {nome_validado}')
             return f'Não foi possível converter a mídia para MP3...'
         except Exception as error:
             print(error)
@@ -190,8 +195,8 @@ class YouTubeDownload:
         :param id_entrada: Recebe o id para ser feito uma query na base de dados
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
+        logging.info(f'Baixando mídia em MP4')
         try:
-
             query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
             for item in query_validador_dados:
                 id_dados = item['id_dados']
@@ -207,10 +212,10 @@ class YouTubeDownload:
             query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=nome_midia)
 
             if query_validador_midia.exists():
+                logging.warning(f"Midia já existe: {nome_midia}")
                 return f'Midia já existe'
             else:
                 response = requests.get(miniatura)
-
                 video = MoviesSalvasServidor(
                     nome_arquivo=nome_midia,
                     path_arquivo=path_midia,
@@ -236,19 +241,19 @@ class YouTubeDownload:
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
-        logging.info(f'Conversão de mídia - {nome_midia} - {data_hora_certa()}')
+        logging.info(f'Conversão de mídia - {nome_midia}')
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
             if search(f'{nome_midia}', arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
                 mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
-                
+
                 """#### Processa o MP4 para MP3"""
                 novo_mp3 = AudioFileClip(m4a_file_abs)
                 novo_mp3.write_audiofile(mp3_file)
                 remove(m4a_file_abs)
                 return True
             else:
-                logging.info(f'Conversão de mídia - {nome_midia} - {data_hora_certa()}: Falha')
+                logging.error(f'Conversão de mídia: {nome_midia}')
                 return False
 
     # Valida se o link é valido.
