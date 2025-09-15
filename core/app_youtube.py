@@ -118,14 +118,14 @@ class YouTubeDownload:
 
         download_yt = YouTube(link_tube)
 
-        nome_midia = str(f"{download_yt.author}_{download_yt.title}.mp3").strip()
-        nome_validado = validacao_nome_arquivo(nome_midia)
+        creater_nome_midia = str(f"{download_yt.author}_{download_yt.title}.mp3").strip()
+        nome_validado = validacao_nome_arquivo(creater_nome_midia)
 
         print(nome_validado)
 
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
-        path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
+        path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
         nome_miniatura_png = f'{nome_validado.replace('.mp3', '_mp3')}.png'
 
@@ -142,7 +142,7 @@ class YouTubeDownload:
             if response_convert:
                 # Se tudo estiver bem, salva no banco de dados.
 
-                query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
+                query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_validado)
                 if query_validador_midia.exists():
                     return f'Midia já existe'
                 else:
