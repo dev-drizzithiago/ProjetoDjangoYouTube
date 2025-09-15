@@ -121,6 +121,7 @@ class YouTubeDownload:
         ducarao_midia = f"{download_yt.length}"
         miniatura = download_yt.thumbnail_url
         path_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_midia)).replace('\\', '/')
+        nome_m4a_to_mp3 = str(nome_midia).replace('.mp3', 'm4a')
 
         query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_midia)
         if query_validador_midia.exists():
@@ -143,14 +144,11 @@ class YouTubeDownload:
         try:
             stream = download_yt.streams.get_audio_only()
             stream.download(
-                output_path=self.PATH_MIDIA_TEMP,
-                filename=validacao_nome_arquivo(
-                    str(nome_midia).replace('.mp3', 'm4a')
-                )
+                output_path=self.PATH_MIDIA_TEMP,filename=validacao_nome_arquivo(nome_m4a_to_mp3)
             )
 
             # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
-            self.mp4_to_mp3(str(nome_midia))
+            self.mp4_to_mp3(nome_m4a_to_mp3)
 
             # Se tudo estiver bem, salva no banco de dados.
             musica.save()
