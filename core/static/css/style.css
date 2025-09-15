@@ -192,11 +192,13 @@ div.content {
     background: darkgrey; /* Cor da parte que pode ser arrastada */
 }
 
+/* Janela do modal*/
 article.views {
     background: var(--cor_background); /* Fundo branco */
     padding: 20px; /* Preenchimento interno */
     box-shadow: var(--sombra); /* Sombra */
     border-radius: var(--bord_radios_px);
+    pointer-events: auto;
 }
 
 @media (min-width: 50px) {
