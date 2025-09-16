@@ -149,12 +149,9 @@ class YouTubeDownload:
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
         nome_miniatura_png = f'{nome_validado.replace('.mp3', '_mp3')}.png'
-        print(nome_miniatura_png)
-        print(nome_validado)
 
         if int(len(path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
             return 'Nome do arquivo muito extenso'
-
         try:
             stream = download_yt.streams.get_audio_only()
             stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
