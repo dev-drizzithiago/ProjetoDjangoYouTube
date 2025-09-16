@@ -31,16 +31,17 @@ Duration: 534 sec
 ---
 
 """
-import logging
 
 from .models import DadosYoutube, MoviesSalvasServidor, MusicsSalvasServidor
 from django.conf import settings
 from django.core.files.base import ContentFile
 
-from os import path, listdir, remove
+import requests
+import logging
 from pathlib import Path
 from re import search, sub
-import requests
+from datetime import datetime
+from os import path, listdir, remove
 
 from moviepy import AudioFileClip
 from pytubefix import YouTube
@@ -112,7 +113,7 @@ class YouTubeDownload:
 
         try:
             dados_link.save()
-            return f'Link salvo na base de dados com sucesso'
+            return 'Link salvo na base de dados com sucesso'
         except Exception as error:
             logging.error(f'Não foi possível registrar o link: [{link}]')
             return f'Dados não foram salvos: {error}'
@@ -127,13 +128,13 @@ class YouTubeDownload:
         query_remocao_link = DadosYoutube.objects.get(id_link=id_link)
         query_remocao_link.delete()
 
-        logging.warning(f'Link removido com sucesso')
-        return f'Link removido com sucesso'
+        logging.warning('Link removido com sucesso')
+        return 'Link removido com sucesso'
 
 
     # Faz download do arquivo em MP3.
     def download_music(self, id_entrada: int):
-        logging.info(f'Baixando mídia em MP3')
+        logging.info('Baixando mídia em MP3')
         query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
         for item in query_validador_dados:
             id_dados = item['id_dados']
@@ -164,7 +165,7 @@ class YouTubeDownload:
 
                 query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_validado)
                 if query_validador_midia.exists():
-                    return f'Midia já existe'
+                    return 'Midia já existe'
                 else:
                     response = requests.get(miniatura)
 
@@ -186,7 +187,7 @@ class YouTubeDownload:
                 print('Mídia não foi encontrada...')
 
             logging.error(f'Não foi possível converter a mídia para MP3: {nome_validado}')
-            return f'Não foi possível converter a mídia para MP3...'
+            return 'Não foi possível converter a mídia para MP3...'
         except Exception as error:
             print(error)
 
@@ -217,7 +218,7 @@ class YouTubeDownload:
 
             if query_validador_midia.exists():
                 logging.warning(f"Midia já existe: {nome_midia}")
-                return f'Midia já existe'
+                return 'Midia já existe'
             else:
                 response = requests.get(miniatura)
                 video = MoviesSalvasServidor(
@@ -227,7 +228,7 @@ class YouTubeDownload:
                     dados_youtube_id=id_dados,
                 )
                 video.path_miniatura.save(
-                    f'{nome_midia.replace('.mp4', '_mp4')}.png',
+                    f"{nome_midia.replace('.mp4', '_mp4')}.png",
                     ContentFile(response.content),
                     save=False  # **
                 )
@@ -235,7 +236,7 @@ class YouTubeDownload:
                 try:
                     stream = download_yt.streams.get_highest_resolution()
                     stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
-                    return f'Download do vídeo realizado com sucesso'
+                    return "Download do vídeo realizado com sucesso"
                 except Exception as error:
                     print('Não foi possível fazer o download do vídeo...')
                     return 'Não foi possível fazer o download do vídeo...'
@@ -245,9 +246,9 @@ class YouTubeDownload:
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
-        logging.info(f'Conversão de mídia - {nome_midia}')
+        logging.info(f"Conversão de mídia - {nome_midia}")
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
-            if search(f'{nome_midia}', arquivo_m4a):
+            if search(f"{nome_midia}", arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
                 mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
 
@@ -257,17 +258,17 @@ class YouTubeDownload:
                 remove(m4a_file_abs)
                 return True
             else:
-                logging.error(f'Conversão de mídia: {nome_midia}')
+                logging.error(f"Conversão de mídia: {nome_midia}")
                 return False
 
     # Valida se o link é valido.
     def validar_link_youtube(self, link):
 
         if 'https://' not in link[:9]:
-            link = f'https://{link}'
+            link = f"https://{link}"
 
         if 'www.' not in link[:13]:
-            link = f'{link[:8]}www.{link[8:]}'
+            link = f"{link[:8]}www.{link[8:]}"
 
         if link[:23] != 'https://www.youtube.com':
             return False
