@@ -21,13 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Quando for para produção desativar
-# SECRET_KEY = "django-insecure-0^2$av^#1@qmh*zhov!v9rp6@2g2t!ryy#&+%u-jfj=u8&5^!_"
+SECRET_KEY = "django-insecure-0^2$av^#1@qmh*zhov!v9rp6@2g2t!ryy#&+%u-jfj=u8&5^!_"
 
 # Quando for para produção ativar
-SECRET_KEY = "zhlXG{p4cd/8{JATwwi5N\mvOx*dd:Q0451E:4!>pL$.~.|gy,NoZ(N!ZnPw=Nig"
+# SECRET_KEY = "zhlXG{p4cd/8{JATwwi5N\mvOx*dd:Q0451E:4!>pL$.~.|gy,NoZ(N!ZnPw=Nig"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["192.168.15.250", '192.168.15.254', 'localhost']
 
