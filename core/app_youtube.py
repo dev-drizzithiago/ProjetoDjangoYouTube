@@ -148,7 +148,7 @@ class YouTubeDownload:
         miniatura = download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
-        nome_miniatura_png = f'{nome_validado.replace('.mp3', '_mp3')}.png'
+        nome_miniatura_png = f"{nome_validado.replace('.mp3', '_mp3')}.png"
 
         if int(len(path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
             return 'Nome do arquivo muito extenso'
