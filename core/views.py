@@ -40,7 +40,7 @@ def login(request):
         ...
 
     return JsonResponse ({
-
+        'mensagem': 'Login'
     })
 
 def add_link_sistema(request):
