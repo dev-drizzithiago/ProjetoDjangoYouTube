@@ -44,8 +44,6 @@ class objYoutube  {
         const dialog = document.querySelector('.dialog_play');
         const video = dialog.querySelector('.video_player source');
         const videoTag = dialog.querySelector('.video_player');
-
-        dialog.style.display = 'block';
         
         video.src = encodeURI(this.link);
         videoTag.load();
@@ -306,9 +304,8 @@ async function requestPlayerMp4() {
             const data = await response.json();
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
-                elemento_index.msg_alerta.textContent = 'Não existe mídias para carregar. Faça o download...'
-                elemento_index.msg_alerta.style.color = 'rgba(236, 52, 52, 1)';
-                return
+                elemento_index.msg_alerta.textContent = 'Não existe mídias para carregar. Faça o download caso já tenha links salvo...'
+                elemento_index.msg_alerta.style.color = 'rgba(236, 52, 52, 1)';                
             }
             PlayerMidiasMp4(data.data_midia, data.lista_img);
         } else {
@@ -324,6 +321,7 @@ function PlayerMidiasMp3(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     }
+    console.log(response)
     response.forEach(element => {
         
          // busca o elemento <div> onde ficará todos os elementos que serão criados. 
@@ -423,9 +421,8 @@ async function requestPlayerMp3() {
             const data = await response.json();
             if (data.data_midia.length === 0){
                 console.warn('Não existe mídias para carregar');
-                elemento_index.msg_alerta.textContent = 'Pasta vázia. Faça o download...'
+                elemento_index.msg_alerta.textContent = 'Não existe mídias para carregar. Faça o download caso já tenha links salvo...'
                 elemento_index.msg_alerta.style.color = 'rgba(236, 52, 52, 1)';
-                return
             }
             PlayerMidiasMp3(data.data_midia, data.lista_img);
         } else {
