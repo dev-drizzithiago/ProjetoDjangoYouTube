@@ -28,20 +28,25 @@ def index(request):
     return render(request, 'index.html', context)
 
 def login(request):
+    if request.method == 'POST':
+        dados_json = json.loads(request.body)
 
-    dados_json = json.loads(request.body)
+        USER = dados_json
+        PASS = dados_json
 
-    USER = dados_json
-    PASS = dados_json
+        usuario = authenticate(username=USER, password=PASS)
 
-    usuario = authenticate(username=USER, password=PASS)
+        if usuario is not None:
+            ...
 
-    if usuario is not None:
-        ...
-
-    return JsonResponse ({
-        'mensagem': 'Login'
-    })
+        return JsonResponse({
+            'mensagem': 'Login'
+        })
+    else:
+        context = {
+            'mensagem': 'Teste'
+        }
+        return render(request, 'login.html', context=context)
 
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
