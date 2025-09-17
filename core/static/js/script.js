@@ -1,4 +1,5 @@
 import { btn_index as btn, getCookie, elemento_index, btn_index, ValidandoCampos, converterDuracao } from './utilitys.js';
+
 let listaAtivaMP4
 let listaAtivaMP3
 let listaAtivalnks
@@ -40,7 +41,7 @@ class objYoutube  {
     player_midia() {
         
         const btnFechar = document.querySelector('.btn_fechar_dialog');
-        const dialog = elemento_index.modalPlayerVideo;
+        const dialog = document.querySelector('.dialog_play');
         const video = dialog.querySelector('.video_player source');
         const videoTag = dialog.querySelector('.video_player');
 
@@ -51,11 +52,9 @@ class objYoutube  {
         dialog.showModal();
 
         // Evento para fechar o diálogo
-        
         btnFechar.addEventListener('click', () => {
-            //videoTag.pause();
-            //dialog.close(); 
-            dialog.style.display = 'none'
+            videoTag.pause();
+            dialog.close();
         });
     }
 
