@@ -251,6 +251,7 @@ class YouTubeDownload:
     def mp4_to_mp3(self, nome_midia):
         logging.info(f"Conversão de mídia - {nome_midia}")
         for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
+            
             if search(f"{nome_midia}", arquivo_m4a):
                 m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
                 mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
@@ -261,7 +262,7 @@ class YouTubeDownload:
                 remove(m4a_file_abs)
                 return True
             else:
-                logging.error(f"Conversão de mídia: {nome_midia}")
+                logging.error(f"Erro na conversão da mídia para MP3: {nome_midia}")
                 return False
 
     # Valida se o link é valido.
