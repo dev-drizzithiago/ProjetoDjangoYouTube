@@ -8,26 +8,16 @@ from django.conf import settings
 from .models import DadosYoutube, MoviesSalvasServidor, MusicsSalvasServidor
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.contrib.auth import authenticate
-
 from .app_youtube import YouTubeDownload
-
-
-logging.basicConfig(
-    # level=logging.INFO, # Nível mínimo de log
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler("log_events_app_yt.log"), # Salva em arquivo
-        logging.StreamHandler(),  # Também mostra no console
-    ]
-)
 
 ROOT_MIDIA_LOCAL_MUSIC = os.path.join(settings.MEDIA_ROOT, 'musics')
 ROOT_MIDIA_LOCAL_MOVIE = os.path.join(settings.MEDIA_ROOT, 'movies')
 STATIC_IMG = os.path.join(settings.STATIC_URL, 'img')
 
+logger = logging.getLogger(__name__)
+
 @ensure_csrf_cookie  # Garante que essa view seja acessada via GET antes de qualquer POST.
 def index(request):
-    logging.info('Entrando na página inicial')
     context = {
         'midia_local': ROOT_MIDIA_LOCAL_MUSIC.replace('\\', '/'),
         'img_btn_add': os.path.join(STATIC_IMG, 'adicionar.png'),
@@ -69,12 +59,13 @@ def add_link_sistema(request):
     if resultado_processo_validacao:
         resultado_processo_add = inicio_obj_yt_registro.registrando_link_base_dados(link_registro)
 
-        print(resultado_processo_add)
+        logger.info(resultado_processo_add)
 
         return JsonResponse({
             'mensagem': resultado_processo_add,
         })
     else:
+        logging.warning('Inserido um link inválido...')
         return JsonResponse({
             'mensagem': 'Por favor, insira um link válido.',
         })
@@ -87,9 +78,13 @@ def download_link(request):
     inicio_obj_yt_registro = YouTubeDownload()
 
     if midia_down == 'MP3':
+        logger.info('Download link MP3')
         resultado_download = inicio_obj_yt_registro.download_music(id_dados)
     elif midia_down == 'MP4':
+        logger.info('Download link MP4')
         resultado_download = inicio_obj_yt_registro.download_movie(id_dados)
+
+    logging.info(resultado_download)
 
     return JsonResponse({
         'mensagem': resultado_download,
