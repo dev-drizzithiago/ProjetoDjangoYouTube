@@ -250,20 +250,24 @@ class YouTubeDownload:
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
         logging.info(f"Conversão de mídia - {nome_midia}")
-        for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
-            
-            if search(f"{nome_midia}", arquivo_m4a):
-                m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
-                mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
+        if len(self.PATH_MIDIA_TEMP) > 1:
+            logging.warning('Existe mais de uma mídia na pasta de temporários. Verifique com o desenvolvedor')
+            return 'Existe mais de uma mídia na pasta de temporários. Verifique com o desenvolvedor'
+        else:
+            logging.info('Analisando arquivo de mídia para conversão...')
+            for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
+                if search(f"{nome_midia}", arquivo_m4a):
+                    m4a_file_abs = path.join(self.PATH_MIDIA_TEMP, arquivo_m4a)
+                    mp3_file = path.join(self.PATH_MIDIA_MUSICS, f"{arquivo_m4a.replace('m4a', 'mp3')}")
 
-                """#### Processa o MP4 para MP3"""
-                novo_mp3 = AudioFileClip(m4a_file_abs)
-                novo_mp3.write_audiofile(mp3_file)
-                remove(m4a_file_abs)
-                return True
-            else:
-                logging.error(f"Erro na conversão da mídia para MP3: {nome_midia}")
-                return False
+                    """#### Processa o MP4 para MP3"""
+                    novo_mp3 = AudioFileClip(m4a_file_abs)
+                    novo_mp3.write_audiofile(mp3_file)
+                    remove(m4a_file_abs)
+                    return True
+                else:
+                    logging.error(f"Mídia não encontrada: {nome_midia}")
+                    return False
 
     # Valida se o link é valido.
     def validar_link_youtube(self, link):
