@@ -47,7 +47,7 @@ from moviepy import AudioFileClip
 from pytubefix import YouTube
 
 logging.basicConfig(
-    # level=logging.INFO, # Nível mínimo de log
+    level=logging.INFO, # Nível mínimo de log
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler("log_events_app_yt.log"), # Salva em arquivo
