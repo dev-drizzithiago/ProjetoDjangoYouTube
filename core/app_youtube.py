@@ -110,9 +110,9 @@ class YouTubeDownload:
             miniatura=youtube.thumbnail_url,
             link_tube=youtube.watch_url,
         )
-
         try:
             dados_link.save()
+            logging.info(f'Link [{link}] salvo na base de dados com sucesso')
             return 'Link salvo na base de dados com sucesso'
         except Exception as error:
             logging.error(f'Não foi possível registrar o link: [{link}]')
@@ -131,10 +131,10 @@ class YouTubeDownload:
         logging.warning('Link removido com sucesso')
         return 'Link removido com sucesso'
 
-
     # Faz download do arquivo em MP3.
     def download_music(self, id_entrada: int):
         logging.info('Baixando mídia em MP3')
+
         query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
         for item in query_validador_dados:
             id_dados = item['id_dados']
@@ -152,6 +152,7 @@ class YouTubeDownload:
         nome_miniatura_png = f"{nome_validado.replace('.mp3', '_mp3')}.png"
 
         if int(len(path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
+            logging.warning('Nome do arquivo muito extenso')
             return 'Nome do arquivo muito extenso'
         try:
             stream = download_yt.streams.get_audio_only()
@@ -162,9 +163,10 @@ class YouTubeDownload:
 
             if response_convert:
                 # Se tudo estiver bem, salva no banco de dados.
-
+                logging.info(f'Arquivo {nome_validado} convertido para MP3')
                 query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_validado)
                 if query_validador_midia.exists():
+                    logging.info(f'Midia {nome_validado} já existe')
                     return 'Midia já existe'
                 else:
                     response = requests.get(miniatura)
@@ -181,6 +183,7 @@ class YouTubeDownload:
                         save=False  # **
                     )
                 musica.save()
+                logging.info(f'Download da mídia {nome_validado} concluido com sucesso.')
                 return f'Download concluido com sucesso.'
             else:
                 logging.error(f'Mídia não foi encontrada: {nome_validado}')
