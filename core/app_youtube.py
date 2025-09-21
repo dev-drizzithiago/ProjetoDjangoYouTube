@@ -178,14 +178,14 @@ class YouTubeDownload:
                 return f'Erro no download da mídia "m4a": {error}'
 
             # Conversão só vai ocorre se o download da mídia der certo.
-            mp3_ok = self.mp4_to_mp3(self.nome_validado)
+            mp3_ok = self.mp4_to_mp3(nome_m4a_to_mp3)
 
             if mp3_ok:
 
                 # Faz o download da miniatura
                 response = requests.get(miniatura)
 
-                # Cria o obj para salvar as informações no banco de dados. 
+                # Cria o obj para salvar as informações no banco de dados.
                 musica = MusicsSalvasServidor(
                     nome_arquivo=self.nome_validado,
                     path_arquivo=path_url_midia,
@@ -200,6 +200,7 @@ class YouTubeDownload:
                     save=False  # **
                 )
                 musica.save()
+
                 logging.info(f'Download da mídia [{self.nome_validado}] concluido com sucesso.')
                 return f'Download da mídia [{self.nome_validado}] concluido com sucesso.'
             else:
@@ -264,7 +265,7 @@ class YouTubeDownload:
         logging.info(f"Conversão de mídia - {nome_midia}")
         if len(self.PATH_MIDIA_TEMP) > 1:
             logging.warning('Existe mais de uma mídia na pasta de temporários. Verifique com o desenvolvedor')
-            return 'Existe mais de uma mídia na pasta de temporários. Verifique com o desenvolvedor'
+            return False
         else:
             logging.info('Analisando arquivo de mídia para conversão...')
             for arquivo_m4a in listdir(self.PATH_MIDIA_TEMP):
