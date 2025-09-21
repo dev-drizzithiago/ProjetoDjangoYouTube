@@ -150,15 +150,15 @@ class YouTubeDownload:
             return
 
         self.creater_nome_midia = str(f"{self.download_yt.author}_{self.download_yt.title}.mp3").strip()
-        nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
+        self.nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
 
         ducarao_midia = f"{self.download_yt.length}"
         miniatura = self.download_yt.thumbnail_url
-        path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_validado)).replace('\\', '/')
-        nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
-        nome_miniatura_png = f"{nome_validado.replace('.mp3', '_mp3')}.png"
+        path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, self.nome_validado)).replace('\\', '/')
+        nome_m4a_to_mp3 = str(self.nome_validado).replace('.mp3', '.m4a')
+        nome_miniatura_png = f"{self.nome_validado.replace('.mp3', '_mp3')}.png"
 
-        if int(len(path.join(self.PATH_MIDIA_TEMP, nome_validado)) > 254):
+        if int(len(path.join(self.PATH_MIDIA_TEMP, self.nome_validado)) > 254):
             logging.warning('Nome do arquivo muito extenso')
             return 'Nome do arquivo muito extenso'
         try:
@@ -170,16 +170,16 @@ class YouTubeDownload:
 
             if response_convert:
                 # Se tudo estiver bem, salva no banco de dados.
-                logging.info(f'Arquivo {nome_validado} convertido para MP3')
-                query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=nome_validado)
+                logging.info(f'Arquivo {self.nome_validado} convertido para MP3')
+                query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=self.nome_validado)
                 if query_validador_midia.exists():
-                    logging.info(f'Midia {nome_validado} já existe')
+                    logging.info(f'Midia {self.nome_validado} já existe')
                     return 'Midia já existe'
                 else:
                     response = requests.get(miniatura)
 
                     musica = MusicsSalvasServidor(
-                        nome_arquivo=nome_validado,
+                        nome_arquivo=self.nome_validado,
                         path_arquivo=path_url_midia,
                         duracao_midia=ducarao_midia,
                         dados_youtube_id=id_dados,
@@ -190,10 +190,10 @@ class YouTubeDownload:
                         save=False  # **
                     )
                 musica.save()
-                logging.info(f'Download da mídia {nome_validado} concluido com sucesso.')
+                logging.info(f'Download da mídia [{self.nome_validado}] concluido com sucesso.')
                 return f'Download concluido com sucesso.'
             else:
-                logging.error(f'Mídia não foi encontrada: {nome_validado}')
+                logging.error(f'Mídia não foi encontrada: {self.nome_validado}')
                 print('Mídia não foi encontrada...')
 
             logging.error(f'Não foi possível converter a mídia para MP3: {nome_validado}')
