@@ -219,7 +219,7 @@ class YouTubeDownload:
         """
         logging.info(f'Baixando mídia em MP4')
 
-        # Busca o link na base de dados. 
+        # Busca o link na base de dados.
         query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
         for item in query_validador_dados:
             id_dados = item['id_dados']
@@ -269,7 +269,7 @@ class YouTubeDownload:
                 save=False  # **
             )
             video.save()
-            logging.info(f"Download do vídeo {} realizado com sucesso")
+            logging.info(f"Download do vídeo {self._nome_validado} realizado com sucesso")
             return "Download do vídeo realizado com sucesso"
 
 
