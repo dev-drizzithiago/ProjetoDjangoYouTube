@@ -99,6 +99,8 @@ class YouTubeDownload:
         self._link_tube = None
         self._usuario = None
 
+        self.download_yt = None
+
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
         logging.info(f'Registrando link [{link}] na base de dados')
@@ -135,18 +137,23 @@ class YouTubeDownload:
     def download_music(self, id_entrada: int):
         logging.info('Baixando mídia em MP3')
 
+        # Query para buscar o link para realizar o download em MP3
         query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
         for item in query_validador_dados:
             id_dados = item['id_dados']
             link_tube = item['link_tube']
 
-        download_yt = YouTube(link_tube)
+        try:
+            self.download_yt = YouTube(link_tube)
+        except Exception as error:
+            logging.error(f'Não foi possível criar o obj do YouTube: {error}')
+            return
 
-        creater_nome_midia = str(f"{download_yt.author}_{download_yt.title}.mp3").strip()
-        nome_validado = validacao_nome_arquivo(creater_nome_midia)
+        self.creater_nome_midia = str(f"{self.download_yt.author}_{self.download_yt.title}.mp3").strip()
+        nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
 
-        ducarao_midia = f"{download_yt.length}"
-        miniatura = download_yt.thumbnail_url
+        ducarao_midia = f"{self.download_yt.length}"
+        miniatura = self.download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(nome_validado).replace('.mp3', '.m4a')
         nome_miniatura_png = f"{nome_validado.replace('.mp3', '_mp3')}.png"
@@ -155,7 +162,7 @@ class YouTubeDownload:
             logging.warning('Nome do arquivo muito extenso')
             return 'Nome do arquivo muito extenso'
         try:
-            stream = download_yt.streams.get_audio_only()
+            stream = self.download_yt.streams.get_audio_only()
             stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
 
             # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
@@ -192,7 +199,7 @@ class YouTubeDownload:
             logging.error(f'Não foi possível converter a mídia para MP3: {nome_validado}')
             return 'Não foi possível converter a mídia para MP3...'
         except Exception as error:
-            print(error)
+            logging.error(f'Erro no downlaod do link para MP3: {error}')
 
     # Faz o download do arquivo em MP4
     def download_movie(self, id_entrada: int):
