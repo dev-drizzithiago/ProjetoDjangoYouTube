@@ -99,11 +99,12 @@ class YouTubeDownload:
         self._link_tube = None
         self._usuario = None
 
-        self.download_yt = None
+        self._download_yt = None
+        self._nome_validado = None
 
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
-        logging.info(f'Registrando link [{link}] na base de dados')
+        logging.info(f'Registrando link na base de dados')
         youtube = YouTube(link)
         dados_link = DadosYoutube(
             autor_link=youtube.author,
@@ -114,7 +115,7 @@ class YouTubeDownload:
         )
         try:
             dados_link.save()
-            logging.info(f'Link [{link}] salvo na base de dados com sucesso')
+            logging.info('Link salvo na base de dados com sucesso')
             return 'Link salvo na base de dados com sucesso'
         except Exception as error:
             logging.error(f'Não foi possível registrar o link: [{link}]')
@@ -144,22 +145,22 @@ class YouTubeDownload:
             link_tube = item['link_tube']
 
         try:
-            self.download_yt = YouTube(link_tube)
+            self._download_yt = YouTube(link_tube)
         except Exception as error:
-            logging.error(f'Não foi possível criar o obj do YouTube: {error}')
-            return
+            logging.error(f"Não foi possível criar o obj do YouTube: {error}")
+            return 'Não foi possível criar o obj do YouTube'
 
-        self.creater_nome_midia = str(f"{self.download_yt.author}_{self.download_yt.title}.mp3").strip()
+        self.creater_nome_midia = str(f"{self._download_yt.author}_{self._download_yt.title}.mp3").strip()
         self.nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
 
         # Formata os dados para o download da mídia
-        ducarao_midia = f"{self.download_yt.length}"
-        miniatura = self.download_yt.thumbnail_url
+        ducarao_midia = f"{self._download_yt.length}"
+        miniatura = self._download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, self.nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(self.nome_validado).replace('.mp3', '.m4a')
         nome_miniatura_png = f"{self.nome_validado.replace('.mp3', '_mp3')}.png"
 
-        # Valida se o nome do arquivo é muito extenso
+        # Valida se o nome do arquivo é muito extenso; nome é baseado do "C:/" até o último carectere.
         if int(len(path.join(self.PATH_MIDIA_TEMP, self.nome_validado)) > 254):
             logging.warning('Nome do arquivo muito extenso')
             return 'Nome do arquivo muito extenso'
@@ -167,15 +168,15 @@ class YouTubeDownload:
         # Verifica se já existe algum registro no banco de dados das mídias salvas.
         query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=self.nome_validado)
         if query_validador_midia.exists() and self.nome_validado:
-            logging.info(f'Midia [{self.nome_validado}] já existe, se a mídia não estiver abrindo, chame o dev.')
-            return f'Midia [{self.nome_validado}] já existe, se a mídia não estiver abrindo, chame o dev.'
+            logging.info(f"Midia [{self.nome_validado}] já existe, se a mídia não estiver abrindo, chame o dev.")
+            return f"Midia já existe."
         else:
             try:
-                stream = self.download_yt.streams.get_audio_only()
+                stream = self._download_yt.streams.get_audio_only()
                 stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
             except Exception as error:
-                logging.error(f'Erro no download da mídia "m4a": {error}')
-                return f'Erro no download da mídia "m4a": {error}'
+                logging.error(f"Erro no download da mídia 'm4a': {error}")
+                return f"Erro no download da mídia 'm4a': {error}"
 
             # Conversão só vai ocorre se o download da mídia der certo.
             mp3_ok = self.mp4_to_mp3(nome_m4a_to_mp3)
@@ -201,8 +202,8 @@ class YouTubeDownload:
                 )
                 musica.save()
 
-                logging.info(f'Download da mídia [{self.nome_validado}] concluido com sucesso.')
-                return f'Download da mídia concluido com sucesso.'
+                logging.info(f"Download da mídia [{self.nome_validado}] concluido com sucesso.")
+                return f"Download da mídia concluido com sucesso."
             else:
                 logging.error('Erro ao converter a midía m4a para MP3')
                 return 'Erro ao converter a midía m4a para MP3'
@@ -217,47 +218,60 @@ class YouTubeDownload:
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
         logging.info(f'Baixando mídia em MP4')
+
+        # Busca o link na base de dados. 
+        query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
+        for item in query_validador_dados:
+            id_dados = item['id_dados']
+            link_tube = item['link_tube']
+
+        # Cria a o obj do youtube.
         try:
-            query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
-            for item in query_validador_dados:
-                id_dados = item['id_dados']
-                link_tube = item['link_tube']
-
             download_yt = YouTube(link_tube)
+        except Exception as error:
+            logging.error(f"Erro ao criar o obj do youtube: {error}")
+            return f"Erro ao criar o obj do youtube."
 
-            nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp4")
-            ducarao_midia = f"{download_yt.length}"
-            miniatura = download_yt.thumbnail_url
-            path_midia = str(Path(self.PATH_MIDIA_MOVIES_URL, nome_midia)).replace('\\', '/')
+        creater_nome_midia = validacao_nome_arquivo(f"{download_yt.author}_{download_yt.title}.mp4")
+        self._nome_validado = validacao_nome_arquivo(creater_nome_midia)
+        ducarao_midia = f"{download_yt.length}"
+        miniatura = download_yt.thumbnail_url
+        path_midia = str(Path(self.PATH_MIDIA_MOVIES_URL, self._nome_validado)).replace('\\', '/')
 
-            query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=nome_midia)
+        query_validador_midia = MoviesSalvasServidor.objects.filter(nome_arquivo=self._nome_validado)
 
-            if query_validador_midia.exists():
-                logging.warning(f"Midia já existe: {nome_midia}")
-                return 'Midia já existe'
-            else:
-                response = requests.get(miniatura)
-                video = MoviesSalvasServidor(
-                    nome_arquivo=nome_midia,
-                    path_arquivo=path_midia,
-                    duracao_midia=ducarao_midia,
-                    dados_youtube_id=id_dados,
-                )
-                video.path_miniatura.save(
-                    f"{nome_midia.replace('.mp4', '_mp4')}.png",
-                    ContentFile(response.content),
-                    save=False  # **
-                )
-                video.save()
-                try:
-                    stream = download_yt.streams.get_highest_resolution()
-                    stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(nome_midia))
-                    return "Download do vídeo realizado com sucesso"
-                except Exception as error:
-                    print('Não foi possível fazer o download do vídeo...')
-                    return 'Não foi possível fazer o download do vídeo...'
-        except FileExistsError as error:
-            return f"Erro no download do vídeo: {error}"
+        if query_validador_midia.exists():
+            logging.warning(f"Midia já existe: {self._nome_validado}")
+            return 'Midia já existe'
+        else:
+            try:
+                stream = download_yt.streams.get_highest_resolution()
+                stream.download(output_path=self.PATH_MIDIA_MOVIES, filename=validacao_nome_arquivo(self._nome_validado))
+            except Exception as error:
+                logging.error(f"Erro ao fazer o download MP4: {error}")
+                return 'Não foi possível fazer o download do vídeo...'
+
+            # Prepara o obj para salvar as informações na base de dados.
+            video = MoviesSalvasServidor(
+                nome_arquivo=self._nome_validado,
+                path_arquivo=path_midia,
+                duracao_midia=ducarao_midia,
+                dados_youtube_id=id_dados,
+            )
+
+            # Faz o download da miniatura
+            response = requests.get(miniatura)
+
+            # Salva as informações da miniatura no banco de dados.
+            video.path_miniatura.save(
+                f"{self._nome_validado.replace('.mp4', '_mp4')}.png",
+                ContentFile(response.content),
+                save=False  # **
+            )
+            video.save()
+            logging.info(f"Download do vídeo {} realizado com sucesso")
+            return "Download do vídeo realizado com sucesso"
+
 
     # Processo para transformar o arquivo de mp4 em mp3
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
@@ -289,16 +303,22 @@ class YouTubeDownload:
 
     # Valida se o link é valido.
     def validar_link_youtube(self, link):
+        logging.info(f"Validando se link é YouTube")
 
+        # Caso o link não esteja com 'https://', o próprio programa vai adicionar
         if 'https://' not in link[:9]:
             link = f"https://{link}"
 
+        # Caso o link não possua o 'www.', eu também vou adicionar ao link.
         if 'www.' not in link[:13]:
             link = f"{link[:8]}www.{link[8:]}"
 
+        # Por fim valida se o link realmente é do youtube
         if link[:23] != 'https://www.youtube.com':
+            logging.error(f"Link não é valido: {link}")
             return False
         else:
+            logging.info(f"Link valido: {link}")
             return True
 
 
