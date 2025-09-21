@@ -28,10 +28,16 @@ class objYoutube  {
             const data = await response.json();
             elemento_index.msg_alerta.innerText = data.mensagem;            
             console.warn(data.mensagem);
+
+            // Chama a janela dos links
+            requestLinksSalvos()
+            btn_index.divBtnLinksYoutube.style.backgroundColor = '#9838f1ff';
+            btn_index.divBtnMidiasMp4.style.backgroundColor = "#afafb4";
+            btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
+            
         } catch (error) {
             console.error('Error adding link:', error);
         } finally {
-            requestLinksSalvos()
             elemento_index.link_entrada.value = '';
             setTimeout(()=>{
                 elemento_index.msg_alerta.innerText = '';
@@ -79,6 +85,24 @@ class objYoutube  {
         const data = await response.json();
         console.log(data)
         elemento_index.msg_alerta.innerText = data.mensagem;
+
+        if (this.opcMidia === 'MP4') {
+            btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
+            btn_index.divBtnMidiasMp4.style.backgroundColor = '#9838f1ff';
+            btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
+            listaAtivaMP3 = false;
+            listaAtivalnks = false;
+            listaAtivaMP4 = true;
+            requestPlayerMp4();
+        } else {
+            btn_index.divBtnLinksYoutube.style.backgroundColor = "#afafb4";
+            btn_index.divBtnMidiasMp4.style.backgroundColor = '#afafb4';
+            btn_index.divBtnMidiasMp3.style.backgroundColor = "#9838f1ff";
+            listaAtivaMP3 = true;
+            listaAtivalnks = false;
+            listaAtivaMP4 = false; 
+            requestPlayerMp3()
+        }
 
         } catch (error) {
             console.error('Error downloading link:', error);
