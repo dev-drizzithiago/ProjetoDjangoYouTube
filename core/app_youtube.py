@@ -202,7 +202,7 @@ class YouTubeDownload:
                 musica.save()
 
                 logging.info(f'Download da mídia [{self.nome_validado}] concluido com sucesso.')
-                return f'Download da mídia [{self.nome_validado}] concluido com sucesso.'
+                return f'Download da mídia concluido com sucesso.'
             else:
                 logging.error('Erro ao converter a midía m4a para MP3')
                 return 'Erro ao converter a midía m4a para MP3'
@@ -263,8 +263,13 @@ class YouTubeDownload:
     # Esse problema não tem nenhum não pode ser chamado pelo usuário, apenas para uso internet do app
     def mp4_to_mp3(self, nome_midia):
         logging.info(f"Conversão de mídia - {nome_midia}")
-        if len(self.PATH_MIDIA_TEMP) > 1:
-            logging.warning('Existe mais de uma mídia na pasta de temporários. Verifique com o desenvolvedor')
+
+        # Busca a quantidade de midias que estão dentro da pasta temp
+        qtd_midias = listdir(self.PATH_MIDIA_TEMP)
+
+        if len(qtd_midias) > 1:
+            logging.warning('Existe mais de uma mídia na pasta de temporários. '
+                            'Verifique com o desenvolvedor: ', len(qtd_midias))
             return False
         else:
             logging.info('Analisando arquivo de mídia para conversão...')
