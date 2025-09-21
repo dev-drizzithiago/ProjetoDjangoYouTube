@@ -50,7 +50,7 @@ logging.basicConfig(
     level=logging.INFO, # Nível mínimo de log
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler("log_events_app_yt.log"), # Salva em arquivo
+        logging.FileHandler("log_events_app_yt.log"),  # Salva em arquivo
         logging.StreamHandler(),  # Também mostra no console
     ]
 )
@@ -67,6 +67,7 @@ def validacao_nome_arquivo(filename):
     :param filename: recebe o nome do arquivo, caso tenha erro, arquivo será corrigido.
     :return:
     """
+    logging.info(f'Validação do nome do arquivo: {filename}')
     return sub(r'[\\/:*?"<>|()\[\]{}!@#$%¨&`^_]', '', filename)
 
 
@@ -101,7 +102,6 @@ class YouTubeDownload:
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
         logging.info(f'Registrando link [{link}] na base de dados')
-
         youtube = YouTube(link)
         dados_link = DadosYoutube(
             autor_link=youtube.author,
