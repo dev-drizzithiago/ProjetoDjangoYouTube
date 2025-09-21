@@ -31,6 +31,7 @@ class objYoutube  {
         } catch (error) {
             console.error('Error adding link:', error);
         } finally {
+            requestLinksSalvos()
             elemento_index.link_entrada.value = '';
             setTimeout(()=>{
                 elemento_index.msg_alerta.innerText = '';
