@@ -67,9 +67,7 @@ def validacao_nome_arquivo(filename):
     :param filename: recebe o nome do arquivo, caso tenha erro, arquivo será corrigido.
     :return:
     """
-    logging.info(f'Corrigind nome do arquivo: {filename}')
     return sub(r'[\\/:*?"<>|()\[\]{}!@#$%¨&`^_]', '', filename)
-
 
 def data_hora_certa():
     """
@@ -217,7 +215,7 @@ class YouTubeDownload:
         :param id_entrada: Recebe o id para ser feito uma query na base de dados
         :return: Mensagem de sucesso quando finalizar o download do vídeo.
         """
-        logging.info(f'Baixando mídia em MP4')
+        logging.info(f'Baixando mídia em MP4...')
 
         # Busca o link na base de dados.
         query_validador_dados = DadosYoutube.objects.filter(id_dados=id_entrada).values()
