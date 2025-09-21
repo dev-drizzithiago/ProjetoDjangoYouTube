@@ -70,7 +70,6 @@ class objYoutube  {
             midia: this.opcMidia,
             id_dados: this.idLink,
         }
-        console.log(data_to_django)
         try {
             const response = await fetch("/download_link/", {
             method: 'POST',
@@ -83,7 +82,6 @@ class objYoutube  {
         });
 
         const data = await response.json();
-        console.log(data)
         elemento_index.msg_alerta.innerText = data.mensagem;
 
         if (this.opcMidia === 'MP4') {
@@ -346,7 +344,6 @@ function PlayerMidiasMp3(response, imgBtn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
     }
-    console.log(response)
     response.forEach(element => {
         
          // busca o elemento <div> onde ficará todos os elementos que serão criados. 
@@ -488,7 +485,7 @@ document.addEventListener('click', (event) => {
     const className = elemento.className;
 
     // Consele para debug
-    console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
+    // console.log(`Tag: ${tag}, ID: ${id}, Class: ${className}`);
     
     if (tag === "img") {
         event.preventDefault();
@@ -537,14 +534,12 @@ document.addEventListener('click', (event) => {
                 listaAtivalnks = false;                 
                 elementoDivResult.style.display = 'none';
                 btn_index.divBtnLinksYoutube.style.backgroundColor = '#afafb4';
-                console.log(listaAtivalnks);
             }
             else {
                 elementoDivResult.style.display = 'grid';
                 listaAtivaMP4 = false;
                 listaAtivaMP3 = false;
                 listaAtivalnks = true;
-                console.log(listaAtivalnks);
             }
         }
         // Evento responsável em abrir as midias em MP4 salvas no servidor
@@ -560,14 +555,12 @@ document.addEventListener('click', (event) => {
                 listaAtivaMP4 = false;                 
                 elementoDivResult.style.display = 'none';
                 btn_index.divBtnMidiasMp4.style.backgroundColor = '#afafb4';
-                console.log(listaAtivaMP4);
             }
             else {
                 elementoDivResult.style.display = 'grid';
                 listaAtivaMP3 = false;
                 listaAtivalnks = false;
                 listaAtivaMP4 = true;
-                console.log(listaAtivaMP4);
             }
         }
         // Evento responsável em abrir as midias em MP3 salvas no servidor
@@ -583,14 +576,12 @@ document.addEventListener('click', (event) => {
                 listaAtivaMP3 = false;                 
                 elementoDivResult.style.display = 'none';
                 btn_index.divBtnMidiasMp3.style.backgroundColor = "#afafb4";
-                console.log(listaAtivaMP3);
             } 
             else {
                 elementoDivResult.style.display = 'grid';
                 listaAtivaMP3 = true;
                 listaAtivalnks = false;
                 listaAtivaMP4 = false;                
-                console.log(listaAtivaMP3);
             }
         }  
         // Evento para fazer o download dos LINKS salvos na base de dados
