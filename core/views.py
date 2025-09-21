@@ -147,3 +147,9 @@ def player_midias_mp3(request):
         'data_midia': lista_midias,
         'lista_img': lista_img,
     })
+
+def removendo_link_base_dados(request):
+    ...
+
+def removendo_midias(resquest):
+    ...
