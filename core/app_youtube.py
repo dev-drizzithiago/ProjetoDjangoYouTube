@@ -67,7 +67,7 @@ def validacao_nome_arquivo(filename):
     :param filename: recebe o nome do arquivo, caso tenha erro, arquivo será corrigido.
     :return:
     """
-    logging.info(f'Validação do nome do arquivo: {filename}')
+    logging.info(f'Corrigind nome do arquivo: {filename}')
     return sub(r'[\\/:*?"<>|()\[\]{}!@#$%¨&`^_]', '', filename)
 
 
@@ -152,54 +152,59 @@ class YouTubeDownload:
         self.creater_nome_midia = str(f"{self.download_yt.author}_{self.download_yt.title}.mp3").strip()
         self.nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
 
+        # Formata os dados para o download da mídia
         ducarao_midia = f"{self.download_yt.length}"
         miniatura = self.download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, self.nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(self.nome_validado).replace('.mp3', '.m4a')
         nome_miniatura_png = f"{self.nome_validado.replace('.mp3', '_mp3')}.png"
 
+        # Valida se o nome do arquivo é muito extenso
         if int(len(path.join(self.PATH_MIDIA_TEMP, self.nome_validado)) > 254):
             logging.warning('Nome do arquivo muito extenso')
             return 'Nome do arquivo muito extenso'
-        try:
-            stream = self.download_yt.streams.get_audio_only()
-            stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
 
-            # Chama o app para transformar o arquivo m4a(audio) em mp3(audio)
-            response_convert = self.mp4_to_mp3(nome_m4a_to_mp3)
+        # Verifica se já existe algum registro no banco de dados das mídias salvas.
+        query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=self.nome_validado)
+        if query_validador_midia.exists() and self.nome_validado:
+            logging.info(f'Midia [{self.nome_validado}] já existe, se a mídia não estiver abrindo, chame o dev.')
+            return f'Midia [{self.nome_validado}] já existe, se a mídia não estiver abrindo, chame o dev.'
+        else:
+            try:
+                stream = self.download_yt.streams.get_audio_only()
+                stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
+            except Exception as error:
+                logging.error(f'Erro no download da mídia "m4a": {error}')
+                return f'Erro no download da mídia "m4a": {error}'
 
-            if response_convert:
-                # Se tudo estiver bem, salva no banco de dados.
-                logging.info(f'Arquivo {self.nome_validado} convertido para MP3')
-                query_validador_midia = MusicsSalvasServidor.objects.filter(nome_arquivo=self.nome_validado)
-                if query_validador_midia.exists():
-                    logging.info(f'Midia {self.nome_validado} já existe')
-                    return 'Midia já existe'
-                else:
-                    response = requests.get(miniatura)
+            # Conversão só vai ocorre se o download da mídia der certo.
+            mp3_ok = self.mp4_to_mp3(self.nome_validado)
 
-                    musica = MusicsSalvasServidor(
-                        nome_arquivo=self.nome_validado,
-                        path_arquivo=path_url_midia,
-                        duracao_midia=ducarao_midia,
-                        dados_youtube_id=id_dados,
-                    )
-                    musica.path_miniatura.save(
-                        nome_miniatura_png,
-                        ContentFile(response.content),
-                        save=False  # **
-                    )
+            if mp3_ok:
+
+                # Faz o download da miniatura
+                response = requests.get(miniatura)
+
+                # Cria o obj para salvar as informações no banco de dados. 
+                musica = MusicsSalvasServidor(
+                    nome_arquivo=self.nome_validado,
+                    path_arquivo=path_url_midia,
+                    duracao_midia=ducarao_midia,
+                    dados_youtube_id=id_dados,
+                )
+
+                # Salva a miniatura em uma pasta especifica.
+                musica.path_miniatura.save(
+                    nome_miniatura_png,
+                    ContentFile(response.content),
+                    save=False  # **
+                )
                 musica.save()
                 logging.info(f'Download da mídia [{self.nome_validado}] concluido com sucesso.')
-                return f'Download concluido com sucesso.'
+                return f'Download da mídia [{self.nome_validado}] concluido com sucesso.'
             else:
-                logging.error(f'Mídia não foi encontrada: {self.nome_validado}')
-                print('Mídia não foi encontrada...')
-
-            logging.error(f'Não foi possível converter a mídia para MP3: {nome_validado}')
-            return 'Não foi possível converter a mídia para MP3...'
-        except Exception as error:
-            logging.error(f'Erro no downlaod do link para MP3: {error}')
+                logging.error('Erro ao converter a midía m4a para MP3')
+                return 'Erro ao converter a midía m4a para MP3'
 
     # Faz o download do arquivo em MP4
     def download_movie(self, id_entrada: int):
