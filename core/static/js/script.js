@@ -16,6 +16,8 @@ class objYoutube  {
 
     async add_link() {
         try {
+            elemento_index.divSpinner.display = 'flex';
+
             const response = await fetch("/add_link_sistema/", {
                 method: 'POST',
                 headers: {
@@ -25,6 +27,7 @@ class objYoutube  {
                 credentials: 'include',
                 body: JSON.stringify(this.link),
             })
+
             const data = await response.json();
             elemento_index.msg_alerta.innerText = data.mensagem;            
             console.warn(data.mensagem);
@@ -39,6 +42,7 @@ class objYoutube  {
             console.error('Error adding link:', error);
         } finally {
             elemento_index.link_entrada.value = '';
+            elemento_index.divSpinner.display = 'none';
             setTimeout(()=>{
                 elemento_index.msg_alerta.innerText = '';
             }, 10000)
