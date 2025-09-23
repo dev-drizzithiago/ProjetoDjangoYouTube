@@ -16,8 +16,6 @@ class objYoutube  {
 
     async add_link() {
         try {
-            elemento_index.divSpinner.display = 'flex';
-
             const response = await fetch("/add_link_sistema/", {
                 method: 'POST',
                 headers: {
@@ -42,7 +40,7 @@ class objYoutube  {
             console.error('Error adding link:', error);
         } finally {
             elemento_index.link_entrada.value = '';
-            elemento_index.divSpinner.display = 'none';
+            elemento_index.divSpinner.style.display = "none";
             setTimeout(()=>{
                 elemento_index.msg_alerta.innerText = '';
             }, 10000)
@@ -69,6 +67,7 @@ class objYoutube  {
 
     async downloadlinkYoutube() {
         elemento_index.msg_alerta.innerText = '';
+
         const data_to_django = {
             link: this.link,
             midia: this.opcMidia,
@@ -504,7 +503,7 @@ document.addEventListener('click', (event) => {
             if (!validar_link.validar_campos()) {
                 return;
             }
-
+            elemento_index.divSpinner.style.display = "block";
             const btn = new objYoutube(link);
             btn.add_link();
         }
