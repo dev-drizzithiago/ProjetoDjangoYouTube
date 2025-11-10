@@ -152,7 +152,7 @@ class YouTubeDownload:
         self.nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
 
         # Formata os dados para o download da mídia
-        ducarao_midia = f"{self._download_yt.length}"
+        duracao_midia = f"{self._download_yt.length}"
         miniatura = self._download_yt.thumbnail_url
         path_url_midia = str(Path(self.PATH_MIDIA_MUSICS_URL, self.nome_validado)).replace('\\', '/')
         nome_m4a_to_mp3 = str(self.nome_validado).replace('.mp3', '.m4a')
@@ -176,7 +176,7 @@ class YouTubeDownload:
                 logging.error(f"Erro no download da mídia 'm4a': {error}")
                 return f"Erro no download da mídia 'm4a': {error}"
 
-            # Conversão só vai ocorre se o download da mídia der certo.
+            # Conversão só vai ocorrer se o ‘download’ da mídia der certo.
             mp3_ok = self.mp4_to_mp3(nome_m4a_to_mp3)
 
             if mp3_ok:
@@ -188,11 +188,11 @@ class YouTubeDownload:
                 musica = MusicsSalvasServidor(
                     nome_arquivo=self.nome_validado,
                     path_arquivo=path_url_midia,
-                    duracao_midia=ducarao_midia,
+                    duracao_midia=duracao_midia,
                     dados_youtube_id=id_dados,
                 )
 
-                # Salva a miniatura em uma pasta especifica.
+                # Salva a miniatura numa pasta especifica.
                 musica.path_miniatura.save(
                     nome_miniatura_png,
                     ContentFile(response.content),
