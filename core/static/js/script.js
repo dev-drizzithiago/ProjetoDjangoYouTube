@@ -253,7 +253,7 @@ function PlayerMidiasMp4(response, imgBtn) {
 
         const duracao = document.createElement('li');
         duracao.classList.add('class_duracao');
-        duracao.textContent = `${String.fromCodePoint(0x23F3)} - ${converterDuracao(element.duracao_midia)} min.`;
+        duracao.textContent = `${String.fromCodePoint(0x23F3)} - ${converterDuracao(element.duracao_midia)} min.`; // insere um emoji
 
         // btn para abrir a midia em uma tag de videos
         const divBtn = document.createElement('div');
