@@ -174,9 +174,10 @@ button {
 
 /* Estilo para a DIV que contém os links */
 div.content {
-    border: var(--bord_teste);    
+    border: var(--bord_teste);
     display: grid;  /* Estilo de grade */
     grid-template-rows: repeat(2, 1fr); /* 4 linhas de altura igual */
+    width: 100%;
     max-height: 405px; /* altura máxima */
     gap: 15px;  /* espaçamento entre os itens */
     padding: 10px;  /* preenchimento interno  */

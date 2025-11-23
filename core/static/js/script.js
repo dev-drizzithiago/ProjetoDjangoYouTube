@@ -118,6 +118,7 @@ class objYoutube  {
 }
 
 /**************************************************************************************************************/
+// Carrega o elemento que fica os links
 function carregaPagina(response, img_btn) {
     if (elemento_index.div_result.innerHTML !== '') {
         elemento_index.div_result.innerHTML = '';
