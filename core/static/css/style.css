@@ -19,7 +19,7 @@ body {
 }
 
 main {
-    border: var(--bord_teste);
+    
     display: block;
     margin-left: auto; 
     margin-right: auto;
