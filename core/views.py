@@ -51,13 +51,14 @@ def login(request):
 
 def add_link_sistema(request):
     dados_json = json.loads(request.body)  # Valor é um link do youtube
-    link_registro = dados_json
+
+    print(dados_json)
 
     inicio_obj_yt_registro = YouTubeDownload()
-    resultado_processo_validacao = inicio_obj_yt_registro.validar_link_youtube(link_registro)
+    resultado_processo_validacao = inicio_obj_yt_registro.validar_link_youtube(dados_json)
 
     if resultado_processo_validacao:
-        resultado_processo_add = inicio_obj_yt_registro.registrando_link_base_dados(link_registro)
+        resultado_processo_add = inicio_obj_yt_registro.registrando_link_base_dados(dados_json)
 
         logger.info(resultado_processo_add)
 
