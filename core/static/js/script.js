@@ -214,7 +214,7 @@ function carregaPagina(response, img_btn) {
         
         img_miniatura.src = element.miniatura;
         pAutorLink.textContent = `${element.autor_link} - ${element.titulo_link} ${String.fromCodePoint(0x1F3B5)}`;
-        pDuracao.textContent = `${String.fromCodePoint(0x23F3)} ${converterDuracao(element.duracao)}`;
+        pDuracao.textContent = `${String.fromCodePoint(0x23F3)} ${converterDuracao(element.duracao)}`; // Converte os emojis
 
         const dadosLink = {
             'url': element.link_tube, 
@@ -271,7 +271,7 @@ function PlayerMidiasMp4(response, imgBtn) {
         btnPlayerMidia.style.width = '60px';
         btnPlayerMidia.style.height = '60px';
         btnPlayerMidia.style.backgroundColor = '#c5c5c5ff';
-        btnPlayerMidia.setAttribute('data-url', String(element.path_arquivo));
+        btnPlayerMidia.setAttribute('data-url', String(element.path_arquivo));  // Pega o arquivo que esta chegando do django/ html
 
         // imagem para abrir a midia em uma tag de videos
         const img_btn_player = document.createElement('img');
