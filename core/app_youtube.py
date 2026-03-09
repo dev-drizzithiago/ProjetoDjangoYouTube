@@ -101,6 +101,10 @@ class YouTubeDownload:
         self._download_yt = None
         self._nome_validado = None
 
+        self.nome_validado = None
+        self.creater_nome_midia = None
+        
+        
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
         logging.info(f'Registrando link na base de dados')
@@ -151,6 +155,7 @@ class YouTubeDownload:
 
         self.creater_nome_midia = str(f"{self._download_yt.author}_{self._download_yt.title}.mp3").strip()
         self.nome_validado = validacao_nome_arquivo(self.creater_nome_midia)
+        print(self.nome_validado)
 
         # Formata os dados para o download da mídia
         duracao_midia = f"{self._download_yt.length}"
