@@ -43,9 +43,11 @@ from pathlib import Path
 from re import search, sub
 from datetime import datetime
 from os import path, listdir, remove
+from django.core.files.base import ContentFile
 
 from moviepy import AudioFileClip
 from pytubefix import YouTube
+import yt_dlp
 
 logging.basicConfig(
     level=logging.INFO, # Nível mínimo de log
@@ -55,6 +57,8 @@ logging.basicConfig(
         logging.StreamHandler(),  # Também mostra no console
     ]
 )
+
+PoToken = "WEB"
 
 def on_progress_(stream, chunk, bytes_remaining):
     total_size = stream.filesize
@@ -108,7 +112,7 @@ class YouTubeDownload:
     # Registra o link na base de dados.
     def registrando_link_base_dados(self, link):
         logging.info(f'Registrando link na base de dados')
-        youtube = YouTube(link)
+        youtube = YouTube(link, client=PoToken)
         dados_link = DadosYoutube(
             autor_link=youtube.author,
             titulo_link=youtube.title,
@@ -148,7 +152,7 @@ class YouTubeDownload:
             link_tube = item['link_tube']
 
         try:
-            self._download_yt = YouTube(link_tube)
+            self._download_yt = YouTube(link_tube, client=PoToken)
         except Exception as error:
             logging.error(f"Não foi possível criar o obj do YouTube: {error}")
             return 'Não foi possível criar o obj do YouTube'
@@ -175,42 +179,90 @@ class YouTubeDownload:
             logging.info(f"Midia [{self.nome_validado}] já existe, se a mídia não estiver abrindo, chame o dev.")
             return f"Midia já existe."
         else:
+
+            # Configuração do yt-dlp
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'outtmpl': str(Path(self.PATH_MIDIA_TEMP, self.nome_validado)),
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }],
+            }
+
             try:
-                stream = self._download_yt.streams.get_audio_only()
-                stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
-            except Exception as error:
-                logging.error(f"Erro no download da mídia 'm4a': {error}")
-                return f"Erro no download da mídia 'm4a': {error}"
-
-            # Conversão só vai ocorrer se o ‘download’ da mídia der certo.
-            mp3_ok = self.mp4_to_mp3(nome_m4a_to_mp3)
-
-            if mp3_ok:
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(link_tube, download=True)
+                    duracao_midia = info.get('duration')
+                    miniatura = info.get('thumbnail')
 
                 # Faz o download da miniatura
                 response = requests.get(miniatura)
 
-                # Cria o obj para salvar as informações no banco de dados.
                 musica = MusicsSalvasServidor(
                     nome_arquivo=self.nome_validado,
                     path_arquivo=path_url_midia,
                     duracao_midia=duracao_midia,
                     dados_youtube_id=id_dados,
                 )
-
-                # Salva a miniatura numa pasta especifica.
                 musica.path_miniatura.save(
                     nome_miniatura_png,
                     ContentFile(response.content),
-                    save=False  # **
+                    save=False
                 )
                 musica.save()
 
-                logging.info(f"Download da mídia [{self.nome_validado}] concluido com sucesso.")
-                return f"Download da mídia concluido com sucesso."
-            else:
-                logging.error('Erro ao converter a midía m4a para MP3')
-                return 'Erro ao converter a midía m4a para MP3'
+                logging.info(f"Download da mídia [{self.nome_validado}] concluído com sucesso.")
+                return f"Download da mídia concluído com sucesso."
+            except Exception as error:
+                logging.error(f"Erro no download da mídia: {error}")
+                return f"Erro no download da mídia: {error}"
+
+            # try:
+            #     try:
+            #         stream = self._download_yt.streams.get_audio_only()
+            #         stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
+            #         if not stream:
+            #             raise Exception("Nenhum stream de áudio disponível")
+            #     except Exception:
+            #         stream = self._download_yt.streams.filter(only_audio=True).first()
+            #         stream.download(output_path=self.PATH_MIDIA_TEMP, filename=nome_m4a_to_mp3)
+            #         if not stream:
+            #             raise Exception("Nenhum stream de áudio disponível")
+            # except Exception as error:
+            #     logging.error(f"Erro no download da mídia 'm4a': {error}")
+            #     return f"Erro no download da mídia 'm4a': {error}"
+            #
+            # # Conversão só vai ocorrer se o ‘download’ da mídia der certo.
+            # mp3_ok = self.mp4_to_mp3(nome_m4a_to_mp3)
+            #
+            # if mp3_ok:
+            #
+            #     # Faz o download da miniatura
+            #     response = requests.get(miniatura)
+            #
+            #     # Cria o obj para salvar as informações no banco de dados.
+            #     musica = MusicsSalvasServidor(
+            #         nome_arquivo=self.nome_validado,
+            #         path_arquivo=path_url_midia,
+            #         duracao_midia=duracao_midia,
+            #         dados_youtube_id=id_dados,
+            #     )
+            #
+            #     # Salva a miniatura numa pasta especifica.
+            #     musica.path_miniatura.save(
+            #         nome_miniatura_png,
+            #         ContentFile(response.content),
+            #         save=False  # **
+            #     )
+            #     musica.save()
+            #
+            #     logging.info(f"Download da mídia [{self.nome_validado}] concluido com sucesso.")
+            #     return f"Download da mídia concluido com sucesso."
+            # else:
+            #     logging.error('Erro ao converter a midía m4a para MP3')
+            #     return 'Erro ao converter a midía m4a para MP3'
 
     # Faz o download do arquivo em MP4
     def download_movie(self, id_entrada: int):
@@ -231,7 +283,7 @@ class YouTubeDownload:
 
         # Cria a o obj do youtube.
         try:
-            download_yt = YouTube(link_tube)
+            download_yt = YouTube(link_tube, client=PoToken)
         except Exception as error:
             logging.error(f"Erro ao criar o obj do youtube: {error}")
             return f"Erro ao criar o obj do youtube."
